@@ -1,0 +1,35 @@
+	xinitd = 1.00E-07
+
+	ftold = 0.10E-06
+
+	tolfitd = 0.10E-07
+
+	dcd = 0.010
+
+	iterinitd = 3
+	iterfitd = 3
+
+	w0refd = 2100.0
+	xl0d = 3.0
+
+	xamp0d = 0.08
+	tau0refd = 2200.0
+	phi0refd = 1.00
+
+	intyped = 0
+
+	iprintd = 3
+
+	vrigthd = 0.0
+	vleftd = 0.0
+
+	nlmind = 5
+	
+	include_errors = 'no'
+	isigd = 0
+
+	ssmaxd = 0.500
+
+	lmind = 0
+	lmaxd = 2
+
