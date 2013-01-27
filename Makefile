@@ -56,10 +56,14 @@ FILES = \
 $(JF)/types.o \
 $(JF)/commonvar.o \
 $(JF)/commonarray.o \
+$(JF)/fun.o \
 $(JF)/sig_bcz_d2.o \
+$(JF)/output.o \
 $(JF)/deffreq.o \
 $(JF)/parameters.o \
-$(JF)/second_diff.o
+$(JF)/second_diff.o \
+$(JF)/get_chi_square.o \
+$(JF)/fit_d2.o
 #$(JF)/fun2.o
 
 
@@ -112,4 +116,4 @@ sig_bcz_d2: $(FPLOT) $(FILES) $(FCOM) $(FBASIC)
 	$(FC) $(FILES) $(FCOM) $(FBASIC) $(FPLOT) -o $@ -L$(lib) -I$(lib) $(LINK) 
 
 clean:
-	rm -f $(FILES) $(FCOM) $(FBASIC) $(FPLOT) *~ *.mod sig_bcz_d2
+	rm -f $(FILES) $(FCOM) $(FBASIC) $(FPLOT) *~ *.mod *.o sig_bcz_d2

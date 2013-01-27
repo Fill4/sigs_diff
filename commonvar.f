@@ -21,6 +21,8 @@ module commonvar
 	integer, public      :: isig, isel
 	integer, public      :: nleft,nrigth
 	
+	logical, public      :: write_d2_to_file
+	
 	real, public         :: fac,pi
 	
 	real, public         :: xinit
@@ -29,8 +31,11 @@ module commonvar
 	real, public         :: vleft,vrigth
 	real, public         :: xmass,xrad			! mass & radius of star
 	real, public         :: ssmax				! max error allowed in frequencies
-	real, public         :: w0,xl0,xamp0,tau0	! initial values
-	real, public         :: w0ref,xamp0ref,tau0ref,phi0ref	! reference values
+	                        ! initial values:   
+	real, public         :: amp_bcz, tau_bcz, phi_bcz, &
+		                    amp1_he, amp2_he, tau_he, phi_he, &
+		                    poly0
+	real, public         :: w0, tau0, w0ref,xamp0ref,tau0ref,phi0ref	! reference values
 	
 
 end module commonvar

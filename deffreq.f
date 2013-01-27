@@ -1,34 +1,24 @@
 !****************************************************************************
 ! Joao Faria: Jan 2013
 !****************************************************************************
-	subroutine deffreq (afile,c)
+	subroutine deffreq (afile)
 !	 Define the reference values of the parameters C
 
 		use commonvar
+		use commonarray, only: c
+		use types
 		
-		implicit double precision (b-h,o-z)
-		implicit integer (i-n)
+		implicit none
 		
 		character(len=80), intent(inout)    :: afile
-		double precision, dimension(*), intent(inout) :: c
-		
 		character(len=80)    :: afile0	
 
 		
 
 		w0 = w0ref
 		tau0 = tau0ref
-		
-		! first 2 parameters
-		c(1)=tau0*w0*fac	! argument
-		c(2)=phi0ref		! phase
-		
-		! third parameter
-		c(3)=xamp0		! amplitude
-
-		! output to terminal -
-		!write(*,*) c(1), c(2), c(3)
-		
+	
+	
 		if (afile(1:5).eq.'00000') then
 			afile0='freqs'
 		else

@@ -98,7 +98,7 @@
 		if (l(n+1).gt.lmax.or.l(n+1).lt.lmin) goto 11
 
 		n = n+1
-		w(n) = ww/w0
+		w(n) = ww!/w0
 		xn(n) = dble(nn)
 		goto 11
 

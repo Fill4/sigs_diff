@@ -3,7 +3,8 @@
 !****************************************************************************
    subroutine second_diff
    
-    use commonvar, only: w0     ! reference frequency
+    use types
+    use commonvar, only: w0, write_d2_to_file
     use commonarray, only: npt, w, n, l, d2, w_d2, nd2
     
     use gnufor2, only: plot
@@ -11,13 +12,14 @@
     implicit none
     
     integer :: i, j
-    real, dimension(npt)   :: d2work
+    real(dp), dimension(npt)   :: d2work
     
     d2work = 0.
-    
+    w = w*1.0d-6    ! convert frequencies to Hz
+        
     do i=2,n
         if (l(i-1) == l(i) .and. l(i) == l(i+1)) then
-            d2work(i) = (w(i-1) - 2.0*w(i) + w(i+1)) * w0
+            d2work(i) = (w(i-1) - 2.0*w(i) + w(i+1))    ! in Hz
         end if
     end do
     
@@ -25,20 +27,24 @@
     j = 1
     do i=1,n
         if (d2work(i) /= 0. .and. d2work(i) < 10. ) then
-            d2(j) = d2work(i)
-            w_d2(j) = w(i)*w0
+            d2(j) = d2work(i)   ! in Hz
+            w_d2(j) = w(i)  ! in Hz
             j = j+1
         end if
     end do
     
-        
-    write(*,'(f10.4, i3, f10.4, /)') (w(i)*w0, l(i), d2work(i), i=1,n)
-    write(*,'(f10.4, f10.4, /)') (d2(i), w_d2(i), i=1,j-1)
+    ! print in muHz unscaled 
+    if (write_d2_to_file) then
+        ! open the file -
+		open(unit=33, file='d2.data', action='write')
+		write(33,'(f18.8, f18.8, /)') (w_d2(i)*1.0d6, d2(i)*1.0d6, i=1,j-1)
+    endif
     
-    write(*,*) j-1
+    ! number o second differences
+!    write(*,*) j-1
     nd2 = j-1
     
-    !call plot(dble(w_d2(1:j-1)), dble(d2(1:j-1)), ' 5.',terminal='jpeg')
+    !call plot(dble(w_d2(1:j-1)), dble(d2(1:j-1)), ' 5.')
    
    end subroutine second_diff
    

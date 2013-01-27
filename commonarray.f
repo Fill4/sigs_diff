@@ -5,6 +5,8 @@
 !	 need to share. 
 
 module commonarray
+
+	use types
 	
 	implicit none
 	
@@ -19,7 +21,9 @@ module commonarray
 	real, dimension(npt), public     :: xn
 	real, dimension(npt), public     :: w   ! frequencies
 
-    real, dimension(npt), public     :: d2      ! second differences
-    real, dimension(npt), public     :: w_d2    ! central frequency of second difference
+    real(dp), dimension(npt), public     :: d2      ! second differences
+    real(dp), dimension(npt), public     :: w_d2    ! central frequency of second difference
+    
+    real(dp), allocatable, public   :: c(:) ! parameters of the fit
     
 end module commonarray
