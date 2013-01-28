@@ -16,10 +16,11 @@ module commonarray
 	
 	integer, dimension(npt), public  :: l   ! angular degrees
 	
-	real, dimension(npt), public     :: sd  ! signal
-	real, dimension(npt), public     :: sig ! errors
-	real, dimension(npt), public     :: xn
-	real, dimension(npt), public     :: w   ! frequencies
+	real(dp), dimension(npt), public     :: sd      ! signal
+	real(dp), dimension(npt), public     :: sig     ! errors in frequencies
+	real(dp), dimension(npt), public     :: sigd2   ! errors in second diff
+	real(dp), dimension(npt), public     :: xn
+	real(dp), dimension(npt), public     :: w   ! frequencies
 
     real(dp), dimension(npt), public     :: d2      ! second differences
     real(dp), dimension(npt), public     :: w_d2    ! central frequency of second difference

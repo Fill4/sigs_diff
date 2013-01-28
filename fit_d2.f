@@ -21,6 +21,7 @@
         !logical, dimension(:), pointer :: vary
         
         real(dp), dimension(80) :: xx, resultfun
+        real(dp)                :: min_xx, max_xx 
 
         ! provide interface to the objective function
         interface
@@ -82,12 +83,15 @@
         ! Successful termination.
 		c = p
 		resd = maxf
-				
-        call linspace(minval(w_d2(1:nd2)), maxval(w_d2(1:nd2)), xx)
-        !write(*,*) w_d2(1), xx(1), w_d2(nd2), xx(200)
+			
+		! create array with smooth function		
+		min_xx = minval(w_d2(1:nd2)) - 1.0d-4
+		max_xx = maxval(w_d2(1:nd2)) + 1.0d-4
+        call linspace(min_xx, max_xx, xx)
         do i=1,80
             resultfun(i) = fun(xx(i))
         end do
+        
         
 		c(1) = c(1) * 1.0d6
 		c(2) = c(2) * 1.0d6
@@ -120,7 +124,7 @@
 ! subtracted from the second differences
         use types
         use commonvar, only : use_error_chi2, nconst
-        use commonarray, only : nd2, w_d2, d2, c, l, sig
+        use commonarray, only : nd2, w_d2, d2, c, l, sigd2
     
         implicit none
 
@@ -131,12 +135,9 @@
         real(dp) :: ww, signal, resid, fun
 
         c = p
-        
-!       if (c(nconst).gt.1.1d0*pi) c(nconst) = c(nconst)-pi
-!		if (c(nconst).lt.0.1d0*pi) c(nconst) = c(nconst)+pi
 		
 		resid = 0.0d0
-		! if not using errors -
+		! if not weighting by errors -
 		if (use_error_chi2 == 'no' .or. use_error_chi2 == 'n') then
 			do i=1,nd2
 				ww = w_d2(i)
@@ -144,13 +145,13 @@
 				signal = fun(ww)
 				resid = resid + (d2(i)-signal)**2
 			end do
-		! if using errors -
+		! if weighting by errors -
 		else if (use_error_chi2 == 'yes' .or. use_error_chi2 == 'y') then
 			do i=1,nd2
 				ww = w_d2(i)
 				ll = l(i)
 				signal = fun(ww)
-				resid = resid + ((d2(i)-signal)/sig(i))**2
+				resid = resid + ((d2(i)-signal)/sigd2(i))**2
 			end do
 		endif
 		

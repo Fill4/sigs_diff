@@ -19,7 +19,8 @@
 		
 		close (1)
 		open (1,file=afile,status='old')
-		call skpcom (1)
+		
+		call skpcom (1) ! skip lines that start with #
 
 		wmin = 1.0d6
 		wmax = 0.0d0
