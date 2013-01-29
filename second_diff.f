@@ -44,9 +44,10 @@
 		write(33,'(f18.8, f18.8, f18.8, /)') (w_d2(i)*1.0d6, d2(i)*1.0d6, sigd2(i)*1.0d6, i=1,j-1)
     endif
     
-    ! number o second differences
-!    write(*,*) j-1
+    ! number of second differences
     nd2 = j-1
+	write (6,'(7x, a, i3)') "# of second differences: ", nd2
+    
     
     !call plot(dble(w_d2(1:j-1)), dble(d2(1:j-1)), ' 5.')
    
