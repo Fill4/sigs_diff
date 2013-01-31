@@ -31,7 +31,7 @@ lib = /home/joao/Programs/fortran/lib
 #FC = /usr/bin/f77
 #FC	= g77 -Wall
 FC	= gfortran
-FFLAGS = -O0 -ffree-form
+FFLAGS = -O1 -ffree-form -ffast-math
 #dbx     = -O5 -r8 -g
 #profil  = -p -O5 -r8 
 #samedir = .
@@ -62,8 +62,8 @@ $(JF)/output.o \
 $(JF)/deffreq.o \
 $(JF)/parameters.o \
 $(JF)/second_diff.o \
-$(JF)/get_chi_square.o \
-$(JF)/fit_d2.o
+$(JF)/fit_d2.o \
+$(JF)/fit_d2_genetic.o
 #$(JF)/fun2.o
 
 

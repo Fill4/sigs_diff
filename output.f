@@ -1,14 +1,15 @@
 !****************************************************************************
 ! Joao Faria: Jan 2013
 !****************************************************************************
-	subroutine output (frequency_file)
+	subroutine output (frequency_file, resd)
 !	 write the results to the terminal
 
-        use types
+        use types_and_interfaces
 		use commonvar
-		use commonarray, only: c
+		use commonarray, only: c, n
 		
 		character(len=80), intent(in) :: frequency_file
+		real(dp), intent(in)          :: resd
 	
 		real(dp)    :: tauBCZ, tauHe
 		real(dp)    :: chi2, chi2norm
@@ -27,14 +28,14 @@
 		                   'tau_BCZ = ', tauBCZ, &
 		                   'phi_bcz = ', c(4), 'A_bcz = ', c(2), &
                            'tau_He = ', tauHe, &
-                           'phi_he = ', c(8), 'A_he = ', c(5), &
-                           'chi2 = ', chi2, 'chi2norm = ', chi2norm
+                           'phi_he = ', c(8), 'A_he = ', c(5), c(6), &
+                           'chi2 = ', resd, 'chi2norm = ', resd/(n-nconst)
                            
  1010	format (3x, a, //, &
                 6x, a, f9.4, //, &
-                6x, a, f9.2, 6x, a, f10.8, //, &
+                6x, a, f9.2, 6x, a, f10.4, //, &
                 6x, a, f9.4, //, &
-                6x, a, f9.2, 6x, a, f10.8, //, &
+                6x, a, f9.2, 6x, a, f10.4, 2x, f10.3, //, &
                 6x, a, f15.10, 5x, a, f15.10, /)
 
         

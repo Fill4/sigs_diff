@@ -4,8 +4,8 @@
 !	 produced by the sharp transition in the base of the
 !	 convection zone
 
-        use types
-!        use commonvar, only: w0
+        use types_and_interfaces, only: dp
+        use commonvar, only: pi
         use commonarray, only: c
 
 		implicit none

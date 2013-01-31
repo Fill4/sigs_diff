@@ -8,7 +8,7 @@
 	
    subroutine sig_bcz_d2
 
-    use types
+    use types_and_interfaces
 	use commonvar
 	use commonarray
 	use lib_opt
@@ -69,8 +69,8 @@
     
 !--- Finding the best parameters -
 	amess = ' '
-	call fit_d2(res)
-
+!	call fit_d2(res)
+    call fit_d2_genetic(res)
 !--- plot results -
 
     
@@ -89,7 +89,7 @@
 !	   write (*,*)"  ==> WARNING: Value of taud not admissible! [.]"
 !	endif
 !	
-	call output (afile)
+	call output (afile, res)
 
 !	if (iprint.ge.1) close (3)
 	write (6,*)"---------------------> PROGRAM SIG_BCZ_D2 <---------------------"

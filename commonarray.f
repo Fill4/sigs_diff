@@ -6,7 +6,7 @@
 
 module commonarray
 
-	use types
+	use types_and_interfaces, only: dp
 	
 	implicit none
 	
