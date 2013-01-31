@@ -20,7 +20,6 @@
 		tauBCZ = c(3)
 		tauHe = c(7)
 		
-		!call get_chi_square(chi2, chi2norm)
 		
 		write (6,*) "  Frequencies from file: ", frequency_file
 	

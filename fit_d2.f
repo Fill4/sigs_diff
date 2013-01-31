@@ -40,7 +40,6 @@
             end function fun
         end interface 
 
-        ! w_d2 and d2 are both scaled by w0 and in Hz so:
 
         ! Set up starting values
         c(1) = poly0*1.0d-6    ! input in muHz

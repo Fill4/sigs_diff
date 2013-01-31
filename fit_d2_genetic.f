@@ -25,33 +25,6 @@
         real(dp), dimension(80) :: xx, resultfun
         real(dp)                :: min_xx, max_xx 
 
-!        ! provide interface to the objective function
-!        interface
-!          function objfun_ga(n, p) result(fun_val)
-!            implicit none
-!            integer, intent(in)    :: n
-!            real, intent(in)       :: p(:)
-!            real                   :: fun_val
-!          end function objfun_ga
-!        end interface
-!        
-!        ! to the function that calculates the signal
-!        interface 
-!            real(kind=8) function fun (w_d2)
-!	            implicit none
-!	            real(kind=8), intent(in)  :: w_d2
-!            end function fun
-!        end interface 
-!        
-!        ! and to the parameter rescaling subroutine
-!        interface
-!          subroutine rescale(array_in, array_out)
-!            implicit none
-!            real, dimension(:), intent(in)      :: array_in
-!            real(kind=8), dimension(:), intent(out) :: array_out
-!          end subroutine rescale
-!        end interface
-        
         
         !     First, initialize the random-number generator
         seed=13579
@@ -60,8 +33,8 @@
         !     Set control variables
         ctrl(1:12) = -1
         ctrl(1) = 120
-        ctrl(2) = 5000
-        !ctrl(12) = -1
+        ctrl(2) = 3000
+        ctrl(12) = -1
         outfile = 'param_file'
         
          
@@ -88,7 +61,6 @@
             resultfun(i) = fun(xx(i))
         end do
 
-        write(*,*) 'calling plot'
         call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, xx*1.0d6, resultfun*1.0d6, &
                   ' 5.00-',color2='dark-yellow',color1='#40e0d0')
 
