@@ -33,8 +33,8 @@
         !     Set control variables
         ctrl(1:12) = -1
         ctrl(1) = 120
-        ctrl(2) = 3000
-        ctrl(12) = -1
+        ctrl(2) = 5000
+        !ctrl(12) = 2
         outfile = 'param_file'
         
          
@@ -62,7 +62,8 @@
         end do
 
         call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, xx*1.0d6, resultfun*1.0d6, &
-                  ' 5.00-',color2='dark-yellow',color1='#40e0d0')
+                  ' 5.00-',color2='dark-yellow',color1='#40e0d0')!, &
+                  !yrange=(/-3.0d0,3.0d0/) )
 
 
 		return
@@ -132,13 +133,33 @@
         
         array_out(1) = dble(array_in(1)) * 2.0d-6
         array_out(2) = dble(array_in(2)) * 1.0d-12
-        array_out(3) = dble(array_in(3)) * (5000. - 2000.) + 2000.
+        array_out(3) = dble(array_in(3)) * (4000. - 2500.) + 2500.
         array_out(4) = dble(array_in(4)) * 2. * pi
         array_out(5) = dble(array_in(5)) * 2.0d-3
         array_out(6) = dble(array_in(6)) * 1.0d8
-        array_out(7) = dble(array_in(7)) * (2000. - 500.) + 500.
+        array_out(7) = dble(array_in(7)) * (1000. - 600.) + 600.
         array_out(8) = dble(array_in(8)) * 2. * pi
   
   
   end subroutine rescale
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 

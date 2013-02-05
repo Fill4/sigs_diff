@@ -30,7 +30,7 @@
     ! remove zeros and wrong values
     j = 1
     do i=1,n
-        if (d2work(i) /= 0. .and. d2work(i) < 10. ) then
+        if (d2work(i) /= 0. .and. abs(d2work(i)) < 10.d-6 ) then
             d2(j) = d2work(i)   ! in Hz
             w_d2(j) = ww(i)  ! in Hz
             sigd2(j) = error(i) ! in Hz
@@ -42,8 +42,8 @@
     if (write_d2_to_file) then
         ! open the file -
 		open(unit=33, file='d2.data', action='write')
-		write(33,*) "nu (muHz)", "d2 (muHz)", "err_d2 (muHz)"
-		write(33,'(f18.8, f18.8, f18.8, /)') (w_d2(i)*1.0d6, d2(i)*1.0d6, sigd2(i)*1.0d6, i=1,j-1)
+		write(33,*) "#  nu (muHz)", "d2 (muHz)", "err_d2 (muHz)"
+		write(33,'(f18.8, f18.8, f18.8)') (w_d2(i)*1.0d6, d2(i)*1.0d6, sigd2(i)*1.0d6, i=1,j-1)
 		close(33)
     endif
     
