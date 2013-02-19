@@ -31,7 +31,7 @@ lib = /home/joao/Programs/fortran/lib
 #FC = /usr/bin/f77
 #FC	= g77 -Wall
 FC	= gfortran
-FFLAGS = -O0 -ffree-form -ffast-math
+FFLAGS = -O3 -ffree-form -ffast-math
 #dbx     = -O5 -r8 -g
 #profil  = -p -O5 -r8 
 #samedir = .
@@ -113,7 +113,7 @@ $(JFp)/gnufor2.o
 # **********************************************************
 
 sig_bcz_d2: $(FPLOT) $(FILES) $(FCOM) $(FBASIC) 
-	$(FC) $(FILES) $(FCOM) $(FBASIC) $(FPLOT) -o $@ -L$(lib) -I$(lib) $(LINK)
+	$(FC) $(FILES) $(FCOM) $(FBASIC) $(FPLOT) -o $@ -L$(lib) -I$(lib) $(LINK) -O3
 
 clean:
 	rm -f $(FILES) $(FCOM) $(FBASIC) $(FPLOT) *~ *.mod *.o sig_bcz_d2

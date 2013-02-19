@@ -37,7 +37,7 @@ module types_and_interfaces
 
     ! interface to the function that calculates the signal
     interface fun
-        real(kind=8) function fun (w_d2)
+        elemental real(kind=8) function fun (w_d2)
             implicit none
             real(kind=8), intent(in)  :: w_d2
         end function fun

@@ -25,16 +25,16 @@
 	
 		write (6,1010) 'Results:', &
 		                   'tau_BCZ = ', tauBCZ, &
-		                   'phi_bcz = ', c(4), 'A_bcz = ', c(2), &
+		                   'phi_bcz = ', c(4), 'A_bcz = ', c(2)*1.0d12, &
                            'tau_He = ', tauHe, &
-                           'phi_he = ', c(8), 'A_he = ', c(5), c(6), &
+                           'phi_he = ', c(8), 'A_he = ', c(5)*1.0d3, c(6), &
                            'chi2 = ', resd, 'chi2norm = ', resd/(n-nconst)
                            
  1010	format (3x, a, //, &
                 6x, a, f9.4, //, &
                 6x, a, f9.2, 6x, a, f10.4, //, &
                 6x, a, f9.4, //, &
-                6x, a, f9.2, 6x, a, f10.4, 2x, f10.3, //, &
+                6x, a, f9.2, 6x, a, f10.4, 2x, f15.3, //, &
                 6x, a, f15.10, 5x, a, f15.10, /)
 
         
