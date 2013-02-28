@@ -15,7 +15,8 @@
 		real(dp) :: xarg, bcz, heiiz
 		real(dp) :: poly
         
-		poly = c(1) !+ c(2)*w_d2 + c(3)*w_d2*w_d2
+        poly = c(1)! + c(9)*w_d2 + c(10)*w_d2**2 + c(11)*w_d2**3
+		!poly = c(1) + c(9)/w_d2 + c(10)/(w_d2**2) + c(11)/(w_d2**3)
 		
 		! BCZ
 		xarg = 2.0d0 * ( 2.d0*pi*c(3)*w_d2 + c(4) )
@@ -23,7 +24,8 @@
 	  	
 	  	! HeIIZ
 	  	xarg = 2.0d0 * ( 2.d0*pi*c(7)*w_d2 + c(8) )
-	  	heiiz = (c(5)*w_d2*exp(-c(6)*w_d2**2)) * sin(xarg)
+	  	    heiiz = (c(5)*w_d2*exp(-c(6)*w_d2**2)) * sin(xarg)
+	  	!heiiz = c(5)*((sin(2.d0*pi*c(6)*w_d2)**2)/(c(6)*w_d2)) * sin(xarg)
 	  	
 	  	fun = poly + bcz + heiiz
 

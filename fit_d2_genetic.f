@@ -22,7 +22,7 @@
         character(len=80) :: outfile
         
         
-        real(dp), dimension(80) :: xx, resultfun
+        real(dp), dimension(150) :: xx, result_fun, result_smooth, result_he, result_bcz
         real(dp)                :: min_xx, max_xx 
 
         
@@ -33,11 +33,11 @@
         !     Set control variables
         ctrl(1:12) = -1
         ctrl(1) = 120
-        ctrl(2) = 15000
+        ctrl(2) = iterfit
         !ctrl(12) = 2
         outfile = 'param_file'
         
-         
+        write(*,*) nconst
         !     Now call pikaia
         CALL pikaia(objfun_ga, nconst, ctrl, x, f, status, outfile)
 
@@ -47,11 +47,11 @@
         ! residuals of best parameters
         chi2 = 1.0/objfun_ga(nconst, x)
         
-!        !     Print the results
-!        WRITE(*,*) ' status: ', STATUS
-!        WRITE(*,*) '      x: ', c
-!        WRITE(*,*) '  chi^2: ', 1./f
-!        WRITE(*,20) ctrl
+        !     Print the results
+        WRITE(*,*) ' status: ', STATUS
+        WRITE(*,*) '      x: ', c
+        WRITE(*,*) '  chi^2: ', 1./f
+        WRITE(*,20) ctrl
 
 
         20 FORMAT(   '    ctrl: ', 6F11.6/ t11, 6F11.6)
@@ -60,15 +60,34 @@
 		min_xx = minval(w_d2(1:nd2)) - 1.0d-4
 		max_xx = maxval(w_d2(1:nd2)) + 1.0d-4
         call linspace(min_xx, max_xx, xx)
-        resultfun = fun(xx)
+        result_fun = fun(xx)
+!        write(*,*) smooth_comp(min_xx), nconst
+        result_smooth = smooth_comp(xx)
+        result_he = he_comp(xx)
+        result_bcz = bcz_comp(xx)
 
 
-        call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, xx*1.0d6, resultfun*1.0d6, &
+        call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
+                  xx*1.0d6, result_fun*1.0d6, &
                   ' 5.00-',color2='black',color1='green', &
-                  errors=sigd2(1:nd2)*1.0d6)!, &
+                  errors=sigd2(1:nd2)*1.0d6)
                   !terminal='png')
                   !yrange=(/-3.0d0,3.0d0/) )
-
+                  
+        call plot(xx*1.0d6,result_he*1.0d6, &
+                  xx*1.0d6,result_bcz*1.0d6, &
+                  xx*1.0d6,result_smooth*1.0d6, &
+                  ' 1-00- 2-',color3='green',color2='red',color1='blue')!, &
+                  !terminal='png')
+                  !yrange=(/-3.0d0,3.0d0/) )                  
+                  
+!        call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
+!                  xx*1.0d6, result_fun*1.0d6, &
+!                  ' 5.00-',color2='black',color1='green', &
+!                  errors=sigd2(1:nd2)*1.0d6)!, &
+!                  !terminal='png')
+!                  !yrange=(/-3.0d0,3.0d0/) )
+                  
 
 		return
 		
@@ -133,7 +152,9 @@
         array_out(6) = dble(array_in(6)) * 5.0d8
         array_out(7) = dble(array_in(7)) * (1500. - 500.) + 500.
         array_out(8) = dble(array_in(8)) * 2.0_dp * pi
-  
+!        array_out(9) = dble(array_in(9)) * 2.0d-6
+!        array_out(10) = dble(array_in(10)) * 2.0d-9
+!        array_out(11) = dble(array_in(11)) * 2.0d-12 
   
   end subroutine rescale
   

@@ -52,6 +52,30 @@ module types_and_interfaces
         real(kind=8), dimension(:), intent(out) :: array_out
       end subroutine rescale
     end interface rescale
+    
+    ! interface to the function that calculates the smooth component
+    interface smooth_comp
+        elemental real(kind=8) function smooth_comp (w_d2)
+            implicit none
+            real(kind=8), intent(in)  :: w_d2
+        end function smooth_comp
+    end interface smooth_comp
+    
+    ! interface to the function that calculates the he component
+    interface he_comp
+        elemental real(kind=8) function he_comp (w_d2)
+            implicit none
+            real(kind=8), intent(in)  :: w_d2
+        end function he_comp
+    end interface he_comp
+    
+        ! interface to the function that calculates the bcz component
+    interface bcz_comp
+        elemental real(kind=8) function bcz_comp (w_d2)
+            implicit none
+            real(kind=8), intent(in)  :: w_d2
+        end function bcz_comp
+    end interface bcz_comp
 
 
 end module types_and_interfaces

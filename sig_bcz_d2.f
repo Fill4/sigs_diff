@@ -44,6 +44,7 @@
     
 !--- Number of parameters to fit -
 	nconst=8
+	!nconst=11
 	allocate(c(nconst))
 	
 !--- Read file with input parameters -
