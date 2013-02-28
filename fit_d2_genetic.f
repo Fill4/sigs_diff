@@ -126,12 +126,12 @@
         real(dp), dimension(:), intent(out) :: array_out
         
         array_out(1) = dble(array_in(1)) * 2.0d-6
-        array_out(2) = dble(array_in(2)) * 2.0d-12
+        array_out(2) = dble(array_in(2)) * 3.0d-12
         array_out(3) = dble(array_in(3)) * (4000. - 1200.) + 1200.
         array_out(4) = dble(array_in(4)) * 2.0_dp * pi
         array_out(5) = dble(array_in(5)) * 20.0d-3
         array_out(6) = dble(array_in(6)) * 5.0d8
-        array_out(7) = dble(array_in(7)) * (1500. - 600.) + 600.
+        array_out(7) = dble(array_in(7)) * (1500. - 500.) + 500.
         array_out(8) = dble(array_in(8)) * 2.0_dp * pi
   
   
