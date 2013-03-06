@@ -20,7 +20,7 @@
 		! fitting procedure -
 		integer :: iterinitd,iterfitd
 		! reference values -
-		real    :: w0refd,xl0d
+		real    :: w0refd,xl0d, nu0d
 		
 		! initial guesses of the parameters are declared in commonvar
 				
@@ -49,7 +49,7 @@
 		integer  :: lmind,lmaxd
 		namelist / sig_bcz_controls / xinitd, ftold, tolfitd, dcd,&
              iterinitd,iterfitd,&
-             w0refd,xl0d,&
+             w0refd,xl0d,nu0d,&
              amp_bcz, tau_bcz, phi_bcz, amp1_he, amp2_he, tau_he, phi_he, poly0, &
              intyped,&
              iprintd,&
@@ -93,9 +93,12 @@
 !		write(6,nml=sig_bcz_controls)
 		
 
-		pi  = 4.0d0*atan(1.0d0)
+		pi = 4.0d0*atan(1.0d0)
+		pi_sq = pi*pi
 		fac = 2.0d-6*pi
 
+        tau0_houdek = 80.0d0
+        tau0_houdek_sq = 6400.0d0
 
 		icalc=0
 		ipara=0
@@ -112,6 +115,7 @@
 
 		icalc=1
 		
+		nu0 = nu0d * 1.0d-6 ! convert from muHz (input) to Hz
 		w0ref = w0refd
 		xl0 = xl0d
 			xl02=xl0*(xl0+1.0d0)

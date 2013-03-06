@@ -6,6 +6,8 @@
 
 module commonvar
 	
+	use types_and_interfaces, only: dp
+	
 	implicit none
 	
 	character(len=10), public  :: include_errors, use_error_chi2
@@ -23,7 +25,8 @@ module commonvar
 	
 	logical, public      :: write_d2_to_file
 	
-	real, public         :: fac,pi
+	real(dp), public     :: fac, pi, pi_sq
+	real(dp), public     :: tau0_houdek, tau0_houdek_sq  
 	
 	real, public         :: xinit
 	real, public         :: ftol,tolfit,dc
@@ -35,7 +38,7 @@ module commonvar
 	real, public         :: amp_bcz, tau_bcz, phi_bcz, &
 		                    amp1_he, amp2_he, tau_he, phi_he, &
 		                    poly0
-	real, public         :: w0, tau0, w0ref,xamp0ref,tau0ref,phi0ref	! reference values
+	real, public         :: nu0, w0, tau0, w0ref,xamp0ref,tau0ref,phi0ref	! reference values
 	
 
 end module commonvar

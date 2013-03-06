@@ -12,7 +12,7 @@
         use lib_plot
 
 
-		real(kind=8)                 :: chi2
+		real(dp)                 :: chi2
 
         real(dp)                    :: object, simp, stopcr
         real(dp), dimension(nconst) :: p, step, var
@@ -27,7 +27,7 @@
 
         
         !     First, initialize the random-number generator
-        seed=13579
+        seed=13578
         call rninit(seed)
         
         !     Set control variables
@@ -37,7 +37,6 @@
         !ctrl(12) = 2
         outfile = 'param_file'
         
-        write(*,*) nconst
         !     Now call pikaia
         CALL pikaia(objfun_ga, nconst, ctrl, x, f, status, outfile)
 
@@ -51,17 +50,17 @@
         WRITE(*,*) ' status: ', STATUS
         WRITE(*,*) '      x: ', c
         WRITE(*,*) '  chi^2: ', 1./f
-        WRITE(*,20) ctrl
+        !WRITE(*,20) ctrl
 
 
         20 FORMAT(   '    ctrl: ', 6F11.6/ t11, 6F11.6)
         
         ! create array with smooth function		
-		min_xx = minval(w_d2(1:nd2)) - 1.0d-4
-		max_xx = maxval(w_d2(1:nd2)) + 1.0d-4
+		min_xx = minval(w_d2(1:nd2)) - 2.0d-4
+		max_xx = maxval(w_d2(1:nd2)) + 2.0d-4
         call linspace(min_xx, max_xx, xx)
         result_fun = fun(xx)
-!        write(*,*) smooth_comp(min_xx), nconst
+        write(*,*) smooth_comp(min_xx), min_xx
         result_smooth = smooth_comp(xx)
         result_he = he_comp(xx)
         result_bcz = bcz_comp(xx)
@@ -144,17 +143,33 @@
         real, dimension(:), intent(in)      :: array_in
         real(dp), dimension(:), intent(out) :: array_out
         
-        array_out(1) = dble(array_in(1)) * 2.0d-6
-        array_out(2) = dble(array_in(2)) * 3.0d-12
-        array_out(3) = dble(array_in(3)) * (4000. - 1200.) + 1200.
+        
+        ! polynomial
+        array_out(1) = dble(array_in(1)) * 1.0d-4
+        array_out(9) = dble(array_in(9)) * 1.0d-1
+        array_out(10) = dble(array_in(10)) * 1.0d2
+        array_out(11) = dble(array_in(11)) * 1.0d3
+        array_out(1) = -1.62013420d-5
+        array_out(9) = 1.54115760d-2
+        array_out(10) = -4.83646351
+        array_out(11) = 5.08562576d2
+        
+!        array_out(1) = -1.85558899d-5
+!        array_out(9) = 1.63208828d-2
+!        array_out(10) = -4.13947874
+!        array_out(11) = 2.63645116d2
+        
+        ! bcz
+        array_out(2) = dble(array_in(2)) * 1.0d1
+        array_out(3) = dble(array_in(3)) * (3000. - 1200.) + 1200.
         array_out(4) = dble(array_in(4)) * 2.0_dp * pi
-        array_out(5) = dble(array_in(5)) * 20.0d-3
-        array_out(6) = dble(array_in(6)) * 5.0d8
-        array_out(7) = dble(array_in(7)) * (1500. - 500.) + 500.
+        
+        ! heII
+        array_out(5) = dble(array_in(5)) * 1.0d-1
+        array_out(6) = dble(array_in(6)) * 1.0d2 ! Delta_II in sec
+        array_out(7) = dble(array_in(7)) * (1000. - 500.) + 500.
         array_out(8) = dble(array_in(8)) * 2.0_dp * pi
-!        array_out(9) = dble(array_in(9)) * 2.0d-6
-!        array_out(10) = dble(array_in(10)) * 2.0d-9
-!        array_out(11) = dble(array_in(11)) * 2.0d-12 
+
   
   end subroutine rescale
   

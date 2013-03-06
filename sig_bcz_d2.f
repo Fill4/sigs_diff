@@ -43,8 +43,8 @@
     call getarg(1, parameter_file)
     
 !--- Number of parameters to fit -
-	nconst=8
-	!nconst=11
+	!nconst=8
+	nconst=11
 	allocate(c(nconst))
 	
 !--- Read file with input parameters -
