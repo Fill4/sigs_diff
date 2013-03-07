@@ -57,7 +57,7 @@ $(JF)/types.o \
 $(JF)/commonvar.o \
 $(JF)/commonarray.o \
 $(JF)/fun.o \
-$(JF)/smooth_component.o \
+$(JF)/components.o \
 $(JF)/sig_bcz_d2.o \
 $(JF)/output.o \
 $(JF)/deffreq.o \
