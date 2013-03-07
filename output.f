@@ -17,11 +17,11 @@
 		integer     :: nfile
 
 
-		tauBCZ = c(3)
-		tauHe = c(7)
+		tauBCZ = c(2)
+		tauHe = c(6)
 		
-		a_bcz = c(2)!*1.0d12
-		a_he = c(5)!*2.0d3
+		a_bcz = c(1)!*1.0d12
+		a_he = c(4)!*2.0d3
 		a = tauHe / (sqrt(2.0_dp*pi)*w0ref*c(6))
 		
 		
@@ -29,9 +29,9 @@
 	
 		write (6,1010) 'Results:', &
 		                   'tau_BCZ = ', tauBCZ, &
-		                   'phi_bcz = ', c(4), 'A_bcz = ', a_bcz, &
+		                   'phi_bcz = ', c(3), 'A_bcz = ', a_bcz, &
                            'tau_He = ', tauHe, &
-                           'phi_he = ', c(8), 'A_he = ', a_he, c(6), &
+                           'phi_he = ', c(7), 'A_he = ', a_he, c(5), &
                            'A_II / sqrt(2pi)*nu0*Delta_II = ', a, &
                            'chi2 = ', resd, 'chi2norm = ', resd/(n-nconst)
                            

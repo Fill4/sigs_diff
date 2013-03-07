@@ -26,5 +26,6 @@ module commonarray
     real(dp), dimension(npt), public     :: w_d2    ! central frequency of second difference
     
     real(dp), allocatable, public   :: c(:) ! parameters of the fit
+    real(dp), allocatable, public   :: polyc(:) ! extra parameters of polynomial
     
 end module commonarray

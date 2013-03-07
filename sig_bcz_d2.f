@@ -11,7 +11,6 @@
     use types_and_interfaces
 	use commonvar
 	use commonarray
-	use lib_opt
 	use lib_array
 		
 	use gnufor2
@@ -43,9 +42,9 @@
     call getarg(1, parameter_file)
     
 !--- Number of parameters to fit -
-	!nconst=8
-	nconst=11
+	nconst=7
 	allocate(c(nconst))
+	allocate(polyc(4))
 	
 !--- Read file with input parameters -
  	call parameters (parameter_file)
