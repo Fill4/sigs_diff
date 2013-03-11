@@ -12,7 +12,8 @@
         use lib_array
         use lib_plot
 
-
+        implicit none
+        
 		real(dp)                 :: chi2
 
         real(dp)                    :: object, simp, stopcr
