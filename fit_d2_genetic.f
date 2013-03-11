@@ -7,7 +7,7 @@
         use types_and_interfaces
         use commonvar
         use commonarray, only : nd2, w_d2, d2, sigd2, c, polyc
-        use lib_pikaia10
+        use lib_pikaia12
         use lib_regression, only: polyreg
         use lib_array
         use lib_plot
@@ -49,11 +49,13 @@
         ctrl(1:12) = -1
         ctrl(1) = 120
         ctrl(2) = iterfit
+        ctrl(5) = 5 ! one-point+creep, adjustable rate based on fitness
         !ctrl(12) = 2
-        outfile = 'param_file'
+        outfile = 'evolution_par_ga.dat'
         
         !     Now call pikaia
-        CALL pikaia(objfun_ga, nconst, ctrl, x, f, status, outfile)
+        !CALL pikaia(objfun_ga, nconst, ctrl, x, f, status, outfile)
+        CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
 
         ! rescaling parameters
         call rescale(x, c)
@@ -75,7 +77,6 @@
 		max_xx = maxval(w_d2(1:nd2)) + 2.0d-4
         call linspace(min_xx, max_xx, xx)
         result_fun = fun(xx)
-        write(*,*) smooth_comp(min_xx), min_xx
         result_smooth = smooth_comp(xx)
         result_he = he_comp(xx)
         result_bcz = bcz_comp(xx)
@@ -171,14 +172,14 @@
 !        array_out(11) = 2.63645116d2
         
         ! bcz
-        array_out(1) = dble(array_in(1)) * 1.0d1
-        array_out(2) = dble(array_in(2)) * (3000. - 1200.) + 1200.
+        array_out(1) = dble(array_in(1)) * 10.0_dp
+        array_out(2) = dble(array_in(2)) * (3000._dp - 1200._dp) + 1200._dp
         array_out(3) = dble(array_in(3)) * 2.0_dp * pi
         
         ! heII
-        array_out(4) = dble(array_in(4)) * 1.0d-1
-        array_out(5) = dble(array_in(5)) * 1.0d2 ! Delta_II in sec
-        array_out(6) = dble(array_in(6)) * (1000. - 500.) + 500.
+        array_out(4) = dble(array_in(4)) * 0.1_dp
+        array_out(5) = dble(array_in(5)) * 100.0_dp ! Delta_II in sec
+        array_out(6) = dble(array_in(6)) * (1000._dp - 500._dp) + 500._dp
         array_out(7) = dble(array_in(7)) * 2.0_dp * pi
 
   
