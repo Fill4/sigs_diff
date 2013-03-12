@@ -142,6 +142,8 @@
 
 		fun_val = sngl(1.0 / resid)
 		
+!		write(*,*) resid
+		
 		return
 		
   end function objfun_ga

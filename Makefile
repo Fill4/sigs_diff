@@ -62,6 +62,7 @@ $(JF)/sig_bcz_d2.o \
 $(JF)/output.o \
 $(JF)/deffreq.o \
 $(JF)/parameters.o \
+$(JF)/error_covariance.o \
 $(JF)/second_diff.o \
 $(JF)/fit_d2.o \
 $(JF)/fit_d2_genetic.o

@@ -15,6 +15,7 @@ module commonarray
 	integer, public                  :: nd2 ! number of second differences
 	
 	integer, dimension(npt), public  :: l   ! angular degrees
+	logical, dimension(npt), public  :: valid_d2  ! holds which values of d2 were calculated
 	
 	real(dp), dimension(npt), public     :: sd      ! signal
 	real(dp), dimension(npt), public     :: sig     ! errors in frequencies
