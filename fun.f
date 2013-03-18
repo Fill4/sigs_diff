@@ -29,7 +29,7 @@
 		!   c(3) = phi_c
 		!   c(1) = A_c
 		xarg = 2.0d0 * ( 2.d0*pi*c(2)*w_d2 + c(3) )
-		factor = 1.0_dp / sqrt(1.0_dp + 0.0625_dp*pi_sq*tau0_houdek_sq*w_d2*w_d2)
+		factor = 1.0_dp / sqrt(1.0_dp + 0.0625_dp/(pi_sq*tau0_houdek_sq*w_d2*w_d2))
 	  	bcz  = ( c(1) * (nu0**3) / (w_d2**2) ) * &
 	  	       factor * &
 	  	       cos(xarg + atan(4.0_dp*pi*tau0_houdek*w_d2))
