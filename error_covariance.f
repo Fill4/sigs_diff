@@ -5,6 +5,7 @@ subroutine error_covariance(errors, invcov)
     use types_and_interfaces, only: dp
     use commonarray, only: n, nd2, l
     use lib_matrix
+    use lib_assert
     
 	implicit none
 	
@@ -13,6 +14,7 @@ subroutine error_covariance(errors, invcov)
 	
 	real(dp), allocatable :: jac(:,:), sigma(:,:), cov(:,:)
 	real(dp), allocatable :: tmpl0(:,:), tmpl1(:,:), tmpl2(:,:), tmpl3(:,:)
+	real(dp) :: cond
     integer :: nl0, nl1, nl2, nl3
 	integer :: i, j
 	
@@ -72,15 +74,25 @@ subroutine error_covariance(errors, invcov)
 !    write(*,*) size(jac, dim=1), size(jac, dim=2)
     
     ! build input covariance matrix, assuming independent errors in the frequencies
+    ! note that it is in muHz
     sigma = 0
     do i=1,n
         sigma(i,i) = (1d6*errors(i))**2
     end do
     
-    write(*,'(79f20.6)') sigma(2,:)
-    stop
-	!call inverse(cov, invcov)
-	
-	!return
+    ! "output covariance matrix" (of the second differences), dimension: nd2 x nd2
+    ! note that it is in muHz
+    allocate(cov(nd2, nd2))
+    cov = 0
+    cov = matmul(jac, matmul(sigma, transpose(jac)))
+!    write(*,'(71f5.2)') cov
+
+    call condition(cov, cond)
+    call assert(cond < 1.0_dp/epsilon(1.0_dp), 'Covariance matrix cannot be inverted')
+!    write(*,'(a,es10.3,3x,a,es10.3)') 'condition number: ', cond, 'eps^-1: ', 1.0_dp/epsilon(1.0_dp)
+
+	call inverse(cov, invcov)
+
+	return
 	
 end subroutine error_covariance
