@@ -174,15 +174,14 @@
         
         ! bcz
         array_out(1) = dble(array_in(1)) * 10.0_dp
-        array_out(2) = dble(array_in(2)) * (3000._dp - 1200._dp) + 1200._dp
+        array_out(2) = dble(array_in(2)) * (4000._dp - 1900._dp) + 1900._dp
         array_out(3) = dble(array_in(3)) * 2.0_dp * pi
         
         ! heII
         array_out(4) = dble(array_in(4)) * 0.1_dp
-        array_out(5) = dble(array_in(5)) * 100.0_dp ! Delta_II in sec
-        array_out(6) = dble(array_in(6)) * (1000._dp - 500._dp) + 500._dp
+        array_out(5) = dble(array_in(5)) * 150.0_dp ! Delta_II in sec
+        array_out(6) = dble(array_in(6)) * (1800._dp - 500._dp) + 500._dp
         array_out(7) = dble(array_in(7)) * 2.0_dp * pi
-
   
   end subroutine rescale
   
