@@ -30,7 +30,7 @@
     ! remove zeros and wrong values
     j = 1
     do i=1,n
-        if (d2work(i) /= 0. .and. abs(d2work(i)) < 10.d-6 ) then
+        if (d2work(i) /= 0. .and. abs(d2work(i)) < 15.d-6 ) then
             d2(j) = d2work(i)   ! in Hz
             w_d2(j) = ww(i)  ! in Hz
             sigd2(j) = error(i) ! in Hz
