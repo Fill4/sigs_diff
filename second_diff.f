@@ -56,7 +56,7 @@
     nd2 = j-1
 	write (6,'(7x, a, i3)') "# of second differences: ", nd2
     
-    allocate(icov(n,n))
+    allocate(icov(nd2, nd2))
     
     call error_covariance(sigw(1:n), icov)
     
