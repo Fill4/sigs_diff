@@ -33,13 +33,13 @@
         ! The polynomial fit is done before the signal fit 
         degree = 3
         
-        call polyreg(w_d2(1:nd2), d2(1:nd2), degree, polyc)
+        call polyreg(1.0_dp/w_d2(1:nd2), d2(1:nd2), degree, polyc)
         
         write(*,*) 'Polynomial fit: '
         write(*,'(16x, es10.2)') polyc(1)
-        write(*,'(16x, es10.2, a)') polyc(2), ' x'
-        write(*,'(16x, es10.2, a)') polyc(3), ' x^2'
-        write(*,'(16x, es10.2, a)') polyc(4), ' x^3'
+        write(*,'(16x, es10.2, a)') polyc(2), ' x^-1'
+        write(*,'(16x, es10.2, a)') polyc(3), ' x^-2'
+        write(*,'(16x, es10.2, a)') polyc(4), ' x^-3'
        
         
         !     First, initialize the random-number generator

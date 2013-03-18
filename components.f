@@ -12,9 +12,8 @@
 	
 		real(dp), intent(in)  :: w_d2
         
-		!smooth_comp = c(1) + c(9)/w_d2 + c(10)/(w_d2**2) + c(11)/(w_d2**3)
-		smooth_comp = polyc(1) + polyc(2)*w_d2 + polyc(3)*w_d2**2 + polyc(4)*w_d2**3
-
+		!smooth_comp = polyc(1) + polyc(2)*w_d2 + polyc(3)*w_d2**2 + polyc(4)*w_d2**3
+		smooth_comp = polyc(1) + polyc(2)/w_d2 + polyc(3)/(w_d2**2) + polyc(4)/(w_d2**3)
 
   end function smooth_comp
 
