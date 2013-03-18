@@ -15,7 +15,6 @@
     integer :: i, j
     real(dp), dimension(npt)   :: d2work, error
     real(dp), dimension(npt)   :: ww, sigw  ! work arrays so don't change w & sig
-!    real(dp), allocatable :: icov(:,:)
 
     
     d2work = 0.
@@ -55,7 +54,7 @@
     nd2 = j-1
 	write (6,'(7x, a, i3)') "# of second differences: ", nd2
     
-    ! calculate 2nd differences covariance matrix
+    ! calculate 2nd differences' covariance matrix
     allocate(icov(nd2, nd2))
     call error_covariance(sigw(1:n), icov)
     

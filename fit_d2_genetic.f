@@ -122,11 +122,11 @@
 
         integer, intent(in)     :: n     ! size of parameter space
         real, intent(in)        :: p(:)
-        real                    :: fun_val, chi2(1,1)
+        real                    :: fun_val
 
 !        real(dp)                    :: signal
         real(dp), dimension(nd2)    :: ww, signal
-        real(dp)                    :: resid, resid_vector(nd2,1)
+        real(dp)                    :: resid, resid_vector(nd2,1), chi2(1,1)
 
         ! rescaling parameters
         call rescale(p, c)
@@ -182,7 +182,7 @@
         ! heII
         array_out(4) = dble(array_in(4)) * 0.1_dp
         array_out(5) = dble(array_in(5)) * 150.0_dp ! Delta_II in sec
-        array_out(6) = dble(array_in(6)) * (1800._dp - 500._dp) + 500._dp
+        array_out(6) = dble(array_in(6)) * (1800._dp - 300._dp) + 300._dp
         array_out(7) = dble(array_in(7)) * 2.0_dp * pi
   
   end subroutine rescale
