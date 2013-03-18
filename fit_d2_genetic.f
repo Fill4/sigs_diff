@@ -62,7 +62,7 @@
         call rescale(x, c)
         
         ! residuals of best parameters
-        chi2 = 1.0/objfun_ga(nconst, x)
+        chi2 = 1.0d12/objfun_ga(nconst, x)
         
         !     Print the results
         WRITE(*,*) ' status: ', STATUS
@@ -116,17 +116,17 @@
 ! and subtracted from the second differences
         use types_and_interfaces, only: dp, fun, rescale
         use commonvar, only : nconst, pi
-        use commonarray, only : nd2, w_d2, d2, c, l, sigd2
+        use commonarray, only : nd2, w_d2, d2, c, l, sigd2, icov
     
         implicit none
 
         integer, intent(in)     :: n     ! size of parameter space
         real, intent(in)        :: p(:)
-        real                    :: fun_val
+        real                    :: fun_val, chi2(1,1)
 
 !        real(dp)                    :: signal
         real(dp), dimension(nd2)    :: ww, signal
-        real(dp)                    :: resid
+        real(dp)                    :: resid, resid_vector(nd2,1)
 
         ! rescaling parameters
         call rescale(p, c)
@@ -135,13 +135,15 @@
 		signal = fun(ww)
 		resid = sum( ((d2(1:nd2)-signal)/(sigd2(1:nd2)))**2 )
 
-!		do i=1,nd2
-!			ll = l(i)
-!			signal = fun(ww(i))
-!			resid = resid + ((d2(i)-signal)/sigd2(i))**2
-!		end do
-
-		fun_val = sngl(1.0 / resid)
+		!fun_val = sngl(1.0 / resid)
+		
+		resid_vector(:,1) = d2(1:nd2)-signal
+		chi2 = matmul( & 
+		         matmul(transpose(resid_vector), icov), &
+		               resid_vector)
+		fun_val = sngl(1.0 / chi2(1,1))
+		                              
+		!write(*,*) resid, 1.0d12*chi2
 		
 		return
 		

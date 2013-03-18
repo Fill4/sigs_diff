@@ -28,4 +28,6 @@ module commonarray
     real(dp), allocatable, public   :: c(:) ! parameters of the fit
     real(dp), allocatable, public   :: polyc(:) ! extra parameters of polynomial
     
+    real(dp), allocatable, public   :: icov(:,:) ! inverse of covariance matrix
+    
 end module commonarray

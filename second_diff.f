@@ -5,25 +5,29 @@
    
     use types_and_interfaces
     use commonvar, only: w0, write_d2_to_file
-    use commonarray, only: npt, w, sig, n, l, d2, w_d2, sigd2, nd2
+    use commonarray, only: npt, w, sig, n, l, d2, w_d2, sigd2, nd2, icov
     
     use gnufor2, only: plot
+    use lib_assert
     
     implicit none
     
     integer :: i, j
     real(dp), dimension(npt)   :: d2work, error
     real(dp), dimension(npt)   :: ww, sigw  ! work arrays so don't change w & sig
+!    real(dp), allocatable :: icov(:,:)
+
     
     d2work = 0.
     error = 0.
+    
     ww = w*1.0d-6     ! convert frequencies to Hz
     sigw = sig*1.0d-6 ! and errors too
         
     do i=2,n
         if (l(i-1) == l(i) .and. l(i) == l(i+1)) then
             d2work(i) = ww(i-1) - 2.0*ww(i) + ww(i+1)    ! in Hz
-            error(i) = dsqrt(sigw(i-1)**2 + 4.0*sigw(i)**2 + sigw(i+1)**2) ! propagate uncertainty
+            error(i) = sqrt(sigw(i-1)**2 + 4.0*sigw(i)**2 + sigw(i+1)**2) ! propagate uncertainty
         end if
     end do
     
@@ -51,8 +55,13 @@
     nd2 = j-1
 	write (6,'(7x, a, i3)') "# of second differences: ", nd2
     
+    ! calculate 2nd differences covariance matrix
+    allocate(icov(nd2, nd2))
+    call error_covariance(sigw(1:n), icov)
     
-    !call plot(dble(w_d2(1:j-1)), dble(d2(1:j-1)), ' 5.')
+    call assert(size(icov, dim=1) == size(icov, dim=2), 'Covariance matrix is not square')
+    call assert(size(icov, dim=1) == nd2, 'Covariance matrix has wrong dimensions')
+
    
    end subroutine second_diff
    
