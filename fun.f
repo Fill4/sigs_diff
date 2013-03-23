@@ -26,9 +26,15 @@
 		a1 = - 4.0_dp * d * w_d2 * w0 + w0/w_d2
 		b1 = 8.0_dp * dd * w0**2 * w_d2**2 - 6.0_dp * d * w0**3
 		
-		! eq (C12) of Houdek 2007 *************************************
+		! eq (C12) of Houdek 2007 **********************************************
 		alpha2 = 2.0_dp * w0 * c(2)
-
+        a2 = - 2.0_dp * (w0 / w_d2) * &
+             (1.0_dp + 0.125_dp/(tau0_houdek_sq * w_d2**2)) / &
+             (1.0_dp + 0.25_dp/(tau0_houdek_sq * w_d2**2))
+        b2 = (w0 / w_d2)**2 * &
+             ( (3.0_dp + 0.625_dp/(tau0_houdek_sq * w_d2**2)) / &
+               (1.0_dp + 0.25_dp/(tau0_houdek_sq * w_d2**2))**2 &
+             )
 		
 		! third degree polynomial in nu^-1
 		!   polyc
@@ -58,7 +64,10 @@
 		!   c(2) = tau_c
 		!   c(3) = phi_c
 		!   c(1) = A_c
-		xarg = 2.0d0 * ( 2.d0*pi*c(2)*w_d2 + c(3) )
+		delta = atan( (a2*sin(alpha2)) / &
+	  	              (1.0_dp - ((1.0_dp + b2) * cos(alpha2))) &
+	  	            )
+		xarg = 2.0d0 * ( 2.d0*pi*c(2)*w_d2 + c(3) ) - delta
 		factor = 1.0_dp / sqrt(1.0_dp + 0.0625_dp/(pi_sq*tau0_houdek_sq*w_d2*w_d2))
 	  	bcz  = ( c(1) * (nu0**3) / (w_d2**2) ) * &
 	  	       factor * &
