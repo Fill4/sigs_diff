@@ -25,7 +25,7 @@ module commonvar
 	
 	logical, public      :: write_d2_to_file
 	
-	real(dp), public     :: fac, pi, pi_sq
+	real(dp), public     :: fac, pi, pi_sq, twopi
 	real(dp), public     :: tau0_houdek, tau0_houdek_sq  
 	
 	real, public         :: xinit

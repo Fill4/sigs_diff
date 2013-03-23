@@ -31,12 +31,12 @@ lib = /home/joao/Programs/fortran/lib
 #FC = /usr/bin/f77
 #FC	= g77 -Wall
 FC	= gfortran
-FFLAGS = -O3 -ffree-form -ffast-math
+FFLAGS = -O3 -ffree-form -ffast-math -fexternal-blas
 #dbx     = -O5 -r8 -g
 #profil  = -p -O5 -r8 
 #samedir = .
 #FTN     = ftnchek
-LINK = -lmodules -llapack -L/usr/lib
+LINK = -lmodules -llapack -lblas -L/usr/lib
 
 #
 # *******************************************************
