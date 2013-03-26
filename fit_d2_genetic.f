@@ -31,15 +31,16 @@
 
         
         ! The polynomial fit is done before the signal fit 
-        degree = 3
+!        degree = 3
+!        call polyreg(1.0_dp/w_d2(1:nd2), d2(1:nd2), degree, polyc)
         
-        call polyreg(1.0_dp/w_d2(1:nd2), d2(1:nd2), degree, polyc)
+        polyc(1) = sum(d2(1:nd2)) / nd2
         
         write(*,*) 'Polynomial fit: '
         write(*,'(16x, es10.2)') polyc(1)
-        write(*,'(16x, es10.2, a)') polyc(2), ' x^-1'
-        write(*,'(16x, es10.2, a)') polyc(3), ' x^-2'
-        write(*,'(16x, es10.2, a)') polyc(4), ' x^-3'
+!        write(*,'(16x, es10.2, a)') polyc(2), ' x^-1'
+!        write(*,'(16x, es10.2, a)') polyc(3), ' x^-2'
+!        write(*,'(16x, es10.2, a)') polyc(4), ' x^-3'
        
         
         !     First, initialize the random-number generator
@@ -135,13 +136,13 @@
 		signal = fun(ww)
 		resid = sum( ((d2(1:nd2)-signal)/(sigd2(1:nd2)))**2 )
 
-		!fun_val = sngl(1.0 / resid)
+		fun_val = sngl(1.0 / resid)
 		
-		resid_vector(:,1) = d2(1:nd2)-signal
-		chi2 = matmul( & 
-		         matmul(transpose(resid_vector), icov), &
-		               resid_vector)
-		fun_val = sngl(1.0 / chi2(1,1))
+!		resid_vector(:,1) = d2(1:nd2)-signal
+!		chi2 = matmul( & 
+!		         matmul(transpose(resid_vector), icov), &
+!		               resid_vector)
+!		fun_val = sngl(1.0 / chi2(1,1))
 		                              
 		!write(*,*) resid, 1.0d12*chi2
 		
@@ -161,18 +162,7 @@
         
         real, dimension(:), intent(in)      :: array_in
         real(dp), dimension(:), intent(out) :: array_out
-        
-        
-        ! polynomial
-!        array_out(1) = -1.62013420d-5
-!        array_out(9) = 1.54115760d-2
-!        array_out(10) = -4.83646351
-!        array_out(11) = 5.08562576d2
-        
-!        array_out(1) = -1.85558899d-5
-!        array_out(9) = 1.63208828d-2
-!        array_out(10) = -4.13947874
-!        array_out(11) = 2.63645116d2
+
         
         ! bcz
         array_out(1) = dble(array_in(1)) * 10.0_dp

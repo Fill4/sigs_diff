@@ -44,7 +44,7 @@
 !--- Number of parameters to fit -
 	nconst=7
 	allocate(c(nconst))
-	allocate(polyc(4))
+	allocate(polyc(1))
 	
 !--- Read file with input parameters -
  	call parameters (parameter_file)
