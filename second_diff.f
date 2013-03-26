@@ -4,7 +4,7 @@
    subroutine second_diff
    
     use types_and_interfaces
-    use commonvar, only: w0, write_d2_to_file
+    use commonvar, only: write_d2_to_file
     use commonarray, only: npt, w, sig, n, l, d2, w_d2, sigd2, nd2, icov
     
     use gnufor2, only: plot
@@ -33,7 +33,7 @@
     ! remove zeros and wrong values
     j = 1
     do i=1,n
-        if (d2work(i) /= 0. .and. abs(d2work(i)) < 15.d-6 ) then
+        if (d2work(i) /= 0.) then ! .and. abs(d2work(i)) < 25.d-6 ) then
             d2(j) = d2work(i)   ! in Hz
             w_d2(j) = ww(i)  ! in Hz
             sigd2(j) = error(i) ! in Hz
@@ -44,15 +44,15 @@
     ! print in muHz
     if (write_d2_to_file) then
         ! open the file -
-		open(unit=33, file='d2.data', action='write')
-		write(33,*) "#  nu (muHz)", "d2 (muHz)", "err_d2 (muHz)"
-		write(33,'(f18.8, f18.8, f18.8)') (w_d2(i)*1.0d6, d2(i)*1.0d6, sigd2(i)*1.0d6, i=1,j-1)
-		close(33)
+        open(unit=33, file='d2.data', action='write')
+        write(33,*) "#  nu (muHz)", "d2 (muHz)", "err_d2 (muHz)"
+        write(33,'(f18.8, f18.8, f18.8)') (w_d2(i)*1.0d6, d2(i)*1.0d6, sigd2(i)*1.0d6, i=1,j-1)
+        close(33)
     endif
     
     ! number of second differences
     nd2 = j-1
-	write (6,'(7x, a, i3)') "# of second differences: ", nd2
+    write (6,'(7x, a, i3)') "# of second differences: ", nd2
     
     ! calculate 2nd differences' covariance matrix
     allocate(icov(nd2, nd2))
@@ -61,7 +61,6 @@
     call assert(size(icov, dim=1) == size(icov, dim=2), 'Covariance matrix is not square')
     call assert(size(icov, dim=1) == nd2, 'Covariance matrix has wrong dimensions')
 
-   
    end subroutine second_diff
    
    

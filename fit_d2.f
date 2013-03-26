@@ -1,6 +1,6 @@
 !--------------------------------------------------------------------
   subroutine fit_d2 (resd)
-!	 this subroutine iterates until the relative variation of the residuals is 
+!     this subroutine iterates until the relative variation of the residuals is 
 !    smaller than TOLFIT. The final value of the parameters is returned in C 
 !    and the residuals in RESD
 
@@ -9,10 +9,10 @@
         use commonarray, only : nd2, w_d2, d2, c
         use lib_simplex
         use lib_array
-        use gnufor2
+        use lib_plot
 
 
-		real(dp), intent(inout)   :: resd
+        real(dp), intent(inout)   :: resd
 
         real(dp)                    :: object, simp, stopcr
         real(dp), dimension(nconst) :: p, step, var
@@ -35,8 +35,8 @@
         ! and to the function that calculates the signal
         interface 
             real(kind=8) function fun (w_d2)
-	            implicit none
-	            real(kind=8), intent(in)  :: w_d2
+                implicit none
+                real(kind=8), intent(in)  :: w_d2
             end function fun
         end interface 
 
@@ -80,23 +80,23 @@
 
 
         ! Successful termination.
-		c = p
-		call objfun(c, resd)
-			
-		! create array with smooth function		
-		min_xx = minval(w_d2(1:nd2)) - 1.0d-4
-		max_xx = maxval(w_d2(1:nd2)) + 1.0d-4
+        c = p
+        call objfun(c, resd)
+            
+        ! create array with smooth function        
+        min_xx = minval(w_d2(1:nd2)) - 1.0d-4
+        max_xx = maxval(w_d2(1:nd2)) + 1.0d-4
         call linspace(min_xx, max_xx, xx)
         do i=1,80
             resultfun(i) = fun(xx(i))
         end do
         
         ! rescale parameters back to more sensible values
-		c(1) = c(1) * 1.0d6
-		c(2) = c(2) * 1.0d12
-		c(5) = c(5) * 1.0d3
+        c(1) = c(1) * 1.0d6
+        c(2) = c(2) * 1.0d12
+        c(5) = c(5) * 1.0d3
 
-		
+        
 !        write(*,*) w_d2(1), xx(100), resultfun(50), resultfun(1)
         write(*,'(8(f13.3,","))') c
         
@@ -106,10 +106,10 @@
                   yrange=(/-2.d0,2.d0/))
         !call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
         !          ' 5.', yrange=(/-2.d0,2.d0/))
-	
-	
-		return
-		
+    
+    
+        return
+        
   end subroutine fit_d2
   
   
@@ -117,40 +117,33 @@
 ! This subroutine calculates the objective function value, i.e. the chi^2.
 ! The signal is calculate in FUN for the current values of the parameters p, and
 ! subtracted from the second differences
-        use types_and_interfaces, only: dp
+
+        use types_and_interfaces, only: dp, fun
         use commonvar, only : use_error_chi2, nconst
-        use commonarray, only : nd2, w_d2, d2, c, l, sigd2
+        use commonarray, only : nd2, w_d2, d2, c, sigd2, icov
     
         implicit none
 
         real(dp), intent(in)   :: p(:)
         real(dp), intent(out)  :: func
         
-        integer :: i, ll
-        real(dp) :: ww, signal, resid, fun
-
+        real(dp), dimension(nd2)    :: ww, signal
+        real(dp)                    :: resid, resid_vector(nd2,1), chi2(1,1)
+        
         c = p
-		
-		resid = 0.0d0
-		! if not weighting by errors -
-		if (use_error_chi2 == 'no' .or. use_error_chi2 == 'n') then
-			do i=1,nd2
-				ww = w_d2(i)
-				ll = l(i)
-				signal = fun(ww)
-				resid = resid + (d2(i)-signal)**2
-			end do
-		! if weighting by errors -
-		else if (use_error_chi2 == 'yes' .or. use_error_chi2 == 'y') then
-			do i=1,nd2
-				ww = w_d2(i)
-				ll = l(i)
-				signal = fun(ww)
-				resid = resid + ((d2(i)-signal)/sigd2(i))**2
-			end do
-		endif
-		
-		func = resid
-		
+        
+        ww = w_d2(1:nd2)
+        signal = fun(ww)
+        resid = sum( ((d2(1:nd2)-signal)/(sigd2(1:nd2)))**2 )
+        
+!        resid_vector(:,1) = d2(1:nd2)-signal
+!        chi2 = matmul( matmul(transpose(resid_vector), icov), &
+!                       resid_vector)
+                       
+        func = resid
+        !func = chi2(1,1)
+        
+        return
+        
   end subroutine objfun
 

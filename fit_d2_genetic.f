@@ -8,6 +8,7 @@
         use commonvar
         use commonarray, only : nd2, w_d2, d2, sigd2, c, polyc
         use lib_pikaia12
+        use lib_simplex
         use lib_regression, only: polyreg
         use lib_array
         use lib_plot
@@ -18,6 +19,8 @@
 
         real(dp)                    :: object, simp, stopcr
         real(dp), dimension(nconst) :: p, step, var
+        integer                     :: ier, print_every, iquad, maxf, nloop, nop
+        logical                     :: first
 
         real        :: ctrl(12), x(nconst), f
         integer     :: seed, status
@@ -41,9 +44,10 @@
         write(*,'(16x, es10.2, a)') polyc(3), ' x^-2'
         write(*,'(16x, es10.2, a)') polyc(4), ' x^-3'
        
+        ! GA minimization ******************************************************
         
         !     First, initialize the random-number generator
-        seed=13578
+        seed=13590
         call rninit(seed)
         
         !     Set control variables
@@ -54,7 +58,7 @@
         !ctrl(12) = 2
         outfile = 'evolution_par_ga.dat'
         
-        !     Now call pikaia
+        !   Now call pikaia
         !CALL pikaia(objfun_ga, nconst, ctrl, x, f, status, outfile)
         CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
 
@@ -67,15 +71,37 @@
         !     Print the results
         WRITE(*,*) ' status: ', STATUS
         WRITE(*,*) '      x: ', c
+        WRITE(*,*) '      x: ', x
         WRITE(*,*) '  chi^2: ', 1./f
-        !WRITE(*,20) ctrl
-
-
-        20 FORMAT(   '    ctrl: ', 6F11.6/ t11, 6F11.6)
+!        WRITE(*,20) ctrl
+!        20 FORMAT(   '    ctrl: ', 6F11.6/ t11, 6F11.6)
+        
+        
+        ! Nelder-Mead minimization to refine minimum ***************************
+        
+        !   set up starting values (from GA minimization)
+        p = c
+        !   set max # of function evaluations, print every iprint
+        maxf = iterfit
+        print_every = -100
+        !   set value for stopping criterion.   Stopping occurs when the
+        !   standard deviation of the values of the objective function at
+        !   the points of the current simplex < stopcr
+        stopcr = tolfit
+        nloop = 100
+        !   now call MINIM to do the work
+        first = .true.
+        CALL minim(p, nconst, object, maxf, print_every, stopcr, nloop, &
+                   iquad, simp, var, objfun, ier)
+        !   successful termination
+		c = p
+        
+        
+        ! Plots ****************************************************************
         
         ! create array with smooth function		
-		min_xx = minval(w_d2(1:nd2)) - 2.0d-4
-		max_xx = maxval(w_d2(1:nd2)) + 2.0d-4
+		min_xx = minval(w_d2(1:nd2)) - 1.0d-4
+		max_xx = maxval(w_d2(1:nd2)) + 1.0d-4
         call linspace(min_xx, max_xx, xx)
         result_fun = fun(xx)
         result_smooth = smooth_comp(xx)
@@ -83,19 +109,28 @@
         result_bcz = bcz_comp(xx)
 
 
+        call plot(xx*1.0d6,result_he*1.0d6, &
+                  xx*1.0d6,result_bcz*1.0d6, &
+                  xx*1.0d6,(result_smooth+result_he+result_bcz)*1.0d6, &
+                  ' 1-00-10-',color3='black',color2='red',color1='blue')!, &
+                  !terminal='png')
+                  !yrange=(/-3.0d0,3.0d0/) ) 
+
+
         call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
                   xx*1.0d6, result_fun*1.0d6, &
-                  ' 5.00-',color2='black',color1='green', &
-                  errors=sigd2(1:nd2)*1.0d6)
+                  xx*1.0d6,result_smooth*1.0d6, &
+                  ' 5.00-10-',color3='green',color2='black',color1='red')!, &
+                  !errors=sigd2(1:nd2)*1.0d6)
                   !terminal='png')
                   !yrange=(/-3.0d0,3.0d0/) )
                   
-        call plot(xx*1.0d6,result_he*1.0d6, &
-                  xx*1.0d6,result_bcz*1.0d6, &
-                  xx*1.0d6,result_smooth*1.0d6, &
-                  ' 1-00- 2-',color3='green',color2='red',color1='blue')!, &
+        call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
+                  xx*1.0d6, result_fun*1.0d6, &
+                  ' 5.00-',color2='black',color1='red', &
+                  errors=sigd2(1:nd2)*1.0d6)
                   !terminal='png')
-                  !yrange=(/-3.0d0,3.0d0/) )                  
+                  !yrange=(/-3.0d0,3.0d0/) )                
                   
 !        call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
 !                  xx*1.0d6, result_fun*1.0d6, &
@@ -135,13 +170,13 @@
 		signal = fun(ww)
 		resid = sum( ((d2(1:nd2)-signal)/(sigd2(1:nd2)))**2 )
 
-		!fun_val = sngl(1.0 / resid)
+		fun_val = sngl(1.0 / resid)
 		
-		resid_vector(:,1) = d2(1:nd2)-signal
-		chi2 = matmul( & 
-		         matmul(transpose(resid_vector), icov), &
-		               resid_vector)
-		fun_val = sngl(1.0 / chi2(1,1))
+!		resid_vector(:,1) = d2(1:nd2)-signal
+!		chi2 = matmul( & 
+!		         matmul(transpose(resid_vector), icov), &
+!		               resid_vector)
+!		fun_val = sngl(1.0 / chi2(1,1))
 		                              
 		!write(*,*) resid, 1.0d12*chi2
 		
@@ -175,15 +210,16 @@
 !        array_out(11) = 2.63645116d2
         
         ! bcz
-        array_out(1) = dble(array_in(1)) * 10.0_dp
+        array_out(1) = dble(array_in(1))! * 0.5d0
+        !array_out(1) = 0.2
         array_out(2) = dble(array_in(2)) * (4000._dp - 1900._dp) + 1900._dp
-        array_out(3) = dble(array_in(3)) * 2.0_dp * pi
+        array_out(3) = dble(array_in(3)) * pi !2.0_dp * pi
         
         ! heII
-        array_out(4) = dble(array_in(4)) * 0.1_dp
+        array_out(4) = dble(array_in(4))! * 0.1d0
         array_out(5) = dble(array_in(5)) * 150.0_dp ! Delta_II in sec
         array_out(6) = dble(array_in(6)) * (1800._dp - 300._dp) + 300._dp
-        array_out(7) = dble(array_in(7)) * 2.0_dp * pi
+        array_out(7) = dble(array_in(7)) * pi !2.0_dp * pi
   
   end subroutine rescale
   

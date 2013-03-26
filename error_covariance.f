@@ -7,22 +7,24 @@ subroutine error_covariance(errors, invcov)
     use lib_matrix
     use lib_assert
     
-	implicit none
-	
-	real(dp), intent(in) :: errors(n)
-	real(dp), dimension(nd2,nd2), intent(out) :: invcov
-	
-	real(dp), allocatable :: jac(:,:), sigma(:,:), cov(:,:)
-	real(dp), allocatable :: tmpl0(:,:), tmpl1(:,:), tmpl2(:,:), tmpl3(:,:)
-	real(dp) :: cond
+    implicit none
+    
+    real(dp), intent(in) :: errors(n)
+    real(dp), dimension(nd2,nd2), intent(out) :: invcov
+    
+    real(dp), allocatable :: jac(:,:), sigma(:,:), cov(:,:)
+    real(dp), allocatable :: tmpl0(:,:), tmpl1(:,:), tmpl2(:,:), tmpl3(:,:)
+    real(dp) :: cond
     integer :: nl0, nl1, nl2, nl3
-	integer :: i, j
-	
-	! jacobian, dimensions are n x nd2 to build it and then we transpose
-	allocate(jac(n, nd2))
+    integer :: i
+    
+!    write(*,*) nd2
+    
+    ! jacobian, dimensions are n x nd2 to build it and then we transpose
+    allocate(jac(n, nd2))
     jac = 0
-	! "input covariance matrix" (of the frequencies), dimensions: n x n
-	allocate(sigma(n, n))
+    ! "input covariance matrix" (of the frequencies), dimensions: n x n
+    allocate(sigma(n, n))
 
     nl0 = 0
     nl1 = 0
@@ -34,6 +36,7 @@ subroutine error_covariance(errors, invcov)
         if (l(i) == 2) nl2 = nl2+1
         if (l(i) == 3) nl3 = nl3+1
     end do
+!    write(*,*) nl0, nl1, nl2, nl3
 
     ! jacobian for l=0
     allocate(tmpl0(nl0, nl0-2))
@@ -86,13 +89,18 @@ subroutine error_covariance(errors, invcov)
     cov = 0
     cov = matmul(jac, matmul(sigma, transpose(jac)))
 !    write(*,'(71f5.2)') cov
+!    write(*,*) size(cov, dim=1), size(cov, dim=2)
 
     call condition(cov, cond)
     call assert(cond < 1.0_dp/epsilon(1.0_dp), 'Covariance matrix cannot be inverted')
 !    write(*,'(a,es10.3,3x,a,es10.3)') 'condition number: ', cond, 'eps^-1: ', 1.0_dp/epsilon(1.0_dp)
 
-	call inverse(cov, invcov)
+    call assert(size(cov, dim=1) == size(cov, dim=2), 'Covariance matrix is not square')
+    call assert(size(cov, dim=1) == nd2, 'Covariance matrix has wrong dimensions')
 
-	return
-	
+    
+    call inverse(cov, invcov)  
+     
+    return
+    
 end subroutine error_covariance

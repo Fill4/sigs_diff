@@ -3,15 +3,22 @@
 !	 this subroutine reads frequency data from file AFILE,
 !	 and divides it in groups of modes with same degree "l"
 
+        use types_and_interfaces, only: dp
 		use commonvar
 		! contains npt, n, l, sd, sig, xn, w -
 		use commonarray
 		
-		implicit double precision (b-h,o-z)
-		implicit integer (i-n)
+!		implicit double precision (b-h,o-z)
+!		implicit integer (i-n)
+        implicit none
+        
 		character(len=80), intent(inout)    :: afile
-		parameter (nsteps=100)
-		dimension np(nsteps)
+		real(dp) :: wmin, wmax, dw, fw, wlower, wupper, ww, ss
+		integer, parameter :: nsteps=100
+        integer :: ll, nn, nd
+		integer :: i, j
+		
+		integer :: nnp, np(nsteps)
 		
 		common /blockval09/nnp
 		common /blockval10/np
@@ -58,16 +65,17 @@
 
 		dw = (wmax-wmin)
 		wlower = wmin + dw*vleft
-		wupper = wmax - dw*vrigth
+		!wupper = wmax - dw*vrigth
+		wupper = merge(vrigth, wmax - dw*vrigth, vrigth /= 0.0)
 		
 		write (*,1013) 'Range in frequencies:', wlower, wupper
  1013	format (7x, a, f10.4, x, '-', x, f9.4)	
  
- 		write (*,1014) 'Reference frequency :', w0
+ 		write (*,1014) 'Reference frequency :', w0ref
  1014	format (7x, a, f10.4)
 
 
-		fw = (w0-wlower)/(wupper-wlower)
+		fw = (w0ref-wlower)/(wupper-wlower)
 		if (fw.lt.0.1d0.or.fw.gt.0.9d0) then
 			write (*,*) 'WARNING: Reference w is inadequate for data!'
 		endif
