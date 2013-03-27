@@ -12,7 +12,7 @@
 	
 		real(dp), intent(in)  :: nu_d2
         
-		smooth_comp = polyc(1) + polyc(2)/nu_d2 + polyc(3)/(nu_d2**2)
+		smooth_comp = polyc(1) !+ polyc(2)/nu_d2 + polyc(3)/(nu_d2**2)
 
   end function smooth_comp
 

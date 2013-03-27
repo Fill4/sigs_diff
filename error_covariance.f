@@ -3,7 +3,8 @@ subroutine error_covariance(errors, invcov)
 ! this routine calculates the inverse of the error covariance matrix 
 
     use types_and_interfaces, only: dp
-    use commonarray, only: n, nd2, l
+    use commonarray, only: n, nd2, l, &
+                           nd2_l0, nd2_l1, nd2_l2, nd2_l3
     use lib_matrix
     use lib_assert
     
@@ -36,7 +37,7 @@ subroutine error_covariance(errors, invcov)
     end do
 
     ! jacobian for l=0
-    allocate(tmpl0(nl0, nl0-2))
+    allocate(tmpl0(nl0, nd2_l0))
     tmpl0=0
     do i=1,nl0-2
         tmpl0(i,i) = 1
@@ -44,7 +45,7 @@ subroutine error_covariance(errors, invcov)
         tmpl0(i+2,i) = 1
     end do
     ! jacobian for l=1
-    allocate(tmpl1(nl1, nl1-2))
+    allocate(tmpl1(nl1, nd2_l1))
     tmpl1=0
     do i=1,nl1-2
         tmpl1(i,i) = 1
@@ -52,7 +53,7 @@ subroutine error_covariance(errors, invcov)
         tmpl1(i+2,i) = 1
     end do
     ! jacobian for l=2
-    allocate(tmpl2(nl2, nl2-2))
+    allocate(tmpl2(nl2, nd2_l2))
     tmpl2=0
     do i=1,nl2-2
         tmpl2(i,i) = 1
@@ -60,7 +61,7 @@ subroutine error_covariance(errors, invcov)
         tmpl2(i+2,i) = 1
     end do
     ! jacobian for l=3
-    allocate(tmpl3(nl3, nl3-2))
+    allocate(tmpl3(nl3, nd2_l3))
     tmpl3=0
     do i=1,nl3-2
         tmpl3(i,i) = 1

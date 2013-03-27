@@ -5,7 +5,8 @@
    
     use types_and_interfaces
     use commonvar, only: w0, write_d2_to_file
-    use commonarray, only: npt, w, sig, n, l, d2, w_d2, sigd2, nd2, icov
+    use commonarray, only: npt, w, sig, n, l, d2, w_d2, sigd2, nd2, icov, &
+                           nd2_l0, nd2_l1, nd2_l2, nd2_l3
     
     use gnufor2, only: plot
     use lib_assert
@@ -19,6 +20,11 @@
     
     d2work = 0.
     error = 0.
+    
+    nd2_l0 = 0
+    nd2_l1 = 0
+    nd2_l2 = 0
+    nd2_l3 = 0
     
     ww = w*1.0d-6     ! convert frequencies to Hz
     sigw = sig*1.0d-6 ! and errors too
@@ -37,9 +43,17 @@
             d2(j) = d2work(i)   ! in Hz
             w_d2(j) = ww(i)  ! in Hz
             sigd2(j) = error(i) ! in Hz
+            
+            if(l(i)==0) nd2_l0 = nd2_l0 + 1
+            if(l(i)==1) nd2_l1 = nd2_l1 + 1
+            if(l(i)==2) nd2_l2 = nd2_l2 + 1
+            if(l(i)==3) nd2_l3 = nd2_l3 + 1
+            
             j = j+1
         end if
     end do
+    
+    !write(*,*) nd2_l0, nd2_l1, nd2_l2, nd2_l3
     
     ! print in muHz
     if (write_d2_to_file) then
