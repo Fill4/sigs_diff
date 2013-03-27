@@ -91,6 +91,9 @@ subroutine error_covariance(errors, invcov)
     call assert(cond < 1.0_dp/epsilon(1.0_dp), 'Covariance matrix cannot be inverted')
 !    write(*,'(a,es10.3,3x,a,es10.3)') 'condition number: ', cond, 'eps^-1: ', 1.0_dp/epsilon(1.0_dp)
 
+    call assert(size(cov, dim=1) == size(cov, dim=2), 'Covariance matrix is not square')
+    call assert(size(cov, dim=1) == nd2, 'Covariance matrix has wrong dimensions')
+    
 	call inverse(cov, invcov)
 
 	return

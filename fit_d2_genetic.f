@@ -31,7 +31,7 @@
 
         
         ! The polynomial fit is done before the signal fit 
-!        degree = 3
+!        degree = 2
 !        call polyreg(1.0_dp/w_d2(1:nd2), d2(1:nd2), degree, polyc)
         
         polyc(1) = sum(d2(1:nd2)) / nd2
@@ -44,7 +44,7 @@
        
         
         !     First, initialize the random-number generator
-        seed=13578
+        seed=13568
         call rninit(seed)
         
         !     Set control variables
@@ -84,17 +84,26 @@
         result_bcz = bcz_comp(xx)
 
 
+        call plot(xx*1.0d6,result_he*1.0d6, &
+                  xx*1.0d6,result_bcz*1.0d6, &
+                  xx*1.0d6,(result_smooth+result_he+result_bcz)*1.0d6, &
+                  ' 1-00-10-',color3='black',color2='red',color1='blue')!, &
+                  !terminal='png')
+                  !yrange=(/-3.0d0,3.0d0/) ) 
+
+
         call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
                   xx*1.0d6, result_fun*1.0d6, &
-                  ' 5.00-',color2='black',color1='green', &
-                  errors=sigd2(1:nd2)*1.0d6)
+                  xx*1.0d6,result_smooth*1.0d6, &
+                  ' 5.00-10-',color3='green',color2='black',color1='red')!, &
+                  !errors=sigd2(1:nd2)*1.0d6)
                   !terminal='png')
                   !yrange=(/-3.0d0,3.0d0/) )
                   
-        call plot(xx*1.0d6,result_he*1.0d6, &
-                  xx*1.0d6,result_bcz*1.0d6, &
-                  xx*1.0d6,result_smooth*1.0d6, &
-                  ' 1-00- 2-',color3='green',color2='red',color1='blue')!, &
+        call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
+                  xx*1.0d6, result_fun*1.0d6, &
+                  ' 5.00-',color2='black',color1='red', &
+                  errors=sigd2(1:nd2)*1.0d6)
                   !terminal='png')
                   !yrange=(/-3.0d0,3.0d0/) )                  
                   
@@ -165,13 +174,13 @@
 
         
         ! bcz
-        array_out(1) = dble(array_in(1)) * 10.0_dp
+        array_out(1) = dble(array_in(1)) * 3.0d-12
         array_out(2) = dble(array_in(2)) * (4000._dp - 1900._dp) + 1900._dp
         array_out(3) = dble(array_in(3)) * 2.0_dp * pi
         
         ! heII
-        array_out(4) = dble(array_in(4)) * 0.1_dp
-        array_out(5) = dble(array_in(5)) * 150.0_dp ! Delta_II in sec
+        array_out(4) = dble(array_in(4)) * 20.0d-3
+        array_out(5) = dble(array_in(5)) * 5.0d9
         array_out(6) = dble(array_in(6)) * (1800._dp - 300._dp) + 300._dp
         array_out(7) = dble(array_in(7)) * 2.0_dp * pi
   
