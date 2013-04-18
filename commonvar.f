@@ -18,12 +18,12 @@ module commonvar
 	integer, public      :: lmin, lmax, nlmin	! lmin - min degree l to consider
 												! lmax - max degree l to consider
 												! nlmin - min # of l points
-	integer, public      :: iterinit,iterfit
+	integer, public      :: iterinit, iterfit, iterIRLS
 	integer, public      :: itermod
 	integer, public      :: isig, isel
 	integer, public      :: nleft,nrigth
 	
-	logical, public      :: write_d2_to_file
+	logical, public      :: write_d2_to_file, write_final
 	
 	real(dp), public     :: fac, pi, pi_sq, twopi
 	real(dp), public     :: tau0_houdek, tau0_houdek_sq  

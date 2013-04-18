@@ -53,7 +53,7 @@
              amp_bcz, tau_bcz, phi_bcz, amp1_he, amp2_he, tau_he, phi_he, poly0, &
              intyped,&
              iprintd,&
-             write_d2,&
+             write_d2, write_final, &
              vrigthd,vleftd,&
              nlmind,&
              isigd, include_errorsd, use_error_chi2d, &

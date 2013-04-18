@@ -5,7 +5,7 @@
    
     use types_and_interfaces
     use commonvar, only: w0, write_d2_to_file
-    use commonarray, only: npt, w, sig, n, l, d2, w_d2, sigd2, nd2, icov, &
+    use commonarray, only: npt, w, sig, n, l, l_d2, d2, w_d2, sigd2, nd2, icov, &
                            nd2_l0, nd2_l1, nd2_l2, nd2_l3
     
     use gnufor2, only: plot
@@ -43,7 +43,7 @@
             d2(j) = d2work(i)   ! in Hz
             w_d2(j) = ww(i)  ! in Hz
             sigd2(j) = error(i) ! in Hz
-            
+            l_d2(j) = l(i)
             if(l(i)==0) nd2_l0 = nd2_l0 + 1
             if(l(i)==1) nd2_l1 = nd2_l1 + 1
             if(l(i)==2) nd2_l2 = nd2_l2 + 1

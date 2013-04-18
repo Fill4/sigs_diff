@@ -14,11 +14,12 @@ module commonarray
 	integer, public                  :: n   ! number of frequencies
 	integer, public                  :: nd2 ! number of second differences
 	
-	integer, dimension(npt), public  :: l   ! angular degrees
+	integer, dimension(npt), public  :: l, l_d2   ! angular degrees
 	
 	real(dp), dimension(npt), public     :: sd      ! signal
 	real(dp), dimension(npt), public     :: sig     ! errors in frequencies
 	real(dp), dimension(npt), public     :: sigd2   ! errors in second diff
+	real(dp), dimension(npt), public     :: weight  ! iteratively adjusted weights for the 2nd differences
 	real(dp), dimension(npt), public     :: xn
 	real(dp), dimension(npt), public     :: w   ! frequencies
 
