@@ -5,8 +5,8 @@ Compiled with: gfortran
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Fit acoustic glitches in low-degree p-mode frequencies using the PIKAIA genetic
-algorithm.
+Fit acoustic glitches in low-degree p-mode second differences using the PIKAIA
+genetic algorithm.
 
 == Description ==
 
