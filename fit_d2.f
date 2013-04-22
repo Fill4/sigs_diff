@@ -9,7 +9,7 @@
         use commonarray, only : nd2, w_d2, d2, c
         use lib_simplex
         use lib_array
-        use gnufor2
+        use lib_plot
 
 
 		real(dp), intent(inout)   :: resd

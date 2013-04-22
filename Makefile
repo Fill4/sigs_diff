@@ -15,14 +15,13 @@
 # *******************************************************
 # ***   Especificar as directorias com as subrotinas  ***
 # *******************************************************
-JF = /home/joao/Programs/CODE_freqFit/2ndDifferences
-JFA = /home/joao/Programs/CODE_freqFit/2ndDifferences/common
-JFB = /home/joao/Programs/CODE_freqFit/2ndDifferences/basic
-JFC = /home/joao/Programs/CODE_freqFit/nl2sol_fit/subroutines/nl2sol
-# plot library:
-JFp = /home/joao/utils/gnuFor2
-# spline library:
-JFspl = /home/joao/Programs/CODE_freqFit/dierckx
+BASE = /home/joao/Programs/CODE_freqFit
+
+path_main = $(BASE)/2ndDifferences
+path_common = $(BASE)/2ndDifferences/common
+path_basic = $(BASE)/2ndDifferences/basic
+
+# library
 lib = /home/joao/Programs/fortran/lib
 
 # *******************************************************
@@ -53,69 +52,44 @@ LINK = -lmodules -llapack -lblas -L/usr/lib
 #----------------------------------------------------------
 
 FILES = \
-$(JF)/types.o \
-$(JF)/commonvar.o \
-$(JF)/commonarray.o \
-$(JF)/fun.o \
-$(JF)/components.o \
-$(JF)/sig_bcz_d2.o \
-$(JF)/output.o \
-$(JF)/deffreq.o \
-$(JF)/parameters.o \
-$(JF)/error_covariance.o \
-$(JF)/second_diff.o \
-$(JF)/fit_d2.o \
-$(JF)/fit_d2_genetic.o
-#$(JF)/fun2.o
+$(path_main)/types.o \
+$(path_main)/commonvar.o \
+$(path_main)/commonarray.o \
+$(path_main)/fun.o \
+$(path_main)/components.o \
+$(path_main)/sig_bcz_d2.o \
+$(path_main)/output.o \
+$(path_main)/deffreq.o \
+$(path_main)/parameters.o \
+$(path_main)/error_covariance.o \
+$(path_main)/second_diff.o \
+$(path_main)/fit_d2.o \
+$(path_main)/fit_d2_genetic.o
+#$(path_main)/fun2.o
 
 
 FCOM = \
-$(JFA)/init.o
+$(path_common)/init.o
 
 # $(JFA)/minimize.o \
 # $(JFA)/nl2sol.o \
 # $(JFA)/resid.o\
 
 FBASIC = \
-$(JFB)/num_to_text.o \
-$(JFB)/skpcom.o \
-$(JFB)/length.o
-
-Fnl2sol = \
-$(JFC)/interfaces.o \
-$(JFC)/minimize.o \
-$(JFC)/nl2sol.o \
-$(JFC)/resid.o
+$(path_basic)/num_to_text.o \
+$(path_basic)/skpcom.o \
+$(path_basic)/length.o
 
 
 
-FPLOT = \
-$(JFp)/gnufor2.o
-
-
-#FSPLINE = \
-#$(JFspl)/concur.o \
-#$(JFspl)/curev.o \
-#$(JFspl)/fpadpo.o \
-#$(JFspl)/fpback.o \
-#$(JFspl)/fpbspl.o \
-#$(JFspl)/fpched.o \
-#$(JFspl)/fpcons.o \
-#$(JFspl)/fpdisc.o \
-#$(JFspl)/fpgivs.o \
-#$(JFspl)/fpinst.o \
-#$(JFspl)/fpknot.o \
-#$(JFspl)/fppocu.o \
-#$(JFspl)/fprati.o \
-#$(JFspl)/fprota.o 
 
 
 # **********************************************************
 # ***             Compilar os programas                  *** 
 # **********************************************************
 
-sig_bcz_d2: $(FPLOT) $(FILES) $(FCOM) $(FBASIC) 
-	$(FC) $(FILES) $(FCOM) $(FBASIC) $(FPLOT) -o $@ -L$(lib) -I$(lib) $(LINK) -O3
+sig_bcz_d2: $(FILES) $(FCOM) $(FBASIC) 
+	$(FC) $(FILES) $(FCOM) $(FBASIC) -o $@ -L$(lib) -I$(lib) $(LINK) -O3
 
 clean:
-	rm -f $(FILES) $(FCOM) $(FBASIC) $(FPLOT) *~ *.mod *.o sig_bcz_d2
+	rm -f $(FILES) $(FCOM) $(FBASIC) *~ *.mod *.o sig_bcz_d2
