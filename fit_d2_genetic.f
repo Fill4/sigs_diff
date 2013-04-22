@@ -16,7 +16,7 @@
 
     implicit none
         
-	real(dp)                 :: chi2
+	real(dp), intent(inout)     :: chi2
 
     real(dp)                    :: object, simp, stopcr
     real(dp), dimension(nconst) :: c0, p, step, var
@@ -71,8 +71,8 @@
         call rescale(x, c)
         WRITE(*,*) '      x: ', c
         WRITE(*,*) '  chi^2: ', 1./f
-        write(*,*) all(abs(c0-c) < 0.3_dp * c)
-        if (all(abs(c0-c) < 0.3_dp * c)) exit
+        write(*,*) all(abs(c0-c) < 0.2_dp * c)
+        if (all(abs(c0-c) < 0.2_dp * c)) exit
         c0 = c
         write(*,*)
     end do
@@ -81,7 +81,7 @@
     call rescale(x, c)
     
     ! residuals of best parameters
-    chi2 = 1.0d12/objfun_ga(nconst, x)
+    chi2 = 1.0/objfun_ga(nconst, x)
     
 !    !     Print the results
 !    WRITE(*,*) ' status: ', STATUS

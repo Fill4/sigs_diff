@@ -11,7 +11,7 @@
 		character(len=80), intent(in) :: frequency_file
 		real(dp), intent(in)          :: resd
 	
-		real(dp)    :: tauBCZ, tauHe, a, a_bcz, a_he
+		real(dp)    :: tauBCZ, tauHe, a, a_bcz, a_he, beta
 		real(dp)    :: chi2, chi2norm
 		
 		integer     :: nfile
@@ -20,8 +20,12 @@
 		tauBCZ = c(2)
 		tauHe = c(6)
 		
-		a_bcz = c(1)!*1.0d12
-		a_he = c(4)!*2.0d3
+		write(*,*) w0ref, fac
+		
+		a_bcz = c(1)*1.0d18 / (w0ref)**2  
+		a_he = c(4) * w0ref * exp(-c(5)*(w0ref*1.0d-6)**2)
+		beta = c(5) * (w0ref*fac)**2  
+		
 		a = tauHe / (sqrt(2.0_dp*pi)*w0ref*c(6))
 		
 		
@@ -31,7 +35,7 @@
 		                   'tau_BCZ = ', tauBCZ, &
 		                   'phi_bcz = ', c(3), 'A_bcz = ', a_bcz, &
                            'tau_He = ', tauHe, &
-                           'phi_he = ', c(7), 'A_he = ', a_he, c(5), &
+                           'phi_he = ', c(7), 'A_he = ', a_he, beta, &
                            'A_II / sqrt(2pi)*nu0*Delta_II = ', a, &
                            'chi2 = ', resd, 'chi2norm = ', resd/(n-nconst)
                            

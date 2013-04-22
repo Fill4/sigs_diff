@@ -96,7 +96,7 @@
 		pi = 4.0_dp*atan(1.0_dp)
 		pi_sq = pi*pi
 		twopi = 2.0_dp*pi
-		fac = 2.0_dp-6*pi
+		fac = 2.0d-6*pi
 
         tau0_houdek = 80.0d0
         tau0_houdek_sq = 6400.0d0
