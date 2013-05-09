@@ -54,7 +54,7 @@
 	call init (afile) ! also calculates 2nd differences
 	write(*,*) ' '
 
-	!call openfiles (afile,xinitm)
+	call openfiles (afile)
 	call flush (6)
 	varlim = 0.2d0
 

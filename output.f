@@ -1,7 +1,7 @@
 !****************************************************************************
 ! Joao Faria: Jan 2013
 !****************************************************************************
-	subroutine output (frequency_file, resd)
+  subroutine output (frequency_file, resd)
 !	 write the results to the terminal
 
         use types_and_interfaces
@@ -48,14 +48,15 @@
                 6x, a, f15.10, 5x, a, f15.10, /)
 
         
-!		nfile=length(afile)
-
-!		! output to "res" file -
-!		if (intype.eq.0) then
-!			write (9,9003) afile(nfile-6:nfile-4), taud, c(2), c(3), amess
-! 9003		format (3x, a, x, f9.4, 2x, f7.5, 2x, f10.8, 2x, a1)
-!		endif
+        ! output to "res" file -
+        nfile = length(frequency_file)
+        if (intype.eq.0) then
+            write (9,9003) &
+               frequency_file(nfile-20:nfile), tauBCZ, c(3), a_bcz, tauHe, c(7), a_he, beta
+     9003   format (x, a24, 7f10.4)
+        endif
+        close(9)
 
         return
         
-	end subroutine output
+  end subroutine output

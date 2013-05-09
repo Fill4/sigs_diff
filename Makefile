@@ -58,6 +58,7 @@ $(path_main)/commonarray.o \
 $(path_main)/fun.o \
 $(path_main)/components.o \
 $(path_main)/sig_bcz_d2.o \
+$(path_main)/openfiles.o \
 $(path_main)/output.o \
 $(path_main)/deffreq.o \
 $(path_main)/parameters.o \
