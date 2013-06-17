@@ -12,8 +12,7 @@
 	use commonvar
 	use commonarray
 	use lib_array
-		
-	use gnufor2
+
 	
     implicit none
 	
