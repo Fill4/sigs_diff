@@ -72,7 +72,7 @@
         WRITE(*,*) '      x: ', c
         WRITE(*,*) '  chi^2: ', 1./f
         write(*,*) all(abs(c0-c) < 0.2_dp * c)
-        if (all(abs(c0-c) < 0.2_dp * c)) exit
+        if (all(abs(c0(1:2)-c(1:2)) < 0.2_dp * c(1:2)) .and. all(abs(c0(4:6)-c(4:6)) < 0.2_dp * c(4:6))) exit
         c0 = c
         write(*,*)
     end do
@@ -89,38 +89,38 @@
 !    WRITE(*,*) '  chi^2: ', 1./f
 
     
-!!    ! create array with smooth function		
-!!	min_xx = minval(w_d2(1:nd2)) - 2.0d-4
-!!	max_xx = maxval(w_d2(1:nd2)) + 2.0d-4
-!!    call linspace(min_xx, max_xx, xx)
-!!    result_fun = fun(xx)
-!!    result_smooth = smooth_comp(xx)
-!!    result_he = he_comp(xx)
-!!    result_bcz = bcz_comp(xx)
+    ! create array with smooth function		
+	min_xx = minval(w_d2(1:nd2)) - 2.0d-4
+	max_xx = maxval(w_d2(1:nd2)) + 2.0d-4
+    call linspace(min_xx, max_xx, xx)
+    result_fun = fun(xx)
+    result_smooth = smooth_comp(xx)
+    result_he = he_comp(xx)
+    result_bcz = bcz_comp(xx)
 
 
-!!    call plot(xx*1.0d6,result_he*1.0d6, &
-!!              xx*1.0d6,result_bcz*1.0d6, &
-!!              xx*1.0d6,(result_smooth+result_he+result_bcz)*1.0d6, &
-!!              ' 1-00-10-',color3='black',color2='red',color1='blue')!, &
-!!              !terminal='png')
-!!              !yrange=(/-3.0d0,3.0d0/) ) 
+    call plot(xx*1.0d6,result_he*1.0d6, &
+              xx*1.0d6,result_bcz*1.0d6, &
+              xx*1.0d6,(result_smooth+result_he+result_bcz)*1.0d6, &
+              ' 1-00-10-',color3='black',color2='red',color1='blue')!, &
+              !terminal='png')
+              !yrange=(/-3.0d0,3.0d0/) ) 
 
 
-!!    call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
-!!              xx*1.0d6, result_fun*1.0d6, &
-!!              xx*1.0d6,result_smooth*1.0d6, &
-!!              ' 5.00-10-',color3='green',color2='black',color1='red')!, &
-!!              !errors=sigd2(1:nd2)*1.0d6)
-!!              !terminal='png')
-!!              !yrange=(/-3.0d0,3.0d0/) )
-!!              
-!!    call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
-!!              xx*1.0d6, result_fun*1.0d6, &
-!!              ' 5.00-',color2='black',color1='red', &
-!!              errors=sigd2(1:nd2)*1.0d6)
-!!              !terminal='png')
-!!              !yrange=(/-3.0d0,3.0d0/) )                  
+    call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
+              xx*1.0d6, result_fun*1.0d6, &
+              xx*1.0d6,result_smooth*1.0d6, &
+              ' 5.00-10-',color3='green',color2='black',color1='red')!, &
+              !errors=sigd2(1:nd2)*1.0d6)
+              !terminal='png')
+              !yrange=(/-3.0d0,3.0d0/) )
+              
+    call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
+              xx*1.0d6, result_fun*1.0d6, &
+              ' 5.00-',color2='black',color1='red', &
+              errors=sigd2(1:nd2)*1.0d6)
+              !terminal='png')
+              !yrange=(/-3.0d0,3.0d0/) )                  
 
 !!    call hist( abs((d2(1:nd2)-fun(w_d2(1:nd2)))/sigd2(1:nd2)), 15, &
 !!               color='#779944',pause=-1.0)
