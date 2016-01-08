@@ -66,7 +66,7 @@
 		integer :: unit
 		
 		! initialize controls to default values -
-		include "sig_bcz_controls_default.dek"
+		include "options_default.dat"
 		
 		!write (6,*) ' '
 		write (6,*) " Reading input parameters from file: ", filename
@@ -133,7 +133,7 @@
 		
 		
 		iprint = iprintd
-		write_d2_to_file = write_d2
+		write_final = write_d2
 		
 		ioutp=1
 		

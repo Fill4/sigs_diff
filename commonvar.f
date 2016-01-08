@@ -23,7 +23,7 @@ module commonvar
 	integer, public      :: isel
 	integer, public      :: nleft,nright
 	
-	logical, public      :: write_d2_to_file, write_final
+	logical, public      :: write_final
 	
 	real(dp), public     :: fac, pi, pi_sq, twopi
 	real(dp), public     :: tau0_houdek, tau0_houdek_sq  

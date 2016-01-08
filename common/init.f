@@ -78,10 +78,10 @@
 
 
 		! if not using errors -
-		if (include_errors == 'no' .or. include_errors == 'n') then
+		if (.NOT. use_error_chi2) then
 			read (1,*,end=21) l(n+1),nn,ww
 		! if using errors -
-		else if (include_errors == 'yes' .or. include_errors == 'y') then
+		else if (use_error_chi2) then
 			read (1,*,end=21) l(n+1),nn,ww,sig(n+1)
 			if (sig(n+1).gt.ssmax) goto 11
 		endif

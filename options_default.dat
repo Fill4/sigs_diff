@@ -18,14 +18,15 @@
 
 	intyped = 0
 
-	iprintd = 3
+	iprintd = 1
+	write_final = .TRUE.
 
 	vrightd = 0.0
 	vleftd = 0.0
 
 	nlmind = 5
 	
-	use_error_chi2d = .F.
+	use_error_chi2d = .FALSE.
 
 	ssmaxd = 0.500
 

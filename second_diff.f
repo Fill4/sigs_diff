@@ -4,7 +4,7 @@
    subroutine second_diff
    
     use types_and_interfaces
-    use commonvar, only: w0, write_d2_to_file
+    use commonvar, only: w0, write_final
     use commonarray, only: npt, w, sig, n, l, l_d2, d2, w_d2, sigd2, nd2, icov, &
                            nd2_l0, nd2_l1, nd2_l2, nd2_l3
     use lib_assert
@@ -54,7 +54,7 @@
     !write(*,*) nd2_l0, nd2_l1, nd2_l2, nd2_l3
     
     ! print in muHz
-    if (write_d2_to_file) then
+    if (write_final) then
         ! open the file -
 		open(unit=33, file='d2.data', action='write')
 		write(33,*) "#  nu (muHz)", "d2 (muHz)", "err_d2 (muHz)"
