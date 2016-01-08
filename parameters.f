@@ -37,12 +37,11 @@
 		! output second differences used in calculation?
 		logical  :: write_d2
 		! borders to ignore in frequency (right and left) -
-		real     :: vrigthd,vleftd
+		real     :: vrightd,vleftd
 		! minimum number of modes with same degree -
 		integer  :: nlmind
 		! wether it should use the errors or not -
-		character(len=10) :: include_errorsd, use_error_chi2d
-		integer  :: isigd
+		logical  :: use_error_chi2d
 		! upper limit for error -
 		real     :: ssmaxd
 		! range in degree -
@@ -54,9 +53,9 @@
              intyped,&
              iprintd,&
              write_d2, write_final, &
-             vrigthd,vleftd,&
+             vrightd,vleftd,&
              nlmind,&
-             isigd, include_errorsd, use_error_chi2d, &
+             use_error_chi2d, &
              ssmaxd,&
              lmind,lmaxd
      
@@ -83,10 +82,10 @@
 
 !		if( iprintd .ne. 0 ) then
 !			write (6,'( a,/ )') "  Input parameters are:"
-!			write (6, 6001) xinitd, xamp0d, tau0refd, phi0refd, iprintd, include_errorsd
+!			write (6, 6001) xinitd, xamp0d, tau0refd, phi0refd, iprintd, use_error_chi2d
 ! 6001		format(4x, "XINIT = ", es10.4, /, &
 !                   4x, "AMP0 = ", f5.3, 4x, "TAU0 = ", f9.2, 4x, "PHI0 = ", f5.3, /, &
-!                   4x, "IPRINT = ", i1, 4x, "ERRORS = ", a1, / )
+!                   4x, "IPRINT = ", i1, 4x, "ERRORS = ", L1, / )
 !		end if
 		
 !		write(6,'( a,/ )') "  Input parameters are:"
@@ -145,18 +144,16 @@
 
 		if (isel.eq.0) then
 		vleft = vleftd
-		vrigth = vrigthd
+		vright = vrightd
 		else if (isel.eq.1) then
 		nleft = vleftd !! fix
-		nrigth = vrightd !! fix
+		nright = vrightd !! fix
 		else 
 		write(*,*) "ERROR: ISEL must be 0 or 1!"
 
 		endif
-		  
-		include_errors = include_errorsd 
+
 		use_error_chi2 = use_error_chi2d
-		isig = isigd
 		ssmax = ssmaxd
 
 		idata=1

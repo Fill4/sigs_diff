@@ -28,9 +28,9 @@
 		
 		write(*,*) ' '
 		
-		if (use_error_chi2 == 'yes' .or. use_error_chi2 == 'y') then
+		if (use_error_chi2) then
 			write (*,'(2x, a)', advance = "no") "name of input file (l,n,v,sigma) --> "
-		else if (use_error_chi2 == 'no' .or. use_error_chi2 == 'n') then
+		else if (.NOT. use_error_chi2) then
 			write (*,'(2x, a)', advance = "no") "name of input file (l,n,v) --> "
 		endif
 

@@ -26,10 +26,10 @@
 		wmax = 0.0d0
 		
 		! if not using errors -
- 10		if (include_errors == 'no' .or. include_errors == 'n') then
+ 10		if (.NOT. use_error_chi2) then
 			read (1,*,end=20) ll,nn,ww
 		! if using errors -
-		else if (include_errors == 'yes' .or. include_errors == 'y') then
+		else if (use_error_chi2) then
 			read (1,*,end=20) ll,nn,ww,ss
 			if (ss.gt.ssmax) goto 10
 		endif
@@ -38,7 +38,7 @@
 		if (ll.gt.lmax.or.ll.lt.lmin) goto 10
 		if (isel.eq.1) then
 			if (nn.lt.nleft) goto 10
-			if (nn.gt.nrigth) goto 10
+			if (nn.gt.nright) goto 10
 		endif
 
 		if (ww.gt.wmax) wmax = ww
@@ -53,12 +53,12 @@
 		n=0
 		if (isel.eq.1) then
 			vleft = 0.0d0
-			vrigth = 0.0d0
+			vright = 0.0d0
 		endif
 
 		dw = (wmax-wmin)
 		wlower = wmin + dw*vleft
-		wupper = wmax - dw*vrigth
+		wupper = wmax - dw*vright
 		
 		write (*,1013) 'Range in frequencies:', wlower, wupper
  1013	format (7x, a, f10.4, x, '-', x, f9.4)	
@@ -91,7 +91,7 @@
 			if (ww.gt.wupper.or.ww.lt.wlower) goto 11
 			else if (isel.eq.1) then
 				if (nn.lt.nleft) goto 11
-				if (nn.gt.nrigth) goto 11
+				if (nn.gt.nright) goto 11
 			else
 				write (*,*) 'WARNING: Wrong option for ISEL!'
 			endif
@@ -119,7 +119,7 @@
 						l(j)=l(j+nd)
 						w(j)=w(j+nd)
 						xn(j)=xn(j+nd)
-						if (isig.gt.0) sig(n)=sig(j+nd)
+						if (use_error_chi2) sig(n)=sig(j+nd)
 					end do
 
 					n=n-nd

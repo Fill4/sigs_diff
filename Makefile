@@ -15,14 +15,10 @@
 # *******************************************************
 # ***   Especificar as directorias com as subrotinas  ***
 # *******************************************************
-BASE = /home/joao/Programs/CODE_freqFit
-
-path_main = $(BASE)/2ndDifferences
-path_common = $(BASE)/2ndDifferences/common
-path_basic = $(BASE)/2ndDifferences/basic
+BASE = /home/fill/Documents/repos/glitch2
 
 # library
-lib = /home/joao/Programs/fortran/lib
+lib = /home/fill/Documents/repos/lib-fortran
 
 # *******************************************************
 # ***                       Macros                    ***
@@ -52,38 +48,34 @@ LINK = -lmodules -llapack -lblas -L/usr/lib
 #----------------------------------------------------------
 
 FILES = \
-$(path_main)/types.o \
-$(path_main)/commonvar.o \
-$(path_main)/commonarray.o \
-$(path_main)/fun.o \
-$(path_main)/components.o \
-$(path_main)/sig_bcz_d2.o \
-$(path_main)/openfiles.o \
-$(path_main)/output.o \
-$(path_main)/deffreq.o \
-$(path_main)/parameters.o \
-$(path_main)/error_covariance.o \
-$(path_main)/second_diff.o \
-$(path_main)/fit_d2.o \
-$(path_main)/fit_d2_genetic.o
-#$(path_main)/fun2.o
+$(BASE)/types.o \
+$(BASE)/commonvar.o \
+$(BASE)/commonarray.o \
+$(BASE)/fun.o \
+$(BASE)/components.o \
+$(BASE)/sig_bcz_d2.o \
+$(BASE)/openfiles.o \
+$(BASE)/output.o \
+$(BASE)/deffreq.o \
+$(BASE)/parameters.o \
+$(BASE)/error_covariance.o \
+$(BASE)/second_diff.o \
+$(BASE)/fit_d2.o \
+$(BASE)/fit_d2_genetic.o
+#$(BASE)/fun2.o
 
 
 FCOM = \
-$(path_common)/init.o
+$(BASE)/common/init.o
 
 # $(JFA)/minimize.o \
 # $(JFA)/nl2sol.o \
 # $(JFA)/resid.o\
 
 FBASIC = \
-$(path_basic)/num_to_text.o \
-$(path_basic)/skpcom.o \
-$(path_basic)/length.o
-
-
-
-
+$(BASE)/basic/num_to_text.o \
+$(BASE)/basic/skpcom.o \
+$(BASE)/basic/length.o
 
 # **********************************************************
 # ***             Compilar os programas                  *** 

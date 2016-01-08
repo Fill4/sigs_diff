@@ -10,7 +10,7 @@ module commonvar
 	
 	implicit none
 	
-	character(len=10), public  :: include_errors, use_error_chi2
+	logical, public 	 :: use_error_chi2 	!Use errors from frequencies
 	
 	integer, public      :: nconst			! number of parameters to fit
 	integer, public      :: iprint
@@ -20,8 +20,8 @@ module commonvar
 												! nlmin - min # of l points
 	integer, public      :: iterinit, iterfit, iterIRLS
 	integer, public      :: itermod
-	integer, public      :: isig, isel
-	integer, public      :: nleft,nrigth
+	integer, public      :: isel
+	integer, public      :: nleft,nright
 	
 	logical, public      :: write_d2_to_file, write_final
 	
@@ -31,7 +31,7 @@ module commonvar
 	real, public         :: xinit
 	real, public         :: ftol,tolfit,dc
 	real, public         :: valtype
-	real, public         :: vleft,vrigth
+	real, public         :: vleft,vright
 	real, public         :: xmass,xrad			! mass & radius of star
 	real, public         :: ssmax				! max error allowed in frequencies
 	                        ! initial values:   

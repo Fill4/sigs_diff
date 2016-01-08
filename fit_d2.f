@@ -133,7 +133,7 @@
 		
 		resid = 0.0d0
 		! if not weighting by errors -
-		if (use_error_chi2 == 'no' .or. use_error_chi2 == 'n') then
+		if (.NOT. use_error_chi2) then
 			do i=1,nd2
 				ww = w_d2(i)
 				ll = l(i)
@@ -141,7 +141,7 @@
 				resid = resid + (d2(i)-signal)**2
 			end do
 		! if weighting by errors -
-		else if (use_error_chi2 == 'yes' .or. use_error_chi2 == 'y') then
+		else if (use_error_chi2) then
 			do i=1,nd2
 				ww = w_d2(i)
 				ll = l(i)

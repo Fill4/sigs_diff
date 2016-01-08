@@ -1,3 +1,4 @@
+&sig_bcz_controls
 	xinitd = 1.00E-07
 
 	ftold = 0.10E-06
@@ -20,16 +21,15 @@
 
 	iprintd = 3
 
-	vrigthd = 0.0
+	vrightd = 0.0
 	vleftd = 0.0
 
 	nlmind = 5
 	
-	include_errors = 'no'
-	isigd = 0
+	use_error_chi2d = .F.
 
 	ssmaxd = 0.500
 
 	lmind = 0
 	lmaxd = 2
-
+/
