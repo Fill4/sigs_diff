@@ -14,14 +14,13 @@
 
 		! sig_bcz_controls
 		namelist / sig_bcz_controls / xinitd, ftold,&
-			 iterinitd,iterfitd,&
-			 w0refd,&
-			 write_finald, &
-			 vrightd,vleftd,&
-			 nlmind,&
-			 use_error_chi2d, &
-			 ssmaxd,&
-			 lmind,lmaxd
+			iterinitd,iterfitd,&
+			w0refd,&
+			vrightd,vleftd,&
+			nlmind,&
+			use_error_chi2d, &
+			ssmaxd,&
+			lmind,lmaxd
 		
 		! smoothing and fitting control parameters -
 		real    :: xinitd, ftold
@@ -29,8 +28,6 @@
 		integer :: iterinitd,iterfitd
 		! reference values -
 		real    :: w0refd
-		! output second differences used in calculation?
-		logical  :: write_finald
 		! borders to ignore in frequency (right and left) -
 		real     :: vrightd,vleftd
 		! minimum number of modes with same degree -
@@ -77,8 +74,6 @@
 		nu0 = nu0d * 1.0d-6 ! convert from muHz (input) to Hz
 		
 		w0ref = w0refd
-
-		write_final = write_finald
 		
 		lmin = lmind
 		lmax = lmaxd

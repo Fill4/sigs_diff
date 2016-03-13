@@ -1,10 +1,10 @@
 !****************************************************************************
 ! Joao Faria: Jan 2013
 !****************************************************************************
-  subroutine output (frequency_file, resd)
+subroutine output (frequency_file, resd)
 !	 write the results to the terminal
 
-        use types_and_interfaces
+		use types_and_interfaces
 		use commonvar
 		use commonarray, only: c, n
 		
@@ -32,31 +32,27 @@
 		write (6,*) "  Frequencies from file: ", frequency_file
 	
 		write (6,1010) 'Results:', &
-		                   'tau_BCZ = ', tauBCZ, &
-		                   'phi_bcz = ', c(3), 'A_bcz = ', a_bcz, &
-                           'tau_He = ', tauHe, &
-                           'phi_he = ', c(7), 'A_he = ', a_he, beta, &
-                           'A_II / sqrt(2pi)*nu0*Delta_II = ', a, &
-                           'chi2 = ', resd, 'chi2norm = ', resd/(n-nconst)
-                           
- 1010	format (3x, a, //, &
-                6x, a, f9.4, //, &
-                6x, a, f9.2, 6x, a, f10.4, //, &
-                6x, a, f9.4, //, &
-                6x, a, f9.2, 6x, a, f10.4, 2x, f15.3, //, &
-                6x, a, f15.8, //, &
-                6x, a, f15.10, 5x, a, f15.10, /)
+						   'tau_BCZ = ', tauBCZ, &
+						   'phi_bcz = ', c(3), 'A_bcz = ', a_bcz, &
+						   'tau_He = ', tauHe, &
+						   'phi_he = ', c(7), 'A_he = ', a_he, beta, &
+						   'A_II / sqrt(2pi)*nu0*Delta_II = ', a, &
+						   'chi2 = ', resd, 'chi2norm = ', resd/(n-nconst)
+						   
+1010	format (3x, a, //, &
+				6x, a, f9.4, //, &
+				6x, a, f9.2, 6x, a, f10.4, //, &
+				6x, a, f9.4, //, &
+				6x, a, f9.2, 6x, a, f10.4, 2x, f15.3, //, &
+				6x, a, f15.8, //, &
+				6x, a, f15.10, 5x, a, f15.10, /)
 
-        
-        ! output to "res" file -
-        !nfile = length(frequency_file)
-        if (intype.eq.0) then
-            write (9,9003) &
-               frequency_file, tauBCZ, c(3), a_bcz, tauHe, c(7), a_he, beta
-     9003   format (x, a24, 7f10.4)
-        endif
-        close(9)
+		
 
-        return
-        
-  end subroutine output
+	write (9,9003) frequency_file, tauBCZ, c(3), a_bcz, tauHe, c(7), a_he, beta
+9003	format (x, a24, 7f10.4)
+	close(9)
+
+	return
+		
+end subroutine output

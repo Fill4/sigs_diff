@@ -21,8 +21,6 @@ module commonvar
 	integer, public      :: isel
 	integer, public      :: nleft,nright
 	
-	logical, public      :: write_final
-	
 	real(dp), public     :: fac, pi
 	
 	real, public         :: xinit

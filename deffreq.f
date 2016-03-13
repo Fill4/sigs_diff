@@ -3,8 +3,8 @@
 !****************************************************************************
 	subroutine deffreq (afile)
 !	 Define the reference values of the parameters C
-        
-        use types_and_interfaces
+		
+		use types_and_interfaces
 		use commonvar
 		use commonarray, only: c
 		

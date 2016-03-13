@@ -2,19 +2,19 @@
 ! Joao Faria: Jan 2013
 !****************************************************************************
    program main ! main only calls sig_bcz_d2
-    call sig_bcz_d2
+	call sig_bcz_d2
    end program main
 	
 	
    subroutine sig_bcz_d2
 
-    use types_and_interfaces
+	use types_and_interfaces
 	use commonvar
 	use commonarray
 	use lib_array
 
 	
-    implicit none
+	implicit none
 	
 	character (len=80)   :: afile
 	character (len=1)    :: amess
@@ -25,7 +25,7 @@
 	real                     :: varlim, var
 	real(dp)                 :: res
 	real(dp), dimension(3)   :: coeff 
-    real(dp), dimension(100) :: xx, resultfun
+	real(dp), dimension(100) :: xx, resultfun
 
 
 	afile='00000'
@@ -33,21 +33,21 @@
 	
 !+++++++++++++++++++++++++++++++++++++++++++
 !--- process command line argument
-    argcount = iargc()
-    if (argcount /= 1) then
-        write(*,'(a,x,/)') "ERROR! usage: sig_bcz_d2 parameter_file"
-        stop
-    endif
-    call getarg(1, parameter_file)
-    
+	argcount = iargc()
+	if (argcount /= 1) then
+		write(*,'(a,x,/)') "ERROR! usage: sig_bcz_d2 parameter_file"
+		stop
+	endif
+	call getarg(1, parameter_file)
+	
 !--- Number of parameters to fit -
 	nconst=7
 	allocate(c(nconst))
 	allocate(polyc(3))
 	
 !--- Read file with input parameters -
- 	call parameters (parameter_file)
- 	
+	call parameters (parameter_file)
+	
 !--- Initializing all quantities, read in frequencies and output files -
 	call deffreq (afile)
 	call init (afile) ! also calculates 2nd differences
@@ -57,21 +57,21 @@
 	call flush (6)
 	varlim = 0.2d0
 
-    
-    !call polyreg(dble(w_d2(1:nd2)), dble(d2(1:nd2)), 2, coeff)
-    !write(*,*) coeff
-    
-    !call linspace(dble(w_d2(1)), dble(w_d2(nd2)), xx)
-    !polyfun = coeff(3) * xx * xx + coeff(2) * xx + coeff(1)
-    
-    !call plot(dble(w_d2(1:nd2)), dble(d2(1:nd2)), xx, polyfun,' 5. 1-',color2='dark-yellow',color1='#40e0d0')
-    
+	
+	!call polyreg(dble(w_d2(1:nd2)), dble(d2(1:nd2)), 2, coeff)
+	!write(*,*) coeff
+	
+	!call linspace(dble(w_d2(1)), dble(w_d2(nd2)), xx)
+	!polyfun = coeff(3) * xx * xx + coeff(2) * xx + coeff(1)
+	
+	!call plot(dble(w_d2(1:nd2)), dble(d2(1:nd2)), xx, polyfun,' 5. 1-',color2='dark-yellow',color1='#40e0d0')
+	
 !--- Finding the best parameters -
 	amess = ' '
 !	call fit_d2(res)
-    call fit_d2_genetic(res)
+	call fit_d2_genetic(res)
 !--- plot results -
-    
+	
 !	call linspace(dble(w_d2(1)), dble(w_d2(nd2)), xx)
 !	do i=1,100
 !	    resultfun(i) = fun(c, xx(i), 0)
@@ -92,6 +92,6 @@
 !	if (iprint.ge.1) close (3)
 	write (6,*)"---------------------> PROGRAM SIG_BCZ_D2 <---------------------"
 
-    deallocate(c)
-    
+	deallocate(c)
+	
    end subroutine sig_bcz_d2

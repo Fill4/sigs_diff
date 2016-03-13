@@ -26,13 +26,13 @@ module commonarray
 	real(dp), dimension(npt), public     :: xn
 	real(dp), dimension(npt), public     :: w   ! frequencies
 
-    real(dp), dimension(npt), public     :: d2      ! second differences
-    real(dp), dimension(npt), public     :: w_d2    ! central frequency of second difference
-    integer, public                      :: nd2_l0, nd2_l1, nd2_l2, nd2_l3
-    
-    real(dp), allocatable, public   :: c(:) ! parameters of the fit
-    real(dp), allocatable, public   :: polyc(:) ! extra parameters of polynomial
-    
-    real(dp), allocatable, public   :: icov(:,:) ! inverse of covariance matrix
-    
+	real(dp), dimension(npt), public     :: d2      ! second differences
+	real(dp), dimension(npt), public     :: w_d2    ! central frequency of second difference
+	integer, public                      :: nd2_l0, nd2_l1, nd2_l2, nd2_l3
+	
+	real(dp), allocatable, public   :: c(:) ! parameters of the fit
+	real(dp), allocatable, public   :: polyc(:) ! extra parameters of polynomial
+	
+	real(dp), allocatable, public   :: icov(:,:) ! inverse of covariance matrix
+	
 end module commonarray

@@ -15,30 +15,30 @@
 	logical             :: res_exists
 
 
-    ! RES file (unit = 9) -
-    inquire( file="res", exist=res_exists)
+	! RES file (unit = 9) -
+	inquire( file="res", exist=res_exists)
 
-    if (res_exists) then
-        open (9, file='res', status='old', position='append')
-    else 
-        open (9, file='res', status='unknown')
-        write (9,*) ' '
-        close (9)
+	if (res_exists) then
+		open (9, file='res', status='old', position='append')
+	else 
+		open (9, file='res', status='unknown')
+		write (9,*) ' '
+		close (9)
 
-        open (9,file='res',status='old')
-        ! write to terminal that RES was created
-        write (6,*) "  In file RES   [filename,C1,C2,...] (all final values)"
+		open (9,file='res',status='old')
+		! write to terminal that RES was created
+		write (6,*) "  In file RES   [filename,C1,C2,...] (all final values)"
 
-        ! header -
-        write (9,'(x, a, i1, x, a)') "# SIG_GENETIC results (", nconst, "parameters)"
-        write (9,*) ''
+		! header -
+		write (9,'(x, a, i1, x, a)') "# SIG_GENETIC results (", nconst, "parameters)"
+		write (9,*) ''
 
-        write (9,'(x, a, a23, 7a10)') &
-          "#", "file", "tau_bcz", "phi_bcz", "amp_bcz", "tau_he", "phi_he", "amp_he", "beta"
-        write (9,*) &
-          "#---------------------------------------------------------------------------------------------"
-        write (9,*) ''
-    endif
+		write (9,'(x, a, a23, 7a10)') &
+		  "#", "file", "tau_bcz", "phi_bcz", "amp_bcz", "tau_he", "phi_he", "amp_he", "beta"
+		write (9,*) &
+		  "#---------------------------------------------------------------------------------------------"
+		write (9,*) ''
+	endif
 
 	return
 	

@@ -8,8 +8,6 @@
 
 	w0refd = 2100.0
 
-	write_finald = .TRUE.
-
 	vrightd = 0.0
 	vleftd = 0.0
 
