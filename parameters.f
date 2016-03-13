@@ -8,34 +8,29 @@
 		
 		implicit double precision (b-h,o-z)
 		implicit integer (i-n)
-        
+		
 		character (len=6)   :: aline
 		character(len=80), intent(in)  :: filename
 
-
 		! sig_bcz_controls
+		namelist / sig_bcz_controls / xinitd, ftold,&
+			 iterinitd,iterfitd,&
+			 w0refd,&
+			 write_finald, &
+			 vrightd,vleftd,&
+			 nlmind,&
+			 use_error_chi2d, &
+			 ssmaxd,&
+			 lmind,lmaxd
 		
 		! smoothing and fitting control parameters -
-		real    :: xinitd, ftold, tolfitd, dcd
+		real    :: xinitd, ftold
 		! fitting procedure -
 		integer :: iterinitd,iterfitd
 		! reference values -
-		real    :: w0refd,xl0d, nu0d
-		
-		! initial guesses of the parameters are declared in commonvar
-				
-		! type of input for frequency files -
-		real    :: intyped
-		! set iprint to -
-		!	0 - no output, just the final values for the parameters
-		!	1 - the coefficients are written in a file
-		!	2 - as 1, and with the residuals being written on the screen
-		!	3 - as 2, and with the end signal+fit being written in a file
-		!	4 - as 3, and with the signal+fit being written in a file for each iteration
-		!	5 - only the signal for the first iteration is written
-		integer  :: iprintd
+		real    :: w0refd
 		! output second differences used in calculation?
-		logical  :: write_d2
+		logical  :: write_finald
 		! borders to ignore in frequency (right and left) -
 		real     :: vrightd,vleftd
 		! minimum number of modes with same degree -
@@ -46,19 +41,7 @@
 		real     :: ssmaxd
 		! range in degree -
 		integer  :: lmind,lmaxd
-		namelist / sig_bcz_controls / xinitd, ftold, tolfitd, dcd,&
-             iterinitd,iterfitd,&
-             w0refd,xl0d,nu0d,&
-             amp_bcz, tau_bcz, phi_bcz, amp1_he, amp2_he, tau_he, phi_he, poly0, &
-             intyped,&
-             iprintd,&
-             write_d2, write_final, &
-             vrightd,vleftd,&
-             nlmind,&
-             use_error_chi2d, &
-             ssmaxd,&
-             lmind,lmaxd
-     
+
 		!--- Read from namelist input file -
 		integer                        :: ierr = 1
 		integer                        :: unit1 = 8
@@ -72,70 +55,30 @@
 		write (6,*) " Reading input parameters from file: ", filename
 		! open the file -
 		open(unit=unit1, file=filename, &
-                      action='read', delim='quote', &
-                      iostat=ierr)
-     	! read input -
-     	read(unit1, nml=sig_bcz_controls, iostat=ierr, iomsg=message)
+					  action='read', delim='quote', &
+					  iostat=ierr)
+		! read input -
+		read(unit1, nml=sig_bcz_controls, iostat=ierr, iomsg=message)
 		close (unit1)
-          	if (ierr /= 0) write(*,*) " --> failed in ", trim(filename), &
-                      " with error code ", ierr, '/', message
-
-!		if( iprintd .ne. 0 ) then
-!			write (6,'( a,/ )') "  Input parameters are:"
-!			write (6, 6001) xinitd, xamp0d, tau0refd, phi0refd, iprintd, use_error_chi2d
-! 6001		format(4x, "XINIT = ", es10.4, /, &
-!                   4x, "AMP0 = ", f5.3, 4x, "TAU0 = ", f9.2, 4x, "PHI0 = ", f5.3, /, &
-!                   4x, "IPRINT = ", i1, 4x, "ERRORS = ", L1, / )
-!		end if
-		
-!		write(6,'( a,/ )') "  Input parameters are:"
-!		write(6,nml=sig_bcz_controls)
-		
+			if (ierr /= 0) write(*,*) " --> failed in ", trim(filename), &
+					  " with error code ", ierr, '/', message		
 
 		pi = 4.0_dp*atan(1.0_dp)
-		pi_sq = pi*pi
-		twopi = 2.0_dp*pi
 		fac = 2.0d-6*pi
-
-        tau0_houdek = 80.0d0
-        tau0_houdek_sq = 6400.0d0
-
-		icalc=0
-		ipara=0
-		ioutp=0
-		idata=0
 
 		xinit = xinitd
 		ftol = ftold
 		tolfit = tolfitd
-        
+		
 		dc = 	dcd
 		iterinit = iterinitd
 		iterfit = iterfitd
-
-		icalc=1
 		
 		nu0 = nu0d * 1.0d-6 ! convert from muHz (input) to Hz
-		w0 = nu0 * twopi
 		
 		w0ref = w0refd
-		xl0 = xl0d
-			xl02=xl0*(xl0+1.0d0)
 
-		
-		intype = intyped
-           if (intype.eq.0) then
-              xmass = 1.0
-              xrad = 1.0
-           endif
-           
-		ipara=1
-		
-		
-		iprint = iprintd
-		write_final = write_d2
-		
-		ioutp=1
+		write_final = write_finald
 		
 		lmin = lmind
 		lmax = lmaxd
@@ -155,13 +98,6 @@
 
 		use_error_chi2 = use_error_chi2d
 		ssmax = ssmaxd
-
-		idata=1
-
-		if (icalc*ipara*ioutp*idata.eq.0) then
-			write (*,*) 'ERROR: data not read correctly!'
-			stop
-		endif
 
 		return
 	

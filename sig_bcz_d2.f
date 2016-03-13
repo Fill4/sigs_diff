@@ -51,7 +51,7 @@
 !--- Initializing all quantities, read in frequencies and output files -
 	call deffreq (afile)
 	call init (afile) ! also calculates 2nd differences
-	write(*,*) ' '
+	write(*,*) ' '	
 
 	call openfiles (afile)
 	call flush (6)
@@ -71,7 +71,6 @@
 !	call fit_d2(res)
     call fit_d2_genetic(res)
 !--- plot results -
-
     
 !	call linspace(dble(w_d2(1)), dble(w_d2(nd2)), xx)
 !	do i=1,100

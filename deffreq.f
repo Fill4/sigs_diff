@@ -12,12 +12,7 @@
 		implicit none
 		
 		character(len=80), intent(inout)    :: afile
-		character(len=80)    :: afile0	
-
-		
-
-		w0 = w0ref
-		tau0 = tau0ref
+		character(len=80)    :: afile0
 	
 	
 		if (afile(1:5).eq.'00000') then

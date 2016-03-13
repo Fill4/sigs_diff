@@ -50,7 +50,8 @@
        
     
     !     First, initialize the random-number generator
-    seed=13568
+    !seed=13578
+    seed = TIME()
     call rninit(seed)
     
     !     Set control variables
@@ -215,13 +216,13 @@
         
         ! bcz
         array_out(1) = dble(array_in(1)) * 5.0d-12
-        array_out(2) = dble(array_in(2)) * (4000._dp - 1900._dp) + 1900._dp
+        array_out(2) = dble(array_in(2)) * (3000._dp - 1900._dp) + 1900._dp
         array_out(3) = dble(array_in(3)) * pi
         
         ! heII
         array_out(4) = dble(array_in(4)) * 20.0d-3
         array_out(5) = dble(array_in(5)) * 1.0d8
-        array_out(6) = dble(array_in(6)) * (1800._dp - 500._dp) + 500._dp
+        array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 500._dp
         array_out(7) = dble(array_in(7)) * pi
   
   end subroutine rescale

@@ -24,7 +24,7 @@
 !	 convection zone
 
         use types_and_interfaces, only: dp
-        use commonvar, only: pi, pi_sq
+        use commonvar, only: pi
         use commonarray, only: c, nd2
 
 		implicit none
@@ -51,12 +51,12 @@
 !	 convection zone
 
         use types_and_interfaces, only: dp
-        use commonvar, only: pi, pi_sq, tau0_houdek, tau0_houdek_sq, nu0
+        use commonvar, only: pi
         use commonarray, only: c, nd2
 
 		implicit none
 	
-		real(dp), intent(in)  :: nu_d2
+		real(dp), intent(in)  :: nu_d2	
 		real(dp) :: xarg
         
 		! BCZ signal

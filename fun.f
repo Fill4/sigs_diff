@@ -3,8 +3,8 @@
 !	 this is the function to be fitted. Expression from Mazumdar 2012 (M12)
 
         use types_and_interfaces, only: dp
-        use commonvar, only: pi, pi_sq, tau0_houdek, tau0_houdek_sq, nu0, w0
-        use commonarray, only: c, polyc
+        use commonvar
+        use commonarray
 
 		implicit none
 	

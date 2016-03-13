@@ -4,9 +4,9 @@
    subroutine second_diff
    
     use types_and_interfaces
-    use commonvar, only: w0, write_final
-    use commonarray, only: npt, w, sig, n, l, l_d2, d2, w_d2, sigd2, nd2, icov, &
-                           nd2_l0, nd2_l1, nd2_l2, nd2_l3
+    use commonvar
+    use commonarray
+
     use lib_assert
     
     implicit none

@@ -49,10 +49,10 @@
 
         
         ! output to "res" file -
-        nfile = length(frequency_file)
+        !nfile = length(frequency_file)
         if (intype.eq.0) then
             write (9,9003) &
-               frequency_file(nfile-20:nfile), tauBCZ, c(3), a_bcz, tauHe, c(7), a_he, beta
+               frequency_file, tauBCZ, c(3), a_bcz, tauHe, c(7), a_he, beta
      9003   format (x, a24, 7f10.4)
         endif
         close(9)
