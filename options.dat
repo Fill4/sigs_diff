@@ -1,10 +1,6 @@
 &sig_bcz_controls
-	xinitd = 1.00E-07
-
-	ftold = 0.10E-06
-
-	iterinitd = 3
-	iterfitd = 3
+	pikaia_popd = -1			!Initial population of pikaia (Number of initial guesses)
+	pikaia_gend = -1			!Number of generations evolved to determine the parameters
 
 	w0refd = 2100.0
 

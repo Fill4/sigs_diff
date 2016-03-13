@@ -56,8 +56,8 @@
 	
 	!     Set control variables
 	ctrl(1:12) = -1
-	ctrl(1) = 120
-	ctrl(2) = iterfit
+	ctrl(1) = pikaia_pop
+	ctrl(2) = pikaia_gen
 	ctrl(5) = 5 ! one-point+creep, adjustable rate based on fitness
 	!ctrl(12) = 2
 	outfile = 'evolution_par_ga.dat'

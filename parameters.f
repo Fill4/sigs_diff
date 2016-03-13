@@ -13,8 +13,7 @@
 		character(len=80), intent(in)  :: filename
 
 		! sig_bcz_controls
-		namelist / sig_bcz_controls / xinitd, ftold,&
-			iterinitd,iterfitd,&
+		namelist / sig_bcz_controls / pikaia_popd,pikaia_gend,&
 			w0refd,&
 			vrightd,vleftd,&
 			nlmind,&
@@ -22,10 +21,8 @@
 			ssmaxd,&
 			lmind,lmaxd
 		
-		! smoothing and fitting control parameters -
-		real    :: xinitd, ftold
-		! fitting procedure -
-		integer :: iterinitd,iterfitd
+		! Variables to control pikaia execution
+		integer :: pikaia_gend, pikaia_popd
 		! reference values -
 		real    :: w0refd
 		! borders to ignore in frequency (right and left) -
@@ -62,16 +59,9 @@
 
 		pi = 4.0_dp*atan(1.0_dp)
 		fac = 2.0d-6*pi
-
-		xinit = xinitd
-		ftol = ftold
-		tolfit = tolfitd
 		
-		dc = 	dcd
-		iterinit = iterinitd
-		iterfit = iterfitd
-		
-		nu0 = nu0d * 1.0d-6 ! convert from muHz (input) to Hz
+		pikaia_pop = pikaia_popd
+		pikaia_gen = pikaia_gend	
 		
 		w0ref = w0refd
 		

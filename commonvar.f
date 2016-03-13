@@ -16,15 +16,12 @@ module commonvar
 	integer, public      :: lmin, lmax, nlmin	! lmin - min degree l to consider
 												! lmax - max degree l to consider
 												! nlmin - min # of l points
-	integer, public      :: iterinit, iterfit, iterIRLS
-	integer, public      :: itermod
+	integer, public      :: pikaia_pop, pikaia_gen, iterIRLS
 	integer, public      :: isel
 	integer, public      :: nleft,nright
 	
 	real(dp), public     :: fac, pi
 	
-	real, public         :: xinit
-	real, public         :: ftol
 	real, public         :: vleft,vright
 	real, public         :: ssmax				! max error allowed in frequencies
 	real, public         :: w0ref
