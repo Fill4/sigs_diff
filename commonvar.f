@@ -16,6 +16,7 @@ module commonvar
 	integer, public      :: lmin, lmax, nlmin	! lmin - min degree l to consider
 												! lmax - max degree l to consider
 												! nlmin - min # of l points
+												
 	integer, public      :: pikaia_pop, pikaia_gen, iterIRLS
 	integer, public      :: isel
 	integer, public      :: nleft,nright
