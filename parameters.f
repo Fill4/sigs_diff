@@ -1,89 +1,88 @@
 !****************************************************************************
-! Joao Faria: Jan 2013
+! Joao Faria: Jan 2013		|		Revised:Filipe Pereira - Mar 2016
 !****************************************************************************
-	subroutine parameters(filename)
+subroutine parameters(options_file)
 !	The input data necessary to fit the signal is read here
 
-		use commonvar
-		
-		implicit double precision (b-h,o-z)
-		implicit integer (i-n)
-		
-		character (len=6)   :: aline
-		character(len=80), intent(in)  :: filename
-
-		! sig_bcz_controls
-		namelist / sig_bcz_controls / pikaia_popd,pikaia_gend,&
-			w0refd,&
-			vrightd,vleftd,&
-			nlmind,&
-			use_error_chi2d, &
-			ssmaxd,&
-			lmind,lmaxd
-		
-		! Variables to control pikaia execution
-		integer :: pikaia_gend, pikaia_popd
-		! reference values -
-		real    :: w0refd
-		! borders to ignore in frequency (right and left) -
-		real     :: vrightd,vleftd
-		! minimum number of modes with same degree -
-		integer  :: nlmind
-		! wether it should use the errors or not -
-		logical  :: use_error_chi2d
-		! upper limit for error -
-		real     :: ssmaxd
-		! range in degree -
-		integer  :: lmind,lmaxd
-
-		!--- Read from namelist input file -
-		integer                        :: ierr = 1
-		integer                        :: unit1 = 8
-		character (len=256)            :: message
-		integer :: unit
-		
-		! initialize controls to default values -
-		include "options_default.dat"
-		
-		!write (6,*) ' '
-		write (6,*) " Reading input parameters from file: ", filename
-		! open the file -
-		open(unit=unit1, file=filename, &
-					  action='read', delim='quote', &
-					  iostat=ierr)
-		! read input -
-		read(unit1, nml=sig_bcz_controls, iostat=ierr, iomsg=message)
-		close (unit1)
-			if (ierr /= 0) write(*,*) " --> failed in ", trim(filename), &
-					  " with error code ", ierr, '/', message		
-
-		pi = 4.0_dp*atan(1.0_dp)
-		fac = 2.0d-6*pi
-		
-		pikaia_pop = pikaia_popd
-		pikaia_gen = pikaia_gend	
-		
-		w0ref = w0refd
-		
-		lmin = lmind
-		lmax = lmaxd
-		nlmin = nlmind
-		isel = 0
-
-		if (isel.eq.0) then
-		vleft = vleftd
-		vright = vrightd
-		else if (isel.eq.1) then
-		nleft = vleftd !! fix
-		nright = vrightd !! fix
-		else 
-		write(*,*) "ERROR: ISEL must be 0 or 1!"
-
-		endif
-
-		use_error_chi2 = use_error_chi2d
-		ssmax = ssmaxd
-
-		return
+	use commonvar
 	
-	end subroutine parameters
+	implicit none
+	
+	character(len=80), intent(in)  :: options_file
+
+	!Defining namelist sig_bcz_controls for easy input of a list of variables
+	namelist / sig_bcz_controls / pikaia_popd,pikaia_gend,&
+								w0refd,&
+								vrightd,vleftd,&
+								nlmind,&
+								use_error_chi2d,&
+								ssmaxd,&
+								lmind,lmaxd
+	
+	! Variables to control pikaia execution
+	integer		:: pikaia_popd, pikaia_gend
+	! reference values -
+	real		:: w0refd
+	! borders to ignore in frequency (right and left) -
+	real		:: vrightd,vleftd
+	! minimum number of modes with same degree -
+	integer		:: nlmind
+	! wether it should use the errors or not -
+	logical		:: use_error_chi2d
+	! upper limit for error -
+	real		:: ssmaxd
+	! range in degree -
+	integer		:: lmind,lmaxd
+
+	!--- Read from namelist input file -
+	integer                        :: ierr = 1
+	integer                        :: unit1 = 8
+	character (len=256)            :: message
+	!integer :: unit
+	
+	!Initialize controls to default values
+	include "options_default.dat"
+	
+	write (6,*) " Reading input parameters from file: ", options_file
+	!Open Options File
+	open(unit=unit1, file=options_file, &
+				  action='read', delim='quote', &
+				  iostat=ierr)
+	!Read Options File
+	read(unit1, nml=sig_bcz_controls, iostat=ierr, iomsg=message)
+	close (unit1)
+	if (ierr /= 0) write(*,*) " --> failed in ", trim(options_file), &
+				  " with error code ", ierr, '/', message		
+
+	!Constants
+	pi = 4.0_dp*atan(1.0_dp)
+	fac = 2.0d-6*pi
+	
+	!Attribute input values to all variables
+	pikaia_pop = pikaia_popd
+	pikaia_gen = pikaia_gend	
+	
+	w0ref = w0refd
+	
+	lmin = lmind
+	lmax = lmaxd
+	nlmin = nlmind
+	isel = 0
+
+	if (isel.eq.0) then
+	vleft = vleftd
+	vright = vrightd
+	else if (isel.eq.1) then
+	nleft = vleftd !! fix
+	nright = vrightd !! fix
+	else 
+	write(*,*) "ERROR: ISEL must be 0 or 1!"
+
+	endif
+
+	use_error_chi2 = use_error_chi2d
+	ssmax = ssmaxd
+
+	return
+
+end subroutine parameters

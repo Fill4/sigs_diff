@@ -18,7 +18,7 @@
 	
 	character (len=80)   :: afile
 	character (len=1)    :: amess
-	character (len=80)   :: parameter_file
+	character (len=80)   :: options_file
 	
 	integer :: i, argcount
 
@@ -35,10 +35,10 @@
 !--- process command line argument
 	argcount = iargc()
 	if (argcount /= 1) then
-		write(*,'(a,x,/)') "ERROR! usage: sig_bcz_d2 parameter_file"
+		write(*,'(a,x,/)') "ERROR! usage: sig_bcz_d2 options_file"
 		stop
 	endif
-	call getarg(1, parameter_file)
+	call getarg(1, options_file)
 	
 !--- Number of parameters to fit -
 	nconst=7
@@ -46,12 +46,15 @@
 	allocate(polyc(3))
 	
 !--- Read file with input parameters -
-	call parameters (parameter_file)
-	
+	call parameters(options_file)
+
 !--- Initializing all quantities, read in frequencies and output files -
 	call deffreq (afile)
 	call init (afile) ! also calculates 2nd differences
 	write(*,*) ' '	
+
+	! Adding stop to test if second differences are being calculated correctly
+	!stop
 
 	call openfiles (afile)
 	call flush (6)
