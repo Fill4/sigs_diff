@@ -41,14 +41,13 @@
 !    polyc(1) = mean(d2(1:nd2))
 	! or, in a more robust way, consider instead the median 
 	polyc(1) = median(d2(1:nd2))
-	
+
 	write(*,*) 'Polynomial fit: '
 	write(*,'(16x, es10.2)') polyc(1)
 !        write(*,'(16x, es10.2, a)') polyc(2), ' x^-1'
 !        write(*,'(16x, es10.2, a)') polyc(3), ' x^-2'
 !        write(*,'(16x, es10.2, a)') polyc(4), ' x^-3'
-	   
-	
+
 	!     First, initialize the random-number generator
 	!seed=13578
 	seed = TIME()
@@ -65,9 +64,9 @@
 	!     Now call pikaia
 	!CALL pikaia(objfun_ga, nconst, ctrl, x, f, status, outfile)
 	
-	do iterIRLS=1,15
+	do iterIRLS=1,4
 		CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
-		write(*,*) weight(1:nd2)*1.0d-12
+		write(*,*) weight(1:nd2)
 		write(*,*)
 		call rescale(x, c)
 		WRITE(*,*) '      x: ', c
@@ -91,8 +90,8 @@
 
 	
 	! create array with smooth function		
-	min_xx = minval(w_d2(1:nd2))*1.0d6 !- 2.0d-4
-	max_xx = maxval(w_d2(1:nd2))*1.0d6 !+ 2.0d-4
+	min_xx = minval(w_d2(1:nd2)) !- 2.0d-4
+	max_xx = maxval(w_d2(1:nd2)) !+ 2.0d-4
 	call linspace(min_xx, max_xx, xx)
 	!result_fun = fun(w_d2)
 	result_fun = fun(xx)
@@ -100,6 +99,10 @@
 	result_he = he_comp(xx)
 	result_bcz = bcz_comp(xx)
 
+	print *,fun(xx)
+
+	call plot(w_d2(1:nd2), d2(1:nd2), &
+	xx, result_fun, ' 5.00-', color1='black', color2='red')
 
 	!call plot(xx*1.0d6,result_he*1.0d6, &
 	!		  xx*1.0d6,result_bcz*1.0d6, &
@@ -123,9 +126,7 @@
 	!		  errors=sigd2(1:nd2)*1.0d6)
 	!		  terminal='png')
 	!		  yrange=(/-3.0d0,3.0d0/) ) 
-	
-	call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, &
-	xx*w0ref, result_fun*w0ref, ' 5.00-', color1='black')
+
 
 !!  call hist( abs((d2(1:nd2)-fun(w_d2(1:nd2)))/sigd2(1:nd2)), 15, &
 !!               color='#779944',pause=-1.0)
@@ -220,14 +221,14 @@
 
 		
 		! bcz
-		array_out(1) = dble(array_in(1)) * 5.0d-12
+		array_out(1) = dble(array_in(1)) * 2*1.0d-6
 		array_out(2) = dble(array_in(2)) * (3000._dp - 1900._dp) + 1900._dp
 		array_out(3) = dble(array_in(3)) * pi
 		
 		! heII
-		array_out(4) = dble(array_in(4)) * 20.0d-3
-		array_out(5) = dble(array_in(5)) * 1.0d8
-		array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 500._dp
+		array_out(4) = dble(array_in(4)) * 2*1.0d-6
+		array_out(5) = dble(array_in(5)) * 300*1.0d-6
+		array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 600._dp
 		array_out(7) = dble(array_in(7)) * pi
   
   end subroutine rescale

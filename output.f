@@ -22,11 +22,16 @@ subroutine output (frequency_file, resd)
 		
 		write(*,*) w0ref, fac
 		
-		a_bcz = c(1)*1.0d18 / (w0ref)**2  
-		a_he = c(4) * w0ref * exp(-c(5)*(w0ref*1.0d-6)**2)
-		beta = c(5) * (w0ref*fac)**2  
+		!a_bcz = c(1)*1.0d18 / (w0ref)**2  
+		!a_he = c(4) * w0ref * exp(-c(5)*(w0ref*1.0d-6)**2)
+		!beta = c(5) * (w0ref*fac)**2 
 		
-		a = tauHe / (sqrt(2.0_dp*pi)*w0ref*c(6))
+		a_bcz = c(1)
+		a_he = c(4)
+		beta = c(5)
+
+		!a = tauHe / (sqrt(2.0_dp*pi)*w0ref*c(6))
+		a = 0101010
 		
 		
 		write (6,*) "  Frequencies from file: ", frequency_file
