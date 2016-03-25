@@ -28,22 +28,29 @@
 	character(len=80) :: outfile, filename
 	
 	
-	real(dp), dimension(150) :: xx, result_fun, result_smooth, result_he, result_bcz
-	real(dp)                :: min_xx, max_xx 
+	real(dp), dimension(150) :: xx, result_fun, result_smooth, result_he, result_bcz, smooth, final
+	real(dp)                :: min_xx, max_xx, diff
 
 		
 	!     The polynomial fit is done before the signal fit 
 	! if fitting a higher degree polynomial, uncomment following two lines
-!    degree = 2
-!    call polyreg(1.0_dp/w_d2(1:nd2), d2(1:nd2), degree, polyc)
+    degree = 2
+    call polyreg(1.0_dp/w_d2(1:nd2), d2(1:nd2), degree, polyc)
 	
+	do i=1,nd2
+		diff = polyc(1) + polyc(2)/w_d2(i) + polyc(3)/(w_d2(i)**2)
+		final(i) = d2(i) - diff
+	end do
+
 	! if just fitting a constant we can calculate the mean
 !    polyc(1) = mean(d2(1:nd2))
 	! or, in a more robust way, consider instead the median 
-	polyc(1) = median(d2(1:nd2))
+	!polyc(1) = median(d2(1:nd2))
 
-	write(*,*) 'Polynomial fit: '
-	write(*,'(16x, es10.2)') polyc(1)
+
+! Here is the print for the polynomial expression calculated previously
+!	write(*,*) 'Polynomial fit: '
+!	write(*,'(16x, es10.2)') polyc(1)*1.0d6
 !        write(*,'(16x, es10.2, a)') polyc(2), ' x^-1'
 !        write(*,'(16x, es10.2, a)') polyc(3), ' x^-2'
 !        write(*,'(16x, es10.2, a)') polyc(4), ' x^-3'
@@ -62,20 +69,20 @@
 	outfile = 'evolution_par_ga.dat'
 	
 	!     Now call pikaia
-	!CALL pikaia(objfun_ga, nconst, ctrl, x, f, status, outfile)
+	CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)!, outfile)
 	
-	do iterIRLS=1,4
-		CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
-		write(*,*) weight(1:nd2)
-		write(*,*)
-		call rescale(x, c)
-		WRITE(*,*) '      x: ', c
-		WRITE(*,*) '  chi^2: ', 1./f
-		write(*,*) all(abs(c0-c) < 0.2_dp * c)
-		if (all(abs(c0(1:2)-c(1:2)) < 0.2_dp * c(1:2)) .and. all(abs(c0(4:6)-c(4:6)) < 0.2_dp * c(4:6))) exit
+	!do iterIRLS=1,4
+	!	CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
+		!write(*,*) weight(1:nd2)
+		!write(*,*)
+	!	call rescale(x, c)
+		!WRITE(*,*) '      x: ', c
+		!WRITE(*,*) '  chi^2: ', 1./f
+		!write(*,*) all(abs(c0-c) < 0.2_dp * c)
+	!	if (all(abs(c0(1:2)-c(1:2)) < 0.2_dp * c(1:2)) .and. all(abs(c0(4:6)-c(4:6)) < 0.2_dp * c(4:6))) exit
 		c0 = c
-		write(*,*)
-	end do
+		!write(*,*)
+	!end do
 		
 	! rescaling parameters
 	call rescale(x, c)
@@ -99,10 +106,13 @@
 	result_he = he_comp(xx)
 	result_bcz = bcz_comp(xx)
 
-	print *,fun(xx)
+	smooth = polyc(1) + polyc(2)/xx + polyc(3)/(xx**2)
 
-	call plot(w_d2(1:nd2), d2(1:nd2), &
-	xx, result_fun, ' 5.00-', color1='black', color2='red')
+    call plot(w_d2(1:nd2)*1.0d6, final(1:nd2)*1.0d6, &
+	xx*1.0d6, smooth*1.0d6, ' 5.00-', color1='black', color2='red')
+
+	!call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
+	!xx*1.0d6, result_fun*1.0d6, ' 5.00-', color1='black', color2='red')
 
 	!call plot(xx*1.0d6,result_he*1.0d6, &
 	!		  xx*1.0d6,result_bcz*1.0d6, &
@@ -222,13 +232,13 @@
 		
 		! bcz
 		array_out(1) = dble(array_in(1)) * 2*1.0d-6
-		array_out(2) = dble(array_in(2)) * (3000._dp - 1900._dp) + 1900._dp
+		array_out(2) = dble(array_in(2)) * (3000._dp*1.0d-6 - 1900._dp*1.0d-6) + 1900._dp*1.0d-6
 		array_out(3) = dble(array_in(3)) * pi
 		
 		! heII
 		array_out(4) = dble(array_in(4)) * 2*1.0d-6
 		array_out(5) = dble(array_in(5)) * 300*1.0d-6
-		array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 600._dp
+		array_out(6) = dble(array_in(6)) * (1200._dp*1.0d-6 - 600._dp*1.0d-6) + 600._dp*1.0d-6
 		array_out(7) = dble(array_in(7)) * pi
   
   end subroutine rescale

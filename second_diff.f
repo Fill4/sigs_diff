@@ -23,8 +23,8 @@ subroutine second_diff
 	nd2_l2 = 0
 	nd2_l3 = 0
 	
-	ww = w*w0ref  		! convert frequencies to Hz
-	sigw = sig 		! and errors too
+	ww = w*w0ref*1.0d-6		! convert frequencies to Hz
+	sigw = sig*1.0d-6 		! and errors too
 
 	! If frequencies and from sequential n's and are from the same l mode then calculate de 2nd difference
 	do i=2,n
@@ -60,7 +60,7 @@ subroutine second_diff
 	! Write second differences to file
 	open(unit=33, file='d2.data', action='write')
 	write(33,*) "#  nu (muHz)", "d2 (muHz)", "err_d2 (muHz)"
-	write(33,'(f18.8, f18.8, f18.8)') (w_d2(i), d2(i), sigd2(i), i=1,nd2)
+	write(33,'(f18.8, f18.8, f18.8)') (w_d2(i)*1.0d6, d2(i)*1.0d6, sigd2(i)*1.0d6, i=1,nd2)
 	close(33)
 	
 
