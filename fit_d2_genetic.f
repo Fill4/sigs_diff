@@ -29,7 +29,7 @@
 	
 	
 	real(dp), dimension(150) :: xx, result_fun, result_smooth, result_he, result_bcz, smooth, final
-	real(dp)                :: min_xx, max_xx, diff
+	real(dp)                :: min_xx, max_xx, diff, test
 
 		
 	!     The polynomial fit is done before the signal fit 
@@ -39,7 +39,7 @@
 	
 	do i=1,nd2
 		diff = polyc(1) + polyc(2)/w_d2(i) + polyc(3)/(w_d2(i)**2)
-		final(i) = d2(i) - diff
+		d2(i) = d2(i) - diff
 	end do
 
 	! if just fitting a constant we can calculate the mean
@@ -69,33 +69,38 @@
 	outfile = 'evolution_par_ga.dat'
 	
 	!     Now call pikaia
-	CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)!, outfile)
+	!CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)!, outfile)
 	
-	!do iterIRLS=1,4
-	!	CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
+	do iterIRLS=1,4
+		CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
 		!write(*,*) weight(1:nd2)
 		!write(*,*)
-	!	call rescale(x, c)
-		!WRITE(*,*) '      x: ', c
+		call rescale(x, c)
+		WRITE(*,*) '      x: ', c
 		!WRITE(*,*) '  chi^2: ', 1./f
 		!write(*,*) all(abs(c0-c) < 0.2_dp * c)
-	!	if (all(abs(c0(1:2)-c(1:2)) < 0.2_dp * c(1:2)) .and. all(abs(c0(4:6)-c(4:6)) < 0.2_dp * c(4:6))) exit
+		if (all(abs(c0(1:2)-c(1:2)) < 0.2_dp * c(1:2)) .and. all(abs(c0(4:6)-c(4:6)) < 0.2_dp * c(4:6))) exit
 		c0 = c
-		!write(*,*)
-	!end do
+		write(*,*)
+	end do
 		
 	! rescaling parameters
 	call rescale(x, c)
 	
 	! residuals of best parameters
-	chi2 = 1.0/objfun_ga(nconst, x)
+	chi2 = 1.0/f
 	
 !    !     Print the results
 !    WRITE(*,*) ' status: ', STATUS
 !    WRITE(*,*) '      x: ', c
 !    WRITE(*,*) '  chi^2: ', 1./f
 
-	
+!	c(1) = 1.5
+!	c(4) = 0.7
+!	c(2) = 2273
+!	c(6) = 707
+!	c(5) = 200
+
 	! create array with smooth function		
 	min_xx = minval(w_d2(1:nd2)) !- 2.0d-4
 	max_xx = maxval(w_d2(1:nd2)) !+ 2.0d-4
@@ -106,13 +111,15 @@
 	result_he = he_comp(xx)
 	result_bcz = bcz_comp(xx)
 
+	print *, result_fun
+
 	smooth = polyc(1) + polyc(2)/xx + polyc(3)/(xx**2)
 
-    call plot(w_d2(1:nd2)*1.0d6, final(1:nd2)*1.0d6, &
-	xx*1.0d6, smooth*1.0d6, ' 5.00-', color1='black', color2='red')
+!    call plot(w_d2(1:nd2), d2(1:nd2), &
+!	xx, smooth, ' 5.00-', color1='black', color2='red')
 
-	!call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
-	!xx*1.0d6, result_fun*1.0d6, ' 5.00-', color1='black', color2='red')
+	call plot(w_d2(1:nd2), d2(1:nd2), &
+	xx, result_fun, ' 5.00-', color1='black', color2='red')
 
 	!call plot(xx*1.0d6,result_he*1.0d6, &
 	!		  xx*1.0d6,result_bcz*1.0d6, &
@@ -231,14 +238,16 @@
 
 		
 		! bcz
-		array_out(1) = dble(array_in(1)) * 2*1.0d-6
-		array_out(2) = dble(array_in(2)) * (3000._dp*1.0d-6 - 1900._dp*1.0d-6) + 1900._dp*1.0d-6
+		array_out(1) = dble(array_in(1)) * 1._dp
+		!array_out(2) = dble(array_in(2)) * (3000._dp - 1900._dp) + 1900._dp
+		array_out(2) = dble(array_in(2)) * 3000._dp
 		array_out(3) = dble(array_in(3)) * pi
 		
 		! heII
-		array_out(4) = dble(array_in(4)) * 2*1.0d-6
-		array_out(5) = dble(array_in(5)) * 300*1.0d-6
-		array_out(6) = dble(array_in(6)) * (1200._dp*1.0d-6 - 600._dp*1.0d-6) + 600._dp*1.0d-6
+		array_out(4) = dble(array_in(4)) * 1._dp
+		array_out(5) = dble(array_in(5)) * 300._dp
+		!array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 600._dp
+		array_out(6) = dble(array_in(6)) * 1200._dp
 		array_out(7) = dble(array_in(7)) * pi
   
   end subroutine rescale

@@ -17,17 +17,15 @@ subroutine output (frequency_file, resd)
 		integer     :: nfile
 
 
-		tauBCZ = c(2)*1.0d6
-		tauHe = c(6)*1.0d6
-		
-		write(*,*) w0ref, fac
+		tauBCZ = c(2)
+		tauHe = c(6)
 		
 		!a_bcz = c(1)*1.0d18 / (w0ref)**2  
 		!a_he = c(4) * w0ref * exp(-c(5)*(w0ref*1.0d-6)**2)
 		!beta = c(5) * (w0ref*fac)**2 
 		
-		a_bcz = c(1)*1.0d6
-		a_he = c(4)*1.0d6
+		a_bcz = c(1)
+		a_he = c(4)
 		beta = c(5)
 
 		!a = tauHe / (sqrt(2.0_dp*pi)*w0ref*c(6))
