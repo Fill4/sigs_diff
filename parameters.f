@@ -41,7 +41,7 @@ subroutine parameters(options_file)
 	!integer :: unit
 	
 	!Initialize controls to default values
-	include "options_default.dat"
+	include "options_default"
 	
 	write (6,*) " Reading input parameters from file: ", options_file
 	!Open Options File

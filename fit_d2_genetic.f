@@ -1,5 +1,5 @@
 !--------------------------------------------------------------------
-  subroutine fit_d2_genetic (chi2)
+subroutine fit_d2_genetic (chi2)
 !	 this subroutine iterates until the relative variation of the residuals is 
 !    smaller than TOLFIT. The final value of the parameters is in C and the 
 !    residuals are returned in chi2
@@ -28,25 +28,25 @@
 	character(len=80) :: outfile, filename
 	
 	
-	real(dp), dimension(150) :: xx, result_fun, result_smooth, result_he, result_bcz, smooth, final
-	real(dp)                :: min_xx, max_xx, diff, test
+	real(dp), dimension(150) :: xx, result_fun, result_smooth, result_he, result_bcz, smooth, final, pred2
+	real(dp)                :: min_xx, max_xx, diff, a, b, d
 
-		
+
 	!     The polynomial fit is done before the signal fit 
 	! if fitting a higher degree polynomial, uncomment following two lines
     degree = 2
     call polyreg(1.0_dp/w_d2(1:nd2), d2(1:nd2), degree, polyc)
-	
-	do i=1,nd2
-		diff = polyc(1) + polyc(2)/w_d2(i) + polyc(3)/(w_d2(i)**2)
-		d2(i) = d2(i) - diff
-	end do
 
 	! if just fitting a constant we can calculate the mean
 !    polyc(1) = mean(d2(1:nd2))
 	! or, in a more robust way, consider instead the median 
 	!polyc(1) = median(d2(1:nd2))
 
+	do i=1,nd2
+		diff = polyc(1) + polyc(2)/w_d2(i) + polyc(3)/(w_d2(i)**2) + polyc(4)/(w_d2(i)**3)
+		pred2(i) = d2(i)
+		d2(i) = d2(i) - diff
+	end do
 
 ! Here is the print for the polynomial expression calculated previously
 !	write(*,*) 'Polynomial fit: '
@@ -76,7 +76,7 @@
 		!write(*,*) weight(1:nd2)
 		!write(*,*)
 		call rescale(x, c)
-		WRITE(*,*) '      x: ', c
+		!WRITE(*,*) '      c: ', c
 		!WRITE(*,*) '  chi^2: ', 1./f
 		!write(*,*) all(abs(c0-c) < 0.2_dp * c)
 		if (all(abs(c0(1:2)-c(1:2)) < 0.2_dp * c(1:2)) .and. all(abs(c0(4:6)-c(4:6)) < 0.2_dp * c(4:6))) exit
@@ -89,21 +89,10 @@
 	
 	! residuals of best parameters
 	chi2 = 1.0/f
-	
-!    !     Print the results
-!    WRITE(*,*) ' status: ', STATUS
-!    WRITE(*,*) '      x: ', c
-!    WRITE(*,*) '  chi^2: ', 1./f
-
-!	c(1) = 1.5
-!	c(4) = 0.7
-!	c(2) = 2273
-!	c(6) = 707
-!	c(5) = 200
 
 	! create array with smooth function		
-	min_xx = minval(w_d2(1:nd2)) !- 2.0d-4
-	max_xx = maxval(w_d2(1:nd2)) !+ 2.0d-4
+	min_xx = minval(w_d2(1:nd2))
+	max_xx = maxval(w_d2(1:nd2))
 	call linspace(min_xx, max_xx, xx)
 	!result_fun = fun(w_d2)
 	result_fun = fun(xx)
@@ -111,15 +100,18 @@
 	result_he = he_comp(xx)
 	result_bcz = bcz_comp(xx)
 
-	print *, result_fun
+	smooth = polyc(1) + polyc(2)/xx + polyc(3)/(xx**2)! + polyc(4)/(xx**3)
 
-	smooth = polyc(1) + polyc(2)/xx + polyc(3)/(xx**2)
+    ! Plot second differences and smooth function removed from them
+    !call plot(w_d2(1:nd2)*w0ref, pred2(1:nd2)*w0ref, &
+	!xx*w0ref, smooth*w0ref, ' 5.00-', color1='black', color2='red')
 
-!    call plot(w_d2(1:nd2), d2(1:nd2), &
-!	xx, smooth, ' 5.00-', color1='black', color2='red')
-
-	call plot(w_d2(1:nd2), d2(1:nd2), &
-	xx, result_fun, ' 5.00-', color1='black', color2='red')
+    ! Plot second differences alone
+	!call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, ' 5.', color1='black')
+	
+	! Plot the fit of fun to the second differences
+	call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, &
+	xx*w0ref, result_fun*w0ref, ' 5.00-', color1='black', color2='red', errors=sigd2(1:nd2))
 
 	!call plot(xx*1.0d6,result_he*1.0d6, &
 	!		  xx*1.0d6,result_bcz*1.0d6, &
@@ -135,14 +127,7 @@
 	!		  ' 5.00-10-',color3='green',color2='black',color1='red')!, &
 	!		  errors=sigd2(1:nd2)*1.0d6)
 	!		  terminal='png')
-	!		  yrange=(/-3.0d0,3.0d0/) )
-			  
-	!call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
-	!		  xx*1.0d6, result_fun*1.0d6, &
-	!		  ' 5.00-',color2='black',color1='red', &
-	!		  errors=sigd2(1:nd2)*1.0d6)
-	!		  terminal='png')
-	!		  yrange=(/-3.0d0,3.0d0/) ) 
+	!		  yrange=(/-3.0d0,3.0d0/) 
 
 
 !!  call hist( abs((d2(1:nd2)-fun(w_d2(1:nd2)))/sigd2(1:nd2)), 15, &
@@ -171,10 +156,10 @@
 
 	return
 		
-  end subroutine fit_d2_genetic
+end subroutine fit_d2_genetic
   
   
-  function objfun_ga(n, p) result(fun_val)
+function objfun_ga(n, p) result(fun_val)
 ! This function calculates the objective function value, i.e. the chi^2.
 ! The signal is calculated in FUN for the current values of the parameters p, 
 ! and subtracted from the second differences
@@ -221,10 +206,10 @@
 		
 		return
 		
-  end function objfun_ga
+end function objfun_ga
   
   
-  subroutine rescale(array_in, array_out)
+subroutine rescale(array_in, array_out)
 ! Rescales the parameters that come out of pikaia ARRAY_IN to their physical
 ! values ARRAY_OUT
 		
@@ -238,17 +223,17 @@
 
 		
 		! bcz
-		array_out(1) = dble(array_in(1)) * 1._dp
-		!array_out(2) = dble(array_in(2)) * (3000._dp - 1900._dp) + 1900._dp
-		array_out(2) = dble(array_in(2)) * 3000._dp
+		array_out(1) = dble(array_in(1)) * 8._dp
+		array_out(2) = dble(array_in(2)) * (3000._dp - 1900._dp) + 1900._dp
+		!array_out(2) = dble(array_in(2)) * 3000._dp
 		array_out(3) = dble(array_in(3)) * pi
 		
 		! heII
-		array_out(4) = dble(array_in(4)) * 1._dp
-		array_out(5) = dble(array_in(5)) * 300._dp
-		!array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 600._dp
-		array_out(6) = dble(array_in(6)) * 1200._dp
+		array_out(4) = dble(array_in(4)) * 8._dp
+		array_out(5) = dble(array_in(5)) * 200
+		array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 600._dp
+		!array_out(6) = dble(array_in(6)) * 1200._dp
 		array_out(7) = dble(array_in(7)) * pi
   
-  end subroutine rescale
+end subroutine rescale
   

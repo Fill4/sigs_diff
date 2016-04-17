@@ -21,8 +21,6 @@ subroutine sig_bcz_d2
 	character (len=1)    :: amess
 	character (len=80)   :: options_file
 
-	integer :: i, argcount
-
 	real                     :: varlim, var
 	real(dp)                 :: res
 	real(dp), dimension(3)   :: coeff 
@@ -34,20 +32,21 @@ subroutine sig_bcz_d2
 
 	!+++++++++++++++++++++++++++++++++++++++++++
 	!--- process command line argument
-	argcount = iargc()
-	if (argcount /= 1) then
-		write(*,'(a,x,/)') "ERROR! usage: sig_bcz_d2 options_file"
-		stop
-	endif
-	call getarg(1, options_file)
+	!argcount = iargc()
+	!if (argcount /= 1) then
+	!	write(*,'(a,x,/)') "ERROR! usage: sig_bcz_d2 options_file"
+	!	stop
+	!endif
+	!call getarg(1, options_file)
 
 	!--- Number of parameters to fit -
-	nconst=7
+ 1	nconst=7
 	allocate(c(nconst))
-	allocate(polyc(3))
+	options_file = 'options_file'
+	allocate(polyc(4))
 
 	!--- Read file with input parameters -
-	call parameters(options_file)
+ 	call parameters(options_file)
 
 	!--- Initializing all quantities, read in frequencies and output files -
 	call deffreq (afile)
@@ -93,5 +92,8 @@ subroutine sig_bcz_d2
 	write (6,*)"---------------------> PROGRAM SIG_BCZ_D2 <---------------------"
 	call flush (6)
 	deallocate(c)
+	deallocate(polyc)
+
+	goto 1
 
 end subroutine sig_bcz_d2

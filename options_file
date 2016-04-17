@@ -2,7 +2,7 @@
 	pikaia_popd = -1			!Initial population of pikaia (Number of initial guesses)
 	pikaia_gend = -1			!Number of generations evolved to determine the parameters
 
-	w0refd = 2100.0
+	w0refd = 2000.0
 
 	vrightd = 0.0
 	vleftd = 0.0
@@ -16,4 +16,5 @@
 	lmind = 0
 	lmaxd = 3
 /
+
 !Line added otherwise the code will report a error in the read

@@ -34,7 +34,7 @@ subroutine init (afile)
 		if (ss.gt.ssmax) goto 10
 	endif
 
-	if (nn.lt.0) goto 10
+	if (nn.lt.6) goto 10
 	if (ll.gt.lmax.or.ll.lt.lmin) goto 10
 	if (isel.eq.1) then
 		if (nn.lt.nleft) goto 10

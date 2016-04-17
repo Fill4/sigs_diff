@@ -24,8 +24,8 @@ subroutine output (frequency_file, resd)
 		!a_he = c(4) * w0ref * exp(-c(5)*(w0ref*1.0d-6)**2)
 		!beta = c(5) * (w0ref*fac)**2 
 		
-		a_bcz = c(1)
-		a_he = c(4)
+		a_bcz = c(1)*w0ref
+		a_he = c(4)*w0ref
 		beta = c(5)
 
 		!a = tauHe / (sqrt(2.0_dp*pi)*w0ref*c(6))
@@ -39,16 +39,14 @@ subroutine output (frequency_file, resd)
 						   'phi_bcz = ', c(3), 'A_bcz = ', a_bcz, &
 						   'tau_He = ', tauHe, &
 						   'phi_he = ', c(7), 'A_he = ', a_he, beta, &
-						   'A_II / sqrt(2pi)*nu0*Delta_II = ', a, &
 						   'chi2 = ', resd, 'chi2norm = ', resd/(n-nconst)
 						   
 1010	format (3x, a, //, &
 				6x, a, f9.4, //, &
-				6x, a, f9.2, 6x, a, f10.4, //, &
+				6x, a, f9.2, 6x, a, f10.8, //, &
 				6x, a, f9.4, //, &
-				6x, a, f9.2, 6x, a, f10.4, 2x, f15.3, //, &
-				6x, a, f15.8, //, &
-				6x, a, f15.10, 5x, a, f15.10, /)
+				6x, a, f9.2, 6x, a, f10.6, 2x, f15.3, //, &
+				6x, a, f15.10, 5x, a, f15.10 /)
 
 		
 

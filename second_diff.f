@@ -23,7 +23,7 @@ subroutine second_diff
 	nd2_l2 = 0
 	nd2_l3 = 0
 	
-	ww = w*w0ref!*1.0d-6		! convert frequencies to Hz
+	ww = w!*1.0d-6		! convert frequencies to Hz
 	sigw = sig!*1.0d-6 		! and errors too
 
 	! If frequencies and from sequential n's and are from the same l mode then calculate de 2nd difference
@@ -39,7 +39,7 @@ subroutine second_diff
 	do i=1,n
 		! Trying new method without transforming units - Filipe
 		!if (d2work(i) /= 0. .and. abs(d2work(i)) < 15.d-6 ) then
-		if (d2work(i) /= 0.) then
+		if (d2work(i) /= 0. .and. abs(d2work(i)) < 10) then
 			d2(j) = d2work(i)   ! in Hz
 			w_d2(j) = ww(i)  ! in Hz
 			sigd2(j) = error(i) ! in Hz
@@ -60,7 +60,7 @@ subroutine second_diff
 	! Write second differences to file
 	open(unit=33, file='d2.data', action='write')
 	write(33,*) "#  nu (muHz)", "d2 (muHz)", "err_d2 (muHz)"
-	write(33,'(f18.8, f18.8, f18.8)') (w_d2(i), d2(i), sigd2(i), i=1,nd2)
+	write(33,'(f18.8, f18.8, f18.8)') (w_d2(i)*w0ref, d2(i)*w0ref, sigd2(i), i=1,nd2)
 	close(33)
 	
 
