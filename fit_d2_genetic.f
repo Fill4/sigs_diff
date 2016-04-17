@@ -164,7 +164,7 @@ function objfun_ga(n, p) result(fun_val)
 ! The signal is calculated in FUN for the current values of the parameters p, 
 ! and subtracted from the second differences
 		use types_and_interfaces, only: dp, fun, rescale
-		use commonvar, only : nconst, pi, iterIRLS
+		use commonvar, only : nconst, pi, iterIRLS, use_error_chi2
 		use commonarray, only : nd2, w_d2, d2, c, l, sigd2, icov, weight
 	
 		implicit none
@@ -183,16 +183,19 @@ function objfun_ga(n, p) result(fun_val)
 
 		ww = w_d2(1:nd2)
 		signal = fun(ww)
-		weight0 = 1.0_dp / sigd2(1:nd2)**2
-		resid = (d2(1:nd2)-signal)**2 * weight0
+		! Define weights for IRLS
+		!weight0 = 1.0_dp / sigd2(1:nd2)**2
+		!if (iterIRLS>1) then
+		!	weight(1:nd2) = Q / ( sigd2(1:nd2)**2 * (resid + Q) )
+		!else 
+		!	weight(1:nd2) = weight0
+		!end if 
 		
-		if (iterIRLS>1) then
-			weight(1:nd2) = Q / ( sigd2(1:nd2)**2 * (resid + Q) )
-		else 
-			weight(1:nd2) = weight0
-		end if 
-		
-		resid = (d2(1:nd2)-signal)**2 * weight(1:nd2)
+		!if (use_error_chi2) then
+		!	resid = (d2(1:nd2)-signal)**2 * weight(1:nd2)
+		!else if (.not. use_error_chi2) then
+			resid = (d2(1:nd2)-signal)**2
+		!end if
 		sr = sum(resid)
 		fun_val = sngl(1.0 / sr)
 		
@@ -224,13 +227,13 @@ subroutine rescale(array_in, array_out)
 		
 		! bcz
 		array_out(1) = dble(array_in(1)) * 8._dp
-		array_out(2) = dble(array_in(2)) * (3000._dp - 1900._dp) + 1900._dp
+		array_out(2) = dble(array_in(2)) * (3500._dp - 1900._dp) + 1900._dp
 		!array_out(2) = dble(array_in(2)) * 3000._dp
 		array_out(3) = dble(array_in(3)) * pi
 		
 		! heII
 		array_out(4) = dble(array_in(4)) * 8._dp
-		array_out(5) = dble(array_in(5)) * 200
+		array_out(5) = dble(array_in(5)) * 500
 		array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 600._dp
 		!array_out(6) = dble(array_in(6)) * 1200._dp
 		array_out(7) = dble(array_in(7)) * pi
