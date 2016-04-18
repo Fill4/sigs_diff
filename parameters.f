@@ -20,28 +20,25 @@ subroutine parameters(options_file)
 								lmind,lmaxd
 	
 	! Variables to control pikaia execution
-	integer		:: pikaia_popd, pikaia_gend
+	integer		:: pikaia_popd = -1, pikaia_gend = -1
 	! reference values -
-	real		:: w0refd
+	real		:: w0refd = 2100.0
 	! borders to ignore in frequency (right and left) -
-	real		:: vrightd,vleftd
+	real		:: vrightd = 0.0, vleftd = 0.0
 	! minimum number of modes with same degree -
-	integer		:: nlmind
+	integer		:: nlmind = 5
 	! wether it should use the errors or not -
-	logical		:: use_error_chi2d
+	logical		:: use_error_chi2d = .FALSE.
 	! upper limit for error -
-	real		:: ssmaxd
+	real		:: ssmaxd = 0.500
 	! range in degree -
-	integer		:: lmind,lmaxd
+	integer		:: lmind = 0,lmaxd = 2
 
 	!--- Read from namelist input file -
 	integer                        :: ierr = 1
 	integer                        :: unit1 = 8
 	character (len=256)            :: message
 	!integer :: unit
-	
-	!Initialize controls to default values
-	include "options_default"
 	
 	write (6,*) " Reading input parameters from file: ", options_file
 	!Open Options File

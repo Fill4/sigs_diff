@@ -1,11 +1,10 @@
 !****************************************************************************
-! Joao Faria: Jan 2013		|		Revised: Filipe Pereira - Mar 2016
+! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
 !****************************************************************************
 ! Main calls sig_bcz_d2
 program main 
 	call sig_bcz_d2
 end program main
-
 
 subroutine sig_bcz_d2
 
@@ -30,8 +29,6 @@ subroutine sig_bcz_d2
 	!--- Number of parameters to fit
  1	nconst=7
 	allocate(c(nconst))
-	!--- Allocate
-	allocate(polyc(4))
 
 	!--- Read options_file with input parameters -
 	call parameters(options_file)	
@@ -51,7 +48,6 @@ subroutine sig_bcz_d2
 	write (6,*)"---------------------> PROGRAM SIG_BCZ_D2 <---------------------"
 	call flush (6)
 	deallocate(c)
-	deallocate(polyc)
 
 	goto 1
 

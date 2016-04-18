@@ -1,4 +1,6 @@
-!--------------------------------------------------------------------
+!****************************************************************************
+! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
+!****************************************************************************
 subroutine init (afile)
 ! This subroutine reads frequency data from file AFILE,
 ! and divides it in groups of modes with same degree "l"
@@ -46,7 +48,6 @@ subroutine init (afile)
 	goto 10
 
  20 rewind (1)
-
 
 	call skpcom (1)
 

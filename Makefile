@@ -58,10 +58,10 @@ $(BASE)/openfiles.o \
 $(BASE)/output.o \
 $(BASE)/deffreq.o \
 $(BASE)/parameters.o \
-$(BASE)/error_covariance.o \
 $(BASE)/second_diff.o \
 $(BASE)/fit_d2.o \
 $(BASE)/fit_d2_genetic.o
+#$(BASE)/error_covariance.o
 #$(BASE)/fun2.o
 
 

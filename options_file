@@ -9,7 +9,7 @@
 
 	nlmind = 5
 	
-	use_error_chi2d = .TRUE.
+	use_error_chi2d = .FALSE.
 
 	ssmaxd = 0.500
 

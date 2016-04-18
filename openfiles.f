@@ -1,5 +1,5 @@
 !--------------------------------------------------------------------
-!	Joao Faria: 20/08/2012 | 
+!	Joao Faria: 20/08/2012	|	Revised: Filipe Pereira - Abr 2016
 !--------------------------------------------------------------------
 subroutine openfiles ()
 !	 open the files necessary for the OUTPUT

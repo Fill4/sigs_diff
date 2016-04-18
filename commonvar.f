@@ -1,8 +1,8 @@
 !--------------------------------------------------------------------
-!	Joao Faria: 20/08/2012 
+!	Joao Faria: 20/08/2012	|	Revised: Filipe Pereira - Abr 2016
 !--------------------------------------------------------------------
-!	 Module that contains the common variables that all subroutines
-!	 need to share. 
+!	Module that contains the common variables that all subroutines
+!	need to share. 
 
 module commonvar
 	
@@ -17,7 +17,7 @@ module commonvar
 												! lmax - max degree l to consider
 												! nlmin - min # of l points
 												
-	integer, public      :: pikaia_pop, pikaia_gen, iterIRLS
+	integer, public      :: pikaia_pop, pikaia_gen, iterIRLS, maxIter
 	integer, public      :: isel
 	integer, public      :: nleft,nright
 	

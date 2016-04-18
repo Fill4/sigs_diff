@@ -1,4 +1,6 @@
-!--------------------------------------------------------------------
+!****************************************************************************
+! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
+!****************************************************************************
 subroutine fit_d2_genetic (chi2)
 !	 this subroutine iterates until the relative variation of the residuals is 
 !    smaller than TOLFIT. The final value of the parameters is in C and the 
@@ -48,6 +50,13 @@ subroutine fit_d2_genetic (chi2)
 		d2(i) = d2(i) - diff
 	end do
 
+	! Define number of re-weight iteratiosn based on error usage 
+	if (use_error_chi2) then
+		maxIter = 4
+	else
+		maxIter = 1
+	end if
+
 ! Here is the print for the polynomial expression calculated previously
 !	write(*,*) 'Polynomial fit: '
 !	write(*,'(16x, es10.2)') polyc(1)*1.0d6
@@ -71,7 +80,7 @@ subroutine fit_d2_genetic (chi2)
 	!     Now call pikaia
 	!CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)!, outfile)
 	
-	do iterIRLS=1,4
+	do iterIRLS=1,maxIter
 		CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
 		!write(*,*) weight(1:nd2)
 		!write(*,*)
@@ -165,7 +174,7 @@ function objfun_ga(n, p) result(fun_val)
 ! and subtracted from the second differences
 		use types_and_interfaces, only: dp, fun, rescale
 		use commonvar, only : nconst, pi, iterIRLS, use_error_chi2
-		use commonarray, only : nd2, w_d2, d2, c, l, sigd2, icov, weight
+		use commonarray, only : nd2, w_d2, d2, c, l, sigd2, weight
 	
 		implicit none
 
@@ -183,19 +192,20 @@ function objfun_ga(n, p) result(fun_val)
 
 		ww = w_d2(1:nd2)
 		signal = fun(ww)
-		! Define weights for IRLS
-		!weight0 = 1.0_dp / sigd2(1:nd2)**2
-		!if (iterIRLS>1) then
-		!	weight(1:nd2) = Q / ( sigd2(1:nd2)**2 * (resid + Q) )
-		!else 
-		!	weight(1:nd2) = weight0
-		!end if 
-		
-		!if (use_error_chi2) then
-		!	resid = (d2(1:nd2)-signal)**2 * weight(1:nd2)
-		!else if (.not. use_error_chi2) then
+
+		! If we are using errors enter IRLS
+		if (use_error_chi2) then
+			weight0 = 1.0_dp / sigd2(1:nd2)**2
+			resid = (d2(1:nd2)-signal)**2 * weight0(1:nd2)
+			if (iterIRLS>1) then
+				weight(1:nd2) = Q / ( sigd2(1:nd2)**2 * (resid + Q) )
+			else 
+				weight(1:nd2) = weight0
+			end if
+			resid = (d2(1:nd2)-signal)**2 * weight(1:nd2)
+		else if (.not. use_error_chi2) then
 			resid = (d2(1:nd2)-signal)**2
-		!end if
+		end if
 		sr = sum(resid)
 		fun_val = sngl(1.0 / sr)
 		
@@ -226,14 +236,14 @@ subroutine rescale(array_in, array_out)
 
 		
 		! bcz
-		array_out(1) = dble(array_in(1)) * 10._dp
+		array_out(1) = dble(array_in(1)) * 1d1
 		array_out(2) = dble(array_in(2)) * (3500._dp - 1900._dp) + 1900._dp
 		!array_out(2) = dble(array_in(2)) * 3000._dp
 		array_out(3) = dble(array_in(3)) * pi
 		
 		! heII
-		array_out(4) = dble(array_in(4)) * 10._dp
-		array_out(5) = dble(array_in(5)) * 500
+		array_out(4) = dble(array_in(4)) * 1d1
+		array_out(5) = dble(array_in(5)) * 5d2
 		array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 600._dp
 		!array_out(6) = dble(array_in(6)) * 1200._dp
 		array_out(7) = dble(array_in(7)) * pi
