@@ -21,74 +21,33 @@ subroutine sig_bcz_d2
 	character (len=1)    :: amess
 	character (len=80)   :: options_file
 
-	real                     :: varlim, var
-	real(dp)                 :: res
-	real(dp), dimension(3)   :: coeff 
-	real(dp), dimension(100) :: xx, resultfun
-
+	real(dp)                 :: chi2
 
 	afile='00000'
+	options_file = 'options_file'
 	write (6,'(/, a, //)')"---------------------> PROGRAM SIG_BCZ_D2 <---------------------"
 
-	!+++++++++++++++++++++++++++++++++++++++++++
-	!--- process command line argument
-	!argcount = iargc()
-	!if (argcount /= 1) then
-	!	write(*,'(a,x,/)') "ERROR! usage: sig_bcz_d2 options_file"
-	!	stop
-	!endif
-	!call getarg(1, options_file)
-
-	!--- Number of parameters to fit -
+	!--- Number of parameters to fit
  1	nconst=7
 	allocate(c(nconst))
-	options_file = 'options_file'
+	!--- Allocate
 	allocate(polyc(4))
 
-	!--- Read file with input parameters -
- 	call parameters(options_file)
+	!--- Read options_file with input parameters -
+	call parameters(options_file)	
 
-	!--- Initializing all quantities, read in frequencies and output files -
-	call deffreq (afile)
-	call init (afile) ! also calculates 2nd differences
-	write(*,*) ' '
+	!--- Initializing all quantities, read in frequencies and create output files -
+	call deffreq (afile) ! Reads freqs_list file
+	call init (afile) ! Reads frequencias and calculates 2nd differences
+	call openfiles () ! Prepare output files
 
-	call openfiles (afile)
 	call flush (6)
-	!varlim = 0.2d0
 
-	!call polyreg(dble(w_d2(1:nd2)), dble(d2(1:nd2)), 2, coeff)
-	!write(*,*) coeff
+	!--- Find best parameters
+	call fit_d2_genetic(chi2)
+	!--- Output the results
+	call output (afile, chi2)
 
-	!call linspace(dble(w_d2(1)), dble(w_d2(nd2)), xx)
-	!polyfun = coeff(3) * xx * xx + coeff(2) * xx + coeff(1)
-
-	!call plot(dble(w_d2(1:nd2)), dble(d2(1:nd2)), xx, polyfun,' 5. 1-',color2='dark-yellow',color1='#40e0d0')
-
-	!--- Finding the best parameters -
-	amess = ' '
-	!	call fit_d2(res)
-	call fit_d2_genetic(res)
-	!--- plot results -
-
-	!	call linspace(dble(w_d2(1)), dble(w_d2(nd2)), xx)
-	!	do i=1,100
-	!	    resultfun(i) = fun(c, xx(i), 0)
-	!	end do
-	!	write(*,*) w_d2(1), xx(1), resultfun(50), fun(c, w_d2(1), 1)
-	!	call plot(dble(w_d2(1:nd2)), dble(d2(1:nd2)), xx, resultfun,' 5. 1-',color2='dark-yellow',color1='#40e0d0')
-
-	!--- Writing the results -
-	! variation in tau0 relative to initial value
-	!	var = abs(((c(3)/(w0*fac))-tau0)/tau0)
-	!	if (var .gt. varlim .and. amess(1:1) .eq. ' ') then
-	!	   amess='.'
-	!	   write (*,*)"  ==> WARNING: Value of taud not admissible! [.]"
-	!	endif
-	!	
-	call output (afile, res)
-
-	!	if (iprint.ge.1) close (3)
 	write (6,*)"---------------------> PROGRAM SIG_BCZ_D2 <---------------------"
 	call flush (6)
 	deallocate(c)

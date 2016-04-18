@@ -226,13 +226,13 @@ subroutine rescale(array_in, array_out)
 
 		
 		! bcz
-		array_out(1) = dble(array_in(1)) * 8._dp
+		array_out(1) = dble(array_in(1)) * 10._dp
 		array_out(2) = dble(array_in(2)) * (3500._dp - 1900._dp) + 1900._dp
 		!array_out(2) = dble(array_in(2)) * 3000._dp
 		array_out(3) = dble(array_in(3)) * pi
 		
 		! heII
-		array_out(4) = dble(array_in(4)) * 8._dp
+		array_out(4) = dble(array_in(4)) * 10._dp
 		array_out(5) = dble(array_in(5)) * 500
 		array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 600._dp
 		!array_out(6) = dble(array_in(6)) * 1200._dp

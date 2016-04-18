@@ -1,45 +1,33 @@
 !****************************************************************************
 ! Joao Faria: Jan 2013
 !****************************************************************************
-subroutine output (frequency_file, resd)
+subroutine output (frequency_file, chi2)
 !	 write the results to the terminal
 
-		use types_and_interfaces
-		use commonvar
-		use commonarray, only: c, n
-		
-		character(len=80), intent(in) :: frequency_file
-		real(dp), intent(in)          :: resd
+	use types_and_interfaces
+	use commonvar
+	use commonarray, only: c, n
 	
-		real(dp)    :: tauBCZ, tauHe, a, a_bcz, a_he, beta
-		real(dp)    :: chi2, chi2norm
-		
-		integer     :: nfile
+	character(len=80), intent(in) :: frequency_file
+	real(dp), intent(in)          :: chi2
 
+	real(dp)    :: tauBCZ, tauHe, a_bcz, a_he, beta
+	real(dp)    :: chi2, chi2norm
 
-		tauBCZ = c(2)
-		tauHe = c(6)
-		
-		!a_bcz = c(1)*1.0d18 / (w0ref)**2  
-		!a_he = c(4) * w0ref * exp(-c(5)*(w0ref*1.0d-6)**2)
-		!beta = c(5) * (w0ref*fac)**2 
-		
-		a_bcz = c(1)*w0ref
-		a_he = c(4)*w0ref
-		beta = c(5)
-
-		!a = tauHe / (sqrt(2.0_dp*pi)*w0ref*c(6))
-		a = 0101010
-		
-		
-		write (6,*) "  Frequencies from file: ", frequency_file
+	a_bcz = c(1)*w0ref
+	tauBCZ = c(2)
+	a_he = c(4)*w0ref
+	beta = c(5)
+	tauHe = c(6)
 	
-		write (6,1010) 'Results:', &
-						   'tau_BCZ = ', tauBCZ, &
-						   'phi_bcz = ', c(3), 'A_bcz = ', a_bcz, &
-						   'tau_He = ', tauHe, &
-						   'phi_he = ', c(7), 'A_he = ', a_he, beta, &
-						   'chi2 = ', resd, 'chi2norm = ', resd/(n-nconst)
+	write (6,*) "  Frequencies from file: ", frequency_file
+
+	write (6,1010)	'Results:', &
+					'tau_BCZ = ', tauBCZ, &
+					'phi_bcz = ', c(3), 'A_bcz = ', a_bcz, &
+					'tau_He = ', tauHe, &
+					'phi_he = ', c(7), 'A_he = ', a_he, beta, &
+					'chi2 = ', chi2, 'chi2norm = ', chi2/(n-nconst)
 						   
 1010	format (3x, a, //, &
 				6x, a, f9.4, //, &

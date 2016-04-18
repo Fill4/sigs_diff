@@ -1,33 +1,26 @@
 !--------------------------------------------------------------------
-!	joao faria: 20/08/2012 
-!		remove INTYPE as an argument, it is contained in the module
-!		COMMONVAR
+!	Joao Faria: 20/08/2012 | 
 !--------------------------------------------------------------------
-	subroutine openfiles (afile)
+subroutine openfiles ()
 !	 open the files necessary for the OUTPUT
 
 	use commonvar
 	
 	implicit none
 	
-	character(len=80), intent(in)  :: afile
-	integer             :: nunit
-	logical             :: res_exists
+	logical             :: bool_Results
 
 
-	! RES file (unit = 9) -
-	inquire( file="res", exist=res_exists)
-
-	if (res_exists) then
-		open (9, file='res', status='old', position='append')
+	! Results file (unit = 9) -
+	inquire( file="Results", exist=bool_Results)
+	if (bool_Results) then
+		open (9, file='Results', status='old', position='append')
 	else 
-		open (9, file='res', status='unknown')
+		open (9, file='Results', status='unknown')
 		write (9,*) ' '
 		close (9)
 
-		open (9,file='res',status='old')
-		! write to terminal that RES was created
-		write (6,*) "  In file RES   [filename,C1,C2,...] (all final values)"
+		open (9,file='Results',status='old')
 
 		! header -
 		write (9,'(x, a, i1, x, a)') "# SIG_GENETIC results (", nconst, "parameters)"
@@ -42,4 +35,4 @@
 
 	return
 	
-	end subroutine openfiles
+end subroutine openfiles
