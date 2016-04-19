@@ -8,13 +8,10 @@
 	vleftd = 0.0
 
 	nlmind = 5
-	
-	use_error_chi2d = .FALSE.
-
-	ssmaxd = 0.500
-
 	lmind = 0
 	lmaxd = 3
+	
+	use_error_chi2d = .TRUE.
+	ssmaxd = 0.500
 /
-
 !Line added otherwise the code will report a error in the read

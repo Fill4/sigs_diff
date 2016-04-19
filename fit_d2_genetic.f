@@ -1,6 +1,6 @@
-!****************************************************************************
+!----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
-!****************************************************************************
+!----------------------------------------------------------------------------
 subroutine fit_d2_genetic (chi2)
 !	 this subroutine iterates until the relative variation of the residuals is 
 !    smaller than TOLFIT. The final value of the parameters is in C and the 

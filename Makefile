@@ -42,9 +42,6 @@ LINK = -lmodules -llapack -lblas -L/usr/lib
 %.o: %.f90
 	$(FC) $(FFLAGS) -c -o $@ $*.f90 $(LINK) -L$(lib) -J$(lib)
 
-
-
-
 #----------------------------------------------------------
 
 FILES = \
@@ -59,30 +56,16 @@ $(BASE)/output.o \
 $(BASE)/deffreq.o \
 $(BASE)/parameters.o \
 $(BASE)/second_diff.o \
-$(BASE)/fit_d2.o \
+$(BASE)/init.o \
+$(BASE)/skpcom.o \
 $(BASE)/fit_d2_genetic.o
-#$(BASE)/error_covariance.o
-#$(BASE)/fun2.o
-
-
-FCOM = \
-$(BASE)/common/init.o
-
-# $(JFA)/minimize.o \
-# $(JFA)/nl2sol.o \
-# $(JFA)/resid.o\
-
-FBASIC = \
-$(BASE)/basic/num_to_text.o \
-$(BASE)/basic/skpcom.o \
-$(BASE)/basic/length.o
 
 # **********************************************************
 # ***             Compilar os programas                  *** 
 # **********************************************************
 
-sig_bcz_d2: $(FILES) $(FCOM) $(FBASIC) 
-	$(FC) $(FILES) $(FCOM) $(FBASIC) -o $@ -L$(lib) -I$(lib) $(LINK) -O3
+sig_bcz_d2: $(FILES)
+	$(FC) $(FILES) -o $@ -L$(lib) -I$(lib) $(LINK) -O3
 
 clean:
-	rm -f $(FILES) $(FCOM) $(FBASIC) *~ *.mod *.o sig_bcz_d2
+	rm -f $(FILES) *~ *.mod *.o sig_bcz_d2

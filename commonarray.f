@@ -7,7 +7,6 @@
 module commonarray
 
 	use types_and_interfaces, only: dp
-	
 	implicit none
 	
 	integer, parameter, public		:: npt = 500

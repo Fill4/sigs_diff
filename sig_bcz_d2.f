@@ -1,26 +1,27 @@
-!****************************************************************************
+!----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
-!****************************************************************************
-! Main calls sig_bcz_d2
-program main 
-	call sig_bcz_d2
-end program main
-
-subroutine sig_bcz_d2
+!----------------------------------------------------------------------------
+! This program isolates an oscillatory signal that is present in the second 
+! differences of the oscillation frequencies and associated with regions where 
+! the sound speed has a discontinuity.
+!
+! The general form of the signal is a known function of frequency that depends 
+! on a set of parameters C. 
+!
+! The differences between the observed 2nd differences and the model ones is 
+! minimized in the least squares sense, providing the best fit parameters
+program sig_bcz_d2
 
 	use types_and_interfaces
 	use commonvar
 	use commonarray
 	use lib_array
-
-
 	implicit none
 
-	character (len=80)   :: afile
-	character (len=1)    :: amess
-	character (len=80)   :: options_file
-
-	real(dp)                 :: chi2
+	integer				:: narg, iarg
+	character (len=80)	:: afile, options_file
+	character (len=20)	:: name
+	real(dp)			:: chi2
 
 	afile='00000'
 	options_file = 'options_file'
@@ -51,4 +52,4 @@ subroutine sig_bcz_d2
 
 	goto 1
 
-end subroutine sig_bcz_d2
+end program sig_bcz_d2

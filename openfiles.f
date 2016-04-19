@@ -1,17 +1,15 @@
 !--------------------------------------------------------------------
-!	Joao Faria: 20/08/2012	|	Revised: Filipe Pereira - Abr 2016
+! Joao Faria: 20/08/2012	|	Revised: Filipe Pereira - Abr 2016
 !--------------------------------------------------------------------
+! This subroutine opens or creates the Results file.
 subroutine openfiles ()
-!	 open the files necessary for the OUTPUT
 
 	use commonvar
-	
 	implicit none
 	
-	logical             :: bool_Results
+	logical			:: bool_Results
 
-
-	! Results file (unit = 9) -
+	! Results file (unit = 9)
 	inquire( file="Results", exist=bool_Results)
 	if (bool_Results) then
 		open (9, file='Results', status='old', position='append')
@@ -22,7 +20,7 @@ subroutine openfiles ()
 
 		open (9,file='Results',status='old')
 
-		! header -
+		! Write header
 		write (9,'(x, a, i1, x, a)') "# SIG_GENETIC results (", nconst, "parameters)"
 		write (9,*) ''
 

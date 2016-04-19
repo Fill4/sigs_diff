@@ -7,7 +7,6 @@
 module commonvar
 	
 	use types_and_interfaces, only: dp
-	
 	implicit none
 	
 	logical, public 	 :: use_error_chi2 	!Use errors from frequencies
@@ -25,6 +24,6 @@ module commonvar
 	
 	real, public         :: vleft,vright
 	real, public         :: ssmax				! max error allowed in frequencies
-	real, public         :: w0ref
+	real, public         :: w0ref				! Reference frequency
 
 end module commonvar

@@ -1,5 +1,5 @@
 !**********************************************************
-  elemental real(dp) function smooth_comp (nu_d2)
+elemental real(dp) function smooth_comp (nu_d2)
 !	 this is the function to be fitted. It is the signal
 !	 produced by the sharp transition in the base of the
 !	 convection zone
@@ -7,18 +7,16 @@
 		use types_and_interfaces, only: dp
 		use commonvar, only: pi
 		use commonarray, only: polyc
-
 		implicit none
 	
 		real(dp), intent(in)  :: nu_d2
 		
 		smooth_comp = polyc(1) !+ polyc(2)/nu_d2 + polyc(3)/(nu_d2**2)
 
-  end function smooth_comp
-
+end function smooth_comp
 
 !**********************************************************
-  elemental real(dp) function he_comp (nu_d2)
+elemental real(dp) function he_comp (nu_d2)
 !	 this is the function to be fitted. It is the signal
 !	 produced by the sharp transition in the base of the
 !	 convection zone
@@ -41,11 +39,10 @@
 		xarg = 4.0_dp*pi*c(6)*nu_d2 + 2.0_dp*c(7)
 		he_comp = (c(4) * nu_d2 * exp(-c(5) * nu_d2**2)) * sin(xarg)
 
-  end function he_comp
-
+end function he_comp
 
 !**********************************************************
-  elemental real(dp) function bcz_comp (nu_d2)
+elemental real(dp) function bcz_comp (nu_d2)
 !	 this is the function to be fitted. It is the signal
 !	 produced by the sharp transition in the base of the
 !	 convection zone
@@ -67,7 +64,7 @@
 		xarg = 4.0d0*pi*c(2)*nu_d2 + 2.0_dp*c(3)
 		bcz_comp  = ( c(1) / (nu_d2**2) ) * sin(xarg)
 
-  end function bcz_comp
+end function bcz_comp
 
 
 
