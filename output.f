@@ -13,6 +13,7 @@ subroutine output (afile, chi2)
 	real(dp), intent(inout)          :: chi2
 	real(dp)    :: tauBCZ, tauHe, a_bcz, a_he, beta
 
+	! Get the parameters from the results array C.
 	a_bcz = c(1)*w0ref
 	tauBCZ = c(2)
 	a_he = c(4)*w0ref
@@ -20,6 +21,7 @@ subroutine output (afile, chi2)
 	tauHe = c(6)
 	chi2 = chi2*w0ref**2
 
+	! Write the results to the shell during execution
 	write (6,1010)	'Results:', &
 					'tau_BCZ = ', tauBCZ, 'A_bcz = ', a_bcz,&
 					'phi_bcz = ', c(3),  &
@@ -32,8 +34,9 @@ subroutine output (afile, chi2)
 			&3x, a, f9.2, //,&
 			&3x, a, f9.4, 6x, a, f10.6, //,&
 			&3x, a, f9.2, 6x, a, f10.4, //,&
-			&3x, a, f15.6, 3x, a, f12.6 //)
+			&3x, a, f12.5, 3x, a, f10.5 //)
 
+	! Write results to the Results file
 	write (9,9003) afile, tauBCZ, c(3), a_bcz, tauHe, c(7), a_he, beta
 9003 format (x, a24, 7f10.4)
 	close(9)

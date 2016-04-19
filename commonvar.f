@@ -9,21 +9,22 @@ module commonvar
 	use types_and_interfaces, only: dp
 	implicit none
 	
-	logical, public 	 :: use_error_chi2 	!Use errors from frequencies
+	logical, public		:: use_error_chi2 	!Use errors from frequencies
 	
-	integer, public      :: nconst			! number of parameters to fit
-	integer, public      :: lmin, lmax, nlmin	! lmin - min degree l to consider
+	integer, public		:: nconst				! number of parameters to fit
+	integer, public		:: lmin, lmax, nlmin	! lmin - min degree l to consider
 												! lmax - max degree l to consider
 												! nlmin - min # of l points
 												
-	integer, public      :: pikaia_pop, pikaia_gen, iterIRLS, maxIter
-	integer, public      :: isel
-	integer, public      :: nleft,nright
+	integer, public		:: pikaia_pop, pikaia_gen, iterIRLS, maxIter
+	integer, public		:: isel
+	integer, public		:: nleft,nright
+	integer, public		:: degree
 	
-	real(dp), public     :: fac, pi
+	real(dp), public	:: fac, pi
 	
-	real, public         :: vleft,vright
-	real, public         :: ssmax				! max error allowed in frequencies
-	real, public         :: w0ref				! Reference frequency
+	real, public		:: vleft,vright
+	real, public		:: ssmax				! max error allowed in frequencies
+	real, public		:: w0ref				! Reference frequency
 
 end module commonvar

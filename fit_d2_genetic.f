@@ -1,68 +1,55 @@
 !----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
 !----------------------------------------------------------------------------
+! This subroutine initially removes the smooth component from the second 
+! differences.
+!
+! Next it runs PIKAIA to try to fit the second differences to the funtion
+! in the fun.f file using a iteratively reweighted least squares method.
 subroutine fit_d2_genetic (chi2)
-!	 this subroutine iterates until the relative variation of the residuals is 
-!    smaller than TOLFIT. The final value of the parameters is in C and the 
-!    residuals are returned in chi2
 
 	use types_and_interfaces
 	use commonvar
 	use commonarray, only : nd2, w_d2, d2, sigd2, l_d2, c, polyc, weight
 	use lib_pikaia12
 	use lib_regression, only: polyreg
-	use lib_statistics, only: mean, median
+	use lib_statistics, only: median
 	use lib_array
 	use lib_plot
 	use lib_io
-
 	implicit none
 		
-	real(dp), intent(inout)     :: chi2
+	real(dp), intent(inout)		:: chi2
+	real(dp), dimension(nconst)	:: c0, p, step, var
 
-	real(dp)                    :: object, simp, stopcr
-	real(dp), dimension(nconst) :: c0, p, step, var
-
-	real        :: ctrl(12), x(nconst), f
-	integer     :: seed, status
-	integer     :: degree, new_unit, i
+	real						:: ctrl(12), x(nconst), f
+	integer						:: seed, status
+	integer						:: new_unit, i
 	
-	character(len=80) :: outfile, filename
-	
-	
-	real(dp), dimension(150) :: xx, result_fun, result_smooth, result_he, result_bcz, smooth, final, pred2
-	real(dp)                :: min_xx, max_xx, diff, a, b, d
+	character(len=80)			:: outfile, filename
+	real(dp), dimension(nd2)	:: smooth, pred2
+	real(dp), dimension(150)	:: xx, result_fun, he_fun, bcz_fun, final, smooth_fun
+	real(dp)					:: min_xx, max_xx, diff, a, b, d
 
+    degree = 3
+	! Polynomial fit of the second differences. The degree is previously defined
+	if (degree .eq. 0) then
+		polyc(1) = median(d2(1:nd2))
+	else
+		call polyreg(1.0_dp/w_d2(1:nd2), d2(1:nd2), degree, polyc)
+	end if
 
-	!     The polynomial fit is done before the signal fit 
-	! if fitting a higher degree polynomial, uncomment following two lines
-    degree = 2
-    call polyreg(1.0_dp/w_d2(1:nd2), d2(1:nd2), degree, polyc)
+	! Get smooth function and remove it from the second differences
+	smooth(1:nd2) = smooth_comp(w_d2(1:nd2))
+	pred2(1:nd2) = d2(1:nd2)
+	d2(1:nd2) = d2(1:nd2) - smooth(1:nd2)
 
-	! if just fitting a constant we can calculate the mean
-!    polyc(1) = mean(d2(1:nd2))
-	! or, in a more robust way, consider instead the median 
-	!polyc(1) = median(d2(1:nd2))
-
-	do i=1,nd2
-		diff = polyc(1) + polyc(2)/w_d2(i) + polyc(3)/(w_d2(i)**2) + polyc(4)/(w_d2(i)**3)
-		pred2(i) = d2(i)
-		d2(i) = d2(i) - diff
-	end do
-
-	! Define number of re-weight iteratiosn based on error usage 
+	! Define number of re-weight iterations based on error usage 
 	if (use_error_chi2) then
 		maxIter = 4
 	else
 		maxIter = 1
 	end if
-
-! Here is the print for the polynomial expression calculated previously
-!	write(*,*) 'Polynomial fit: '
-!	write(*,'(16x, es10.2)') polyc(1)*1.0d6
-!        write(*,'(16x, es10.2, a)') polyc(2), ' x^-1'
-!        write(*,'(16x, es10.2, a)') polyc(3), ' x^-2'
-!        write(*,'(16x, es10.2, a)') polyc(4), ' x^-3'
 
 	!     First, initialize the random-number generator
 	!seed=13578
@@ -99,28 +86,29 @@ subroutine fit_d2_genetic (chi2)
 	! residuals of best parameters
 	chi2 = 1.0/f
 
-	! create array with smooth function		
+	! Create arrays with all the results obtained.		
 	min_xx = minval(w_d2(1:nd2))
 	max_xx = maxval(w_d2(1:nd2))
 	call linspace(min_xx, max_xx, xx)
-	!result_fun = fun(w_d2)
 	result_fun = fun(xx)
-	result_smooth = smooth_comp(xx)
-	result_he = he_comp(xx)
-	result_bcz = bcz_comp(xx)
+	he_fun = he_comp(xx)
+	bcz_fun = bcz_comp(xx)
+	smooth_fun = smooth_comp(xx)
 
-	smooth = polyc(1) + polyc(2)/xx + polyc(3)/(xx**2)! + polyc(4)/(xx**3)
+    ! Plot initial second differences and smooth function fitted to them
+    call plot(w_d2(1:nd2)*w0ref, pred2(1:nd2)*w0ref, &
+	xx*w0ref, smooth_fun*w0ref, ' 5.00-', color1='black', color2='red')
 
-    ! Plot second differences and smooth function removed from them
-    !call plot(w_d2(1:nd2)*w0ref, pred2(1:nd2)*w0ref, &
-	!xx*w0ref, smooth*w0ref, ' 5.00-', color1='black', color2='red')
-
-    ! Plot second differences alone
+    ! Plot second differences without the smooth component
 	!call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, ' 5.', color1='black')
 	
 	! Plot the fit of fun to the second differences
 	call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, &
 	xx*w0ref, result_fun*w0ref, ' 5.00-', color1='black', color2='red', errors=sigd2(1:nd2))
+
+	! Plot the HeII and the Bcz components
+	call plot(xx*w0ref, he_fun*w0ref, &
+	xx*w0ref, bcz_fun*w0ref, '00-00-', color1='blue', color2='red')
 
 	!call plot(xx*1.0d6,result_he*1.0d6, &
 	!		  xx*1.0d6,result_bcz*1.0d6, &

@@ -33,6 +33,8 @@ subroutine parameters(options_file)
 	real		:: ssmaxd = 0.500
 	! Range in degree
 	integer		:: lmind = 0,lmaxd = 2
+	! Degree of the polynomial smooth function
+	integer		:: degreed = 2
 
 	integer                        :: ierr = 1
 	integer                        :: unit1 = 8
