@@ -1,10 +1,9 @@
 !--------------------------------------------------------------------
 !	Joao Faria: 21/08/2012  |	Revised: Filipe Pereira - Abr 2016
 !--------------------------------------------------------------------
+module commonarray
 !	Module that contains the common arrays that some subroutines
 !	need to share. 
-
-module commonarray
 
 	use types_and_interfaces, only: dp
 	implicit none
@@ -18,6 +17,7 @@ module commonarray
 
 	real(dp), dimension(npt), public	:: w		! frequencies
 	real(dp), dimension(npt), public	:: d2		! second differences
+	real(dp), dimension(npt), public	:: pre_d2		! second differences
 	real(dp), dimension(npt), public	:: w_d2		! central frequency of second difference
 	
 	real(dp), dimension(npt), public	:: sig		! errors in frequencies

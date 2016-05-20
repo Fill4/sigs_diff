@@ -22,7 +22,6 @@ module types_and_interfaces
       end function objfun_ga
     end interface
     
-    
     ! provide interface to the objective function (simplex type)
     interface objfun
       subroutine objfun(p, func)
@@ -32,8 +31,6 @@ module types_and_interfaces
         real (dp), intent(out) :: func
       end subroutine objfun
     end interface objfun
-    
-    
 
     ! interface to the function that calculates the signal
     interface fun
@@ -42,7 +39,6 @@ module types_and_interfaces
             real(kind=8), intent(in)  :: w_d2
         end function fun
     end interface fun
-    
     
     ! to the parameter rescaling subroutine
     interface rescale

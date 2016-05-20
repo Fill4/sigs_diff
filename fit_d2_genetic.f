@@ -1,22 +1,20 @@
 !----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
 !----------------------------------------------------------------------------
+subroutine fit_d2_genetic (chi2)
 ! This subroutine initially removes the smooth component from the second 
 ! differences.
 !
 ! Next it runs PIKAIA to try to fit the second differences to the funtion
 ! in the fun.f file using a iteratively reweighted least squares method.
-subroutine fit_d2_genetic (chi2)
 
 	use types_and_interfaces
 	use commonvar
-	use commonarray, only : nd2, w_d2, d2, sigd2, l_d2, c, polyc, weight
+	use commonarray, only : nd2, w_d2, d2, sigd2, l_d2, c, polyc, weight, pre_d2
 	use lib_pikaia12
 	use lib_regression, only: polyreg
 	use lib_statistics, only: median
-	use lib_array
-	use lib_plot
-	use lib_io
+
 	implicit none
 		
 	real(dp), intent(inout)		:: chi2
@@ -27,10 +25,8 @@ subroutine fit_d2_genetic (chi2)
 	integer						:: new_unit, i
 	
 	character(len=80)			:: outfile, filename
-	real(dp), dimension(nd2)	:: smooth, pred2
-	real(dp), dimension(150)	:: xx, result_fun, he_fun, bcz_fun, final, smooth_fun
-	real(dp)					:: min_xx, max_xx, diff, a, b, d
-
+	real(dp), dimension(nd2)	:: smooth
+	
     degree = 3
 	! Polynomial fit of the second differences. The degree is previously defined
 	if (degree .eq. 0) then
@@ -41,7 +37,7 @@ subroutine fit_d2_genetic (chi2)
 
 	! Get smooth function and remove it from the second differences
 	smooth(1:nd2) = smooth_comp(w_d2(1:nd2))
-	pred2(1:nd2) = d2(1:nd2)
+	pre_d2(1:nd2) = d2(1:nd2)
 	d2(1:nd2) = d2(1:nd2) - smooth(1:nd2)
 
 	! Define number of re-weight iterations based on error usage 
@@ -51,105 +47,30 @@ subroutine fit_d2_genetic (chi2)
 		maxIter = 1
 	end if
 
-	!     First, initialize the random-number generator
-	!seed=13578
+	! First, initialize the random-number generator
 	seed = TIME()
 	call rninit(seed)
 	
-	!     Set control variables
+	! Set control variables
 	ctrl(1:12) = -1
 	ctrl(1) = pikaia_pop 
 	ctrl(2) = pikaia_gen
 	ctrl(5) = 5 ! one-point+creep, adjustable rate based on fitness
-	!ctrl(12) = 2
-	outfile = 'evolution_par_ga.dat'
 	
-	!     Now call pikaia
-	!CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)!, outfile)
-	
+	! Either run PIKAIA once for a no errors run or iterate through various weights for
+	! each point until convergence or until MaxIter
 	do iterIRLS=1,maxIter
-		CALL pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
-		!write(*,*) weight(1:nd2)
-		!write(*,*)
+		call pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
 		call rescale(x, c)
-		!WRITE(*,*) '      c: ', c
-		!WRITE(*,*) '  chi^2: ', 1./f
-		!write(*,*) all(abs(c0-c) < 0.2_dp * c)
 		if (all(abs(c0(1:2)-c(1:2)) < 0.2_dp * c(1:2)) .and. all(abs(c0(4:6)-c(4:6)) < 0.2_dp * c(4:6))) exit
 		c0 = c
-		write(*,*)
 	end do
 		
-	! rescaling parameters
+	! Rescale parameters
 	call rescale(x, c)
 	
-	! residuals of best parameters
+	! Residuals of best parameters
 	chi2 = 1.0/f
-
-	! Create arrays with all the results obtained.		
-	min_xx = minval(w_d2(1:nd2))
-	max_xx = maxval(w_d2(1:nd2))
-	call linspace(min_xx, max_xx, xx)
-	result_fun = fun(xx)
-	he_fun = he_comp(xx)
-	bcz_fun = bcz_comp(xx)
-	smooth_fun = smooth_comp(xx)
-
-    ! Plot initial second differences and smooth function fitted to them
-    call plot(w_d2(1:nd2)*w0ref, pred2(1:nd2)*w0ref, &
-	xx*w0ref, smooth_fun*w0ref, ' 5.00-', color1='black', color2='red')
-
-    ! Plot second differences without the smooth component
-	!call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, ' 5.', color1='black')
-	
-	! Plot the fit of fun to the second differences
-	call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, &
-	xx*w0ref, result_fun*w0ref, ' 5.00-', color1='black', color2='red', errors=sigd2(1:nd2))
-
-	! Plot the HeII and the Bcz components
-	call plot(xx*w0ref, he_fun*w0ref, &
-	xx*w0ref, bcz_fun*w0ref, '00-00-', color1='blue', color2='red')
-
-	!call plot(xx*1.0d6,result_he*1.0d6, &
-	!		  xx*1.0d6,result_bcz*1.0d6, &
-	!		  xx*1.0d6,(result_smooth+result_he+result_bcz)*1.0d6, &
-	!		  ' 1-00-10-',color3='black',color2='red',color1='blue')!, &
-	!		  !terminal='png')
-	!		  !yrange=(/-3.0d0,3.0d0/) ) 
-
-
-	!call plot(w_d2(1:nd2)*1.0d6, d2(1:nd2)*1.0d6, &
-	!		  xx*1.0d6, result_fun*1.0d6, &
-	!		  xx*1.0d6,result_smooth*1.0d6, &
-	!		  ' 5.00-10-',color3='green',color2='black',color1='red')!, &
-	!		  errors=sigd2(1:nd2)*1.0d6)
-	!		  terminal='png')
-	!		  yrange=(/-3.0d0,3.0d0/) 
-
-
-!!  call hist( abs((d2(1:nd2)-fun(w_d2(1:nd2)))/sigd2(1:nd2)), 15, &
-!!               color='#779944',pause=-1.0)
-
-	! TODO: Check code below
-
-	! output signal to file -
-	!if (write_final) then
-	!    write(filename, '("signal_",i4,"-",i0.4,".dat")') int(c(2)), int(c(6))
-	!    write(*,*) filename
-	!    new_unit = next_unit()
-	!    open (new_unit, file=filename, status='unknown')
-	!    write(new_unit,'(a)') '# observed second differences'
-	!    write(new_unit,'(a)') '# N'
-	!    write(new_unit,'(a, x, a, 3a12)') '#', 'l', 'nu(muHz)', 'D2nu(muHz)', 'err(muHz)'
-	!    write(new_unit,'(i3)') nd2
-	!    write(new_unit,'(i3, 3f12.4)') (l_d2(i), w_d2(i)*1.0d6, d2(i)*1.0d6, sigd2(i)*1.0d6, i=1,nd2)
-	!    write(new_unit,'(a)') '# fitted signals'
-	!    write(new_unit,'(a, x, 4a12)') '#', 'nu(muHz)', 'bcz', 'he', 'sum'
-	!    write(new_unit,'(2x, 4f12.5)') (xx(i)*1.0d6, result_bcz(i)*1.0d6, &
-	!                                    result_he(i)*1.0d6, result_fun(i)*1.0d6, i=1,150)
-	!    close(new_unit)
-	!endif
-	 
 
 	return
 		
@@ -160,53 +81,44 @@ function objfun_ga(n, p) result(fun_val)
 ! This function calculates the objective function value, i.e. the chi^2.
 ! The signal is calculated in FUN for the current values of the parameters p, 
 ! and subtracted from the second differences
-		use types_and_interfaces, only: dp, fun, rescale
-		use commonvar, only : nconst, pi, iterIRLS, use_error_chi2
-		use commonarray, only : nd2, w_d2, d2, c, l, sigd2, weight
-	
-		implicit none
 
-		integer, intent(in)     :: n     ! size of parameter space
-		real, intent(in)        :: p(:)
-		real                    :: fun_val
+	use types_and_interfaces, only: dp, fun, rescale
+	use commonvar, only : nconst, pi, iterIRLS, use_error_chi2
+	use commonarray, only : nd2, w_d2, d2, c, l, sigd2, weight
+	implicit none
 
-!        real(dp)                    :: signal
-		real(dp), dimension(nd2)    :: ww, signal, weight0
-		real(dp)                    :: resid(nd2), sr, resid_vector(nd2,1), chi2(1,1)
-		integer, parameter :: Q = 4
+	integer, intent(in)			:: n     ! size of parameter space
+	real, intent(in)			:: p(:)
+	real						:: fun_val
+	real(dp), dimension(nd2)	:: ww, signal, weight0
+	real(dp)					:: resid(nd2), sr, resid_vector(nd2,1), chi2(1,1)
+	integer, parameter			:: Q = 4
 
-		! rescaling parameters
-		call rescale(p, c)
+	! Rescale parameters
+	call rescale(p, c)
 
-		ww = w_d2(1:nd2)
-		signal = fun(ww)
+	ww = w_d2(1:nd2)
+	signal = fun(ww)
 
-		! If we are using errors enter IRLS
-		if (use_error_chi2) then
-			weight0 = 1.0_dp / sigd2(1:nd2)**2
-			resid = (d2(1:nd2)-signal)**2 * weight0(1:nd2)
-			if (iterIRLS>1) then
-				weight(1:nd2) = Q / ( sigd2(1:nd2)**2 * (resid + Q) )
-			else 
-				weight(1:nd2) = weight0
-			end if
-			resid = (d2(1:nd2)-signal)**2 * weight(1:nd2)
-		else if (.not. use_error_chi2) then
-			resid = (d2(1:nd2)-signal)**2
+	! If we are using errors enter IRLS
+	if (use_error_chi2) then
+		weight0 = 1.0_dp / sigd2(1:nd2)**2
+		resid = (d2(1:nd2)-signal)**2 * weight0(1:nd2)
+		if (iterIRLS>1) then
+			weight(1:nd2) = Q / ( sigd2(1:nd2)**2 * (resid + Q) )
+		else 
+			weight(1:nd2) = weight0
 		end if
-		sr = sum(resid)
-		fun_val = sngl(1.0 / sr)
-		
-!		resid_vector(:,1) = d2(1:nd2)-signal
-!		chi2 = matmul( & 
-!		         matmul(transpose(resid_vector), icov), &
-!		               resid_vector)
-!		fun_val = sngl(1.0 / chi2(1,1))
-									  
-		!write(*,*) resid, chi2
-		
-		return
-		
+		resid = (d2(1:nd2)-signal)**2 * weight(1:nd2)
+	! Else just do normal least square calculation
+	else if (.not. use_error_chi2) then
+		resid = (d2(1:nd2)-signal)**2
+	end if
+	sr = sum(resid)
+	fun_val = sngl(1.0 / sr)
+	
+	return
+
 end function objfun_ga
   
   
@@ -223,17 +135,15 @@ subroutine rescale(array_in, array_out)
 		real(dp), dimension(:), intent(out) :: array_out
 
 		
-		! bcz
+		! Bcz
 		array_out(1) = dble(array_in(1)) * 1d1
-		array_out(2) = dble(array_in(2)) * (3500._dp - 1900._dp) + 1900._dp
-		!array_out(2) = dble(array_in(2)) * 3000._dp
+		array_out(2) = dble(array_in(2)) * (4000._dp - 1200._dp) + 1200._dp
 		array_out(3) = dble(array_in(3)) * pi
 		
-		! heII
+		! HeII
 		array_out(4) = dble(array_in(4)) * 1d1
 		array_out(5) = dble(array_in(5)) * 5d2
-		array_out(6) = dble(array_in(6)) * (1200._dp - 600._dp) + 600._dp
-		!array_out(6) = dble(array_in(6)) * 1200._dp
+		array_out(6) = dble(array_in(6)) * (1800._dp - 200._dp) + 200._dp
 		array_out(7) = dble(array_in(7)) * pi
   
 end subroutine rescale

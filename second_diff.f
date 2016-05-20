@@ -1,9 +1,9 @@
 !----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
 !----------------------------------------------------------------------------
+subroutine second_diff
 ! This subroutine calculates the second differences from the oscillation
 ! frequencies.
-subroutine second_diff
 
 	use types_and_interfaces
 	use commonvar
@@ -44,7 +44,7 @@ subroutine second_diff
 
 	! Number of second differences
 	nd2 = j-1
-	write (6,'(7x, a, i3)') "# of second differences: ", nd2
+	if (verbose) write (6,'(7x, a, i3)') "# of second differences: ", nd2
 
 	! Write second differences to file
 	if (use_error_chi2) then

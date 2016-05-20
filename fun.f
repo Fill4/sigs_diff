@@ -1,8 +1,8 @@
 !----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
 !----------------------------------------------------------------------------
-! This is the theoretical function to be fitted
 elemental real(dp) function fun (nu_d2)
+! This is the theoretical function to be fitted
 
 	use types_and_interfaces, only: dp
 	use commonvar

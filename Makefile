@@ -58,6 +58,8 @@ $(BASE)/parameters.o \
 $(BASE)/second_diff.o \
 $(BASE)/init.o \
 $(BASE)/skpcom.o \
+$(BASE)/help.o \
+$(BASE)/star_par.o \
 $(BASE)/fit_d2_genetic.o
 
 # **********************************************************

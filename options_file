@@ -11,7 +11,7 @@
 	lmind = 0
 	lmaxd = 3
 	
-	use_error_chi2d = .TRUE.
+	use_error_chi2d = .FALSE.
 	ssmaxd = 0.500
 /
 !Line added otherwise the code will report a error in the read

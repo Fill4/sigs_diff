@@ -1,9 +1,9 @@
 !----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
 !----------------------------------------------------------------------------
+subroutine init (afile)
 ! This subroutine reads frequency data from file AFILE, and divides it in
 ! groups of modes with same degree l.
-subroutine init (afile)
 
 	use types_and_interfaces, only: dp
 	use commonvar
@@ -13,11 +13,15 @@ subroutine init (afile)
 	character(len=80), intent(inout) :: afile
 	real(dp) :: dw, fw, ww, ss, wlower, wupper, wmax, wmin
 	integer  :: ll, nd, nn
-	integer  :: i, j
+	integer  :: i, j, k
 
 	close (1)
 	open (1,file=afile,status='old')
 	call skpcom (1)
+	! Necessary change for fgong freq files
+	do k=1,6
+		read(1,*)
+	end do
 
 	wmin = 1.0d6
 	wmax = 0.0d0
@@ -27,10 +31,10 @@ subroutine init (afile)
 	! and minimum frequencies accepted from the data.
 10	if (.NOT. use_error_chi2) then
 		read (1,*,end=20) ll,nn,ww
-		print *, ll, nn, ww
+		if (verbose) print *, ll, nn, ww
 	else if (use_error_chi2) then
 		read (1,*,end=20) ll,nn,ww,ss
-		print *, ll, nn, ww, ss
+		if (verbose) print *, ll, nn, ww, ss
 		if (ss.gt.ssmax) goto 10
 	endif
 
@@ -48,15 +52,19 @@ subroutine init (afile)
 20	rewind (1)
 
 	call skpcom (1)
+	! Necessary change for fgong freq files
+	do k=1,6
+		read(1,*)
+	end do
 
 	dw = (wmax-wmin)
 	wlower = wmin + dw*vleft
 	wupper = wmax - dw*vright
 
-	write (*,1013) 'Range in frequencies:', wlower, wupper
+	if (verbose) write (*,1013) 'Range in frequencies:', wlower, wupper
 1013 format (7x, a, f10.4, x, '-', x, f9.4)
  
-	write (*,1014) 'Reference frequency :', w0ref
+	if (verbose) write (*,1014) 'Reference frequency :', w0ref
 1014 format (7x, a, f10.4)
 
 	! Check if reference frequency is adequate
@@ -131,7 +139,7 @@ subroutine init (afile)
 	! Add final value to np to later iterate through all l's again
 	np(nnp+1) = n+1
 
-	write (6,1015) "Points read: ", n
+	if (verbose) write (6,1015) "Frequencies read: ", n
 1015 format (7x, a, i3)
 
 	! Call second_diff to calcualte the second differences from the read frequencies

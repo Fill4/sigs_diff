@@ -1,8 +1,8 @@
 !--------------------------------------------------------------------
 ! Joao Faria: 20/08/2012	|	Revised: Filipe Pereira - Abr 2016
 !--------------------------------------------------------------------
+subroutine openfiles
 ! This subroutine opens or creates the Results file.
-subroutine openfiles ()
 
 	use commonvar
 	implicit none

@@ -1,9 +1,9 @@
 !----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
 !----------------------------------------------------------------------------
+subroutine parameters(options_file)
 ! This subroutine parses through the options_file assigning the input values to 
 ! all variables.
-subroutine parameters(options_file)
 
 	use commonvar
 	implicit none
@@ -41,7 +41,7 @@ subroutine parameters(options_file)
 	character (len=256)            :: message
 	
 	! Open Options File
-	write (6,*) " Reading input parameters from file: ", options_file
+	if (verbose) write (6,*) " Reading input parameters from file: ", options_file
 	open(unit=unit1, file=options_file, &
 				  action='read', delim='quote', &
 				  iostat=ierr)
@@ -49,7 +49,7 @@ subroutine parameters(options_file)
 	! Read Options File
 	read(unit1, nml=sig_bcz_controls, iostat=ierr, iomsg=message)
 	close (unit1)
-	if (ierr /= 0) write(*,*) " --> failed in ", trim(options_file), &
+	if (ierr /= 0) write(*,*) " Failed reading ", trim(options_file), &
 				  " with error code ", ierr, '/', message		
 
 	! Constants

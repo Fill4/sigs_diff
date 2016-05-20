@@ -1,8 +1,8 @@
 !----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
 !----------------------------------------------------------------------------
-! This subroutine reads all the frequencies files on afile.
 subroutine deffreq (afile)
+! This subroutine reads all the frequencies files on afile.
 	
 	use commonvar
 	implicit none
@@ -16,23 +16,23 @@ subroutine deffreq (afile)
 		afile0='stop'
 	endif
 	
-	write(*,*) ' '
-	
 	if (use_error_chi2) then
-		write (*,'(2x, a)', advance = "no") "Name of input file (l,n,v,sigma) --> "
+		if (verbose) write (*,'(2x, a)', advance = "no") "Name of input file (l,n,v,sigma) --> "
 	else if (.NOT. use_error_chi2) then
-		write (*,'(2x, a)', advance = "no") "Name of input file (l,n,v) --> "
+		if (verbose) write (*,'(2x, a)', advance = "no") "Name of input file (l,n,v) --> "
 	endif
 
 	read (*,'(a80)') afile
 
-	write (*,*) ' '
+	if (verbose) write (*,*) ' '
 
 	if (afile(1:1).eq.' ') afile = afile0
 	if (afile(1:4).eq.'stop') stop
 
-	write (*,*) " Reading frequencies from File: ", afile
-	write (*,*) ' '
+	if (verbose) then
+		write (*,*) " Reading frequencies from File: ", afile
+		write (*,*) ' '
+	end if
 
 	return
 end
