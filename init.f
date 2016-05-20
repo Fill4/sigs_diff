@@ -18,10 +18,13 @@ subroutine init (afile)
 	close (1)
 	open (1,file=afile,status='old')
 	call skpcom (1)
+	
 	! Necessary change for fgong freq files
-	do k=1,6
-		read(1,*)
-	end do
+	if (is_model) then
+		do k=1,6
+			read(1,*)
+		end do
+	end if
 
 	wmin = 1.0d6
 	wmax = 0.0d0

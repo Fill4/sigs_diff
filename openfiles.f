@@ -15,20 +15,22 @@ subroutine openfiles
 		open (9, file='Results', status='old', position='append')
 	else 
 		open (9, file='Results', status='unknown')
-		write (9,*) ' '
+		if (verbose) write (9,*) ' '
 		close (9)
 
 		open (9,file='Results',status='old')
 
 		! Write header
-		write (9,'(x, a, i1, x, a)') "# SIG_GENETIC results (", nconst, "parameters)"
-		write (9,*) ''
+		if (verbose) then
+			write (9,'(x, a, i1, x, a)') "# SIG_GENETIC results (", nconst, "parameters)"
+			write (9,*) ''
 
-		write (9,'(x, a, a23, 7a10)') &
-		  "#", "file", "tau_bcz", "phi_bcz", "amp_bcz", "tau_he", "phi_he", "amp_he", "beta"
-		write (9,*) &
-		  "#---------------------------------------------------------------------------------------------"
-		write (9,*) ''
+			write (9,'(x, a, a23, 7a10)') &
+			  "#", "file", "tau_bcz", "phi_bcz", "amp_bcz", "tau_he", "phi_he", "amp_he", "beta"
+			write (9,*) &
+			  "#---------------------------------------------------------------------------------------------"
+			write (9,*) ''
+		end if
 	endif
 
 	return

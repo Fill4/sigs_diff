@@ -11,6 +11,7 @@ module commonvar
 	logical, public		:: use_error_chi2 		! Use errors from frequencies
 	logical, public		:: show_plots = .FALSE.
 	logical, public		:: verbose = .FALSE.	! Toggle print information during execution
+	logical, public		:: is_model = .FALSE.
 	
 	integer, public		:: nconst				! number of parameters to fit
 	integer, public		:: lmin, lmax, nlmin	! lmin - min degree l to consider

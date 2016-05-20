@@ -7,8 +7,8 @@ subroutine deffreq (afile)
 	use commonvar
 	implicit none
 	
-	character(len=80), intent(inout)    :: afile
-	character(len=80)    :: afile0
+	character(len=80), intent(inout)	:: afile
+	character(len=80)					:: afile0
 
 	if (afile(1:5).eq.'00000') then
 		afile0='freqs'
