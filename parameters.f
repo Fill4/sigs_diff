@@ -17,8 +17,12 @@ subroutine parameters(options_file)
 								nlmind,&
 								use_error_chi2d,&
 								ssmaxd,&
-								lmind,lmaxd
-	
+								lmind,lmaxd,&
+								degreed,&
+								large_sepd, teffd, lumd,&
+								upper_tau_bczd, lower_tau_bczd,&
+								upper_tau_he2d,lower_tau_he2d
+
 	! Variables to control pikaia execution
 	integer		:: pikaia_popd = -1, pikaia_gend = -1
 	! Reference frequency
@@ -34,7 +38,12 @@ subroutine parameters(options_file)
 	! Range in degree
 	integer		:: lmind = 0,lmaxd = 2
 	! Degree of the polynomial smooth function
-	integer		:: degreed = 2
+	integer		:: degreed = 3
+	!Star parameters
+	real		:: large_sepd, teffd, lumd
+	!Initial values for parameters
+	integer		:: upper_tau_bczd = 2500, lower_tau_bczd = 1500
+	integer		:: upper_tau_he2d = 1400, lower_tau_he2d = 500
 
 	integer                        :: ierr = 1
 	integer                        :: unit1 = 8
@@ -79,6 +88,15 @@ subroutine parameters(options_file)
 
 	use_error_chi2 = use_error_chi2d
 	ssmax = ssmaxd
+
+	upper_tau_bcz = upper_tau_bczd
+	lower_tau_bcz = lower_tau_bczd
+	upper_tau_he2 = upper_tau_he2d
+	lower_tau_he2 = lower_tau_he2d
+
+	teff = teffd
+	lum = lumd
+	large_sep = large_sepd
 
 	return
 

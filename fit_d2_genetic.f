@@ -27,7 +27,6 @@ subroutine fit_d2_genetic (chi2)
 	character(len=80)			:: outfile, filename
 	real(dp), dimension(nd2)	:: smooth
 	
-    degree = 3
 	! Polynomial fit of the second differences. The degree is previously defined
 	if (degree .eq. 0) then
 		polyc(1) = median(d2(1:nd2))
@@ -125,26 +124,26 @@ end function objfun_ga
 subroutine rescale(array_in, array_out)
 ! Rescales the parameters that come out of pikaia ARRAY_IN to their physical
 ! values ARRAY_OUT
-		
-		use types_and_interfaces, only: dp
-		use commonvar, only: pi
-		
-		implicit none
-		
-		real, dimension(:), intent(in)      :: array_in
-		real(dp), dimension(:), intent(out) :: array_out
+	
+	use types_and_interfaces, only: dp
+	use commonvar
+	
+	implicit none
+	
+	real, dimension(:), intent(in)      :: array_in
+	real(dp), dimension(:), intent(out) :: array_out
 
-		
-		! Bcz
-		array_out(1) = dble(array_in(1)) * 1d1
-		array_out(2) = dble(array_in(2)) * (4000._dp - 1200._dp) + 1200._dp
-		array_out(3) = dble(array_in(3)) * pi
-		
-		! HeII
-		array_out(4) = dble(array_in(4)) * 1d1
-		array_out(5) = dble(array_in(5)) * 5d2
-		array_out(6) = dble(array_in(6)) * (1800._dp - 200._dp) + 200._dp
-		array_out(7) = dble(array_in(7)) * pi
+	
+	! Bcz
+	array_out(1) = dble(array_in(1)) * 1d1
+	array_out(2) = dble(array_in(2)) * (upper_tau_bcz - lower_tau_bcz) + lower_tau_bcz
+	array_out(3) = dble(array_in(3)) * pi
+	
+	! HeII
+	array_out(4) = dble(array_in(4)) * 1d1
+	array_out(5) = dble(array_in(5)) * 5d2
+	array_out(6) = dble(array_in(6)) * (upper_tau_he2 - lower_tau_he2) + lower_tau_he2
+	array_out(7) = dble(array_in(7)) * pi
   
 end subroutine rescale
   

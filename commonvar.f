@@ -11,7 +11,6 @@ module commonvar
 	logical, public		:: use_error_chi2 		! Use errors from frequencies
 	logical, public		:: show_plots = .FALSE.
 	logical, public		:: verbose = .FALSE.	! Toggle print information during execution
-	logical, public		:: is_model = .FALSE.
 	
 	integer, public		:: nconst				! number of parameters to fit
 	integer, public		:: lmin, lmax, nlmin	! lmin - min degree l to consider
@@ -29,10 +28,11 @@ module commonvar
 	real, public		:: ssmax				! max error allowed in frequencies
 	real, public		:: w0ref				! Reference frequency
 
-	real, public		:: star_mass			
-	real, public		:: star_rad
-	real, public		:: star_lum				!Various star parameters
-	real, public		:: star_teff
-	real, public		:: star_age
+	!Variables to use in rescale function
+	real(dp), public		:: upper_tau_bcz, lower_tau_bcz
+	real(dp), public		:: upper_tau_he2, lower_tau_he2
+	real(dp), public		:: upper_beta, lower_beta
+	
+	reaL, public		:: large_sep, teff, lum
 
 end module commonvar
