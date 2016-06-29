@@ -88,6 +88,7 @@ subroutine parameters(options_file)
 
 	use_error_chi2 = use_error_chi2d
 	ssmax = ssmaxd
+	degree = degreed
 
 	upper_tau_bcz = upper_tau_bczd
 	lower_tau_bcz = lower_tau_bczd

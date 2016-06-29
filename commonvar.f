@@ -24,9 +24,9 @@ module commonvar
 	
 	real(dp), public	:: fac, pi
 	
-	real, public		:: vleft,vright
-	real, public		:: ssmax				! max error allowed in frequencies
-	real, public		:: w0ref				! Reference frequency
+	real(dp), public	:: vleft,vright			!
+	real(dp), public	:: ssmax                ! Max error allowed in frequencies
+	real(dp), public	:: w0ref                ! Reference values
 
 	!Variables to use in rescale function
 	real(dp), public		:: upper_tau_bcz, lower_tau_bcz

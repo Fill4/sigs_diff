@@ -2,7 +2,8 @@
 pikaia_popd = -1			!Initial population of pikaia (Number of initial guesses)
 pikaia_gend = -1			!Number of generations evolved to determine the parameters
 
-w0refd = 3000.0
+w0refd = 2000.0
+degreed = 1
 
 vrightd = 0.0
 vleftd = 0.0
@@ -11,12 +12,12 @@ nlmind = 5
 lmind = 0
 lmaxd = 3
 
-use_error_chi2d = .FALSE.
-ssmaxd = 0.500
+use_error_chi2d = .TRUE.
+ssmaxd = 0.300
 
-upper_tau_bczd = 2400
-lower_tau_bczd = 1900
-upper_tau_he2d = 850
+upper_tau_bczd = 3600
+lower_tau_bczd = 1000
+upper_tau_he2d = 1500
 lower_tau_he2d = 350
 /
 !Line added otherwise the code will report a error in the read

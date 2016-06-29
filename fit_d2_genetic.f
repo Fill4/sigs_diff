@@ -135,12 +135,12 @@ subroutine rescale(array_in, array_out)
 
 	
 	! Bcz
-	array_out(1) = dble(array_in(1)) * 1d1
+	array_out(1) = dble(array_in(1)) * 10
 	array_out(2) = dble(array_in(2)) * (upper_tau_bcz - lower_tau_bcz) + lower_tau_bcz
 	array_out(3) = dble(array_in(3)) * pi
 	
 	! HeII
-	array_out(4) = dble(array_in(4)) * 1d1
+	array_out(4) = dble(array_in(4)) * 10
 	array_out(5) = dble(array_in(5)) * 5d2
 	array_out(6) = dble(array_in(6)) * (upper_tau_he2 - lower_tau_he2) + lower_tau_he2
 	array_out(7) = dble(array_in(7)) * pi
