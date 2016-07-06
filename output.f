@@ -17,6 +17,7 @@ subroutine output (afile, chi2)
 	real(dp)						:: tauBCZ, tauHe, a_bcz, a_he, beta
 	real(dp), dimension(150)		:: xx, result_fun, he_fun, bcz_fun, smooth_fun
 	real(dp)						:: min_xx, max_xx
+	integer							:: j, k
 
 
 	! Create arrays with all the results obtained.		
@@ -72,6 +73,20 @@ subroutine output (afile, chi2)
 	write (9,9003) afile, tauBCZ, c(3), a_bcz, tauHe, c(7), a_he, beta
 9003 format (a24, 7f10.4)
 	close(9)
+
+	if (show_plots) then
+		open (8, file='data_funcs', status='unknown')
+		do j = 1,150
+			write(8,9004) xx(j)*w0ref, result_fun(j), bcz_fun(j), he_fun(j)
+	9004	format (4f15.5)
+		end do
+
+		open (7, file='data', status='unknown')
+		do k = 1,nd2
+			write(7,9005) w_d2(k)*w0ref, d2(k)*w0ref, sigd2(k)
+	9005	format (3f15.6)
+		end do
+	end if
 
 	return
 		

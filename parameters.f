@@ -38,7 +38,7 @@ subroutine parameters(options_file)
 	! Range in degree
 	integer		:: lmind = 0,lmaxd = 2
 	! Degree of the polynomial smooth function
-	integer		:: degreed = 3
+	integer		:: degreed = 1
 	!Star parameters
 	real		:: large_sepd, teffd, lumd
 	!Initial values for parameters
