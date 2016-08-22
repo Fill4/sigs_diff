@@ -17,8 +17,10 @@ subroutine second_diff
 	d2work = 0.0
 	error = 0.0
 
+	if (verbose) write(*,1015) 'l', 'w', 'd2', 'sig'
+ 1015 format (a4, a12, a12, a9)
 	! If frequencies are from sequential n's and are from the same l mode then calculate de 2nd difference
-	do i=2,n
+	do i=2,n-1
 		if (l(i-1) == l(i) .and. l(i) == l(i+1) .and. xn(i)-xn(i-1) == 1 .and. xn(i)-xn(i-1) == 1) then
 			d2work(i) = w(i-1) - 2.0*w(i) + w(i+1)
 			if (use_error_chi2) then
@@ -37,14 +39,17 @@ subroutine second_diff
 			if (use_error_chi2) then
 				sigd2(j) = error(i) ! in Hz
 			end if
-			
+			if (verbose) then
+				write(*,1010) l_d2(j), w_d2(j), d2(j), sigd2(j)
+			endif
 			j = j+1
 		end if
 	end do
+ 1010 format (i4, f12.4, f12.4, f9.4)
 
 	! Number of second differences
 	nd2 = j-1
-	if (verbose) write (6,'(7x, a, i3)') "# of second differences: ", nd2
+	if (verbose) write (6,'(2x, a, i3)') "# of second differences: ", nd2
 
 	! Write second differences to file
 	if (use_error_chi2) then

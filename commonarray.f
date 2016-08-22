@@ -13,7 +13,7 @@ module commonarray
 	integer, public					:: nd2			! number of second differences
 	
 	integer, dimension(npt), public		:: l, l_d2		! angular degrees
-	real(dp), dimension(npt), public	:: xn
+	integer, dimension(npt), public		:: xn
 
 	real(dp), dimension(npt), public	:: w		! frequencies
 	real(dp), dimension(npt), public	:: d2		! second differences

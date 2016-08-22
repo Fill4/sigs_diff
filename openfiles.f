@@ -24,10 +24,10 @@ subroutine openfiles
 		if (verbose) then
 			write (9,'(a, i1, x, a)') "# SIG_GENETIC results (", nconst, "parameters)"
 
-			write (9,'(a, a23, 7a10)') &
-			  "#", "file", "tau_bcz", "phi_bcz", "amp_bcz", "tau_he", "phi_he", "amp_he", "beta"
-			write (9,*) &
-			  "#---------------------------------------------------------------------------------------------"
+			write (9,'(a, a6, a29, 7a10)') &
+				"#", "file", "|", "tau_bcz", "phi_bcz", "amp_bcz", "tau_he", "phi_he", "amp_he", "beta"
+			write (9,'(a)') &
+				"#---------------------------------------------------------------------------------------------"
 		end if
 	endif
 

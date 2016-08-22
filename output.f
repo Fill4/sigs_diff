@@ -71,7 +71,7 @@ subroutine output (afile, chi2)
 
 	! Write results to the Results file
 	write (9,9003) afile, tauBCZ, c(3), a_bcz, tauHe, c(7), a_he, beta
-9003 format (a24, 7f10.4)
+9003 format (a36, 7f12.4)
 	close(9)
 
 	if (show_plots) then

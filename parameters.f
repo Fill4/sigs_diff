@@ -38,7 +38,7 @@ subroutine parameters(options_file)
 	! Range in degree
 	integer		:: lmind = 0,lmaxd = 2
 	! Degree of the polynomial smooth function
-	integer		:: degreed = 1
+	integer		:: degreed = 3
 	!Star parameters
 	real		:: large_sepd, teffd, lumd
 	!Initial values for parameters
@@ -58,7 +58,7 @@ subroutine parameters(options_file)
 	! Read Options File
 	read(unit1, nml=sig_bcz_controls, iostat=ierr, iomsg=message)
 	close (unit1)
-	if (ierr /= 0) write(*,*) " Failed reading ", trim(options_file), &
+	if (ierr /= 0) write(*,*) "Failed reading ", trim(options_file), &
 				  " with error code ", ierr, '/', message		
 
 	! Constants

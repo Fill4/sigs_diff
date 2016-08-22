@@ -27,10 +27,8 @@ subroutine init (afile)
 	! and minimum frequencies accepted from the data.
 10	if (.NOT. use_error_chi2) then
 		read (1,*,end=20) ll,nn,ww
-		if (verbose) print *, ll, nn, ww
 	else if (use_error_chi2) then
 		read (1,*,end=20) ll,nn,ww,ss
-		if (verbose) print *, ll, nn, ww, ss
 		if (ss.gt.ssmax) goto 10
 	endif
 
@@ -52,12 +50,16 @@ subroutine init (afile)
 	dw = (wmax-wmin)
 	wlower = wmin + dw*vleft
 	wupper = wmax - dw*vright
-
-	if (verbose) write (*,1013) 'Range in frequencies:', wlower, wupper
-1013 format (7x, a, f10.4, x, '-', x, f9.4)
  
-	if (verbose) write (*,1014) 'Reference frequency :', w0ref
-1014 format (7x, a, f10.4)
+	if (verbose) then
+		write (*,1013) 'Range in frequencies:', wlower, wupper
+		write (*,1014) 'Reference frequency :', w0ref
+		write(*,*) ' '
+		write(*,1015) 'l', 'n', 'w', 'sig'
+	endif
+1013 format (2x, a, f10.4, x, '-', x, f9.4)
+1014 format (2x, a, f10.4)
+1015 format (a4, a5, a12, a9)
 
 	! Check if reference frequency is adequate
 	fw = (w0ref-wlower)/(wupper-wlower)
@@ -90,6 +92,8 @@ subroutine init (afile)
 	n = n+1
 	w(n) = ww/w0ref
 	xn(n) = dble(nn)
+	if (verbose) write(*,1016) l(n), xn(n), w(n)*w0ref, sig(n)
+ 1016 format (i4, i5, f12.4, f9.4)
 	goto 11
 
  21 close (1)
@@ -131,8 +135,10 @@ subroutine init (afile)
 	! Add final value to np to later iterate through all l's again
 	np(nnp+1) = n+1
 
-	if (verbose) write (6,1015) "Frequencies read: ", n
-1015 format (7x, a, i3)
+	if (verbose) write(*,*) ' '
+	if (verbose) write (6,1017) "Frequencies read: ", n
+1017 format (2x, a, i3)
+	if (verbose) write(*,*) ' '
 
 	! Call second_diff to calcualte the second differences from the read frequencies
 	call second_diff
