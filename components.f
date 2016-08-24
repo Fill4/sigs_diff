@@ -3,7 +3,7 @@ elemental real(dp) function smooth_comp (nu_d2)
 ! Polynomial smooth function. Depends on degree defined.
 
 	use types_and_interfaces, only: dp
-	use commonvar, only: degree
+	use commonvar, only: degree, w0ref
 	use commonarray, only: polyc
 	implicit none
 
@@ -12,7 +12,7 @@ elemental real(dp) function smooth_comp (nu_d2)
 	smooth_comp = 0
 
 	do i=0,degree
-		smooth_comp = smooth_comp + (polyc(i+1)/nu_d2**(i))
+		smooth_comp = smooth_comp + (polyc(i+1)/nu_d2**i)
 	end do
 
 end function smooth_comp
@@ -36,8 +36,8 @@ elemental real(dp) function he_comp (nu_d2)
 	!   c(6) = tau_he
 	!   c(7) = phi_he
 	
-	xarg = 4.0_dp*pi*c(6)*w0ref*nu_d2*1d-6 + 2.0_dp*c(7)
-	he_comp = (c(4) * nu_d2 * exp(-(c(5)*2.0_dp*pi*w0ref*1d-6) * nu_d2**2)) * sin(xarg)
+	xarg = 4.0_dp*pi*c(6)*nu_d2*w0ref*1.0d-6 + 2.0_dp*c(7)
+	he_comp = (c(4)*nu_d2*exp(-c(5)*(nu_d2*w0ref*2.0_dp*pi*1.0d-6)**2)) * sin(xarg)
 
 end function he_comp
 
@@ -59,8 +59,8 @@ elemental real(dp) function bcz_comp (nu_d2)
 	!   c(2) = tau_bcz
 	!   c(3) = phi_bcz
 	
-	yarg = 4.0d0*pi*c(2)*w0ref*nu_d2*1d-6 + 2.0_dp*c(3)
-	bcz_comp  = ( c(1) / (nu_d2**2) ) * sin(yarg)
+	yarg =  4.0d0*pi*c(2)*nu_d2*w0ref*1.0d-6 + 2.0_dp*c(3)
+	bcz_comp  = ( c(1)/nu_d2**2 ) * sin(yarg)
 
 end function bcz_comp
 

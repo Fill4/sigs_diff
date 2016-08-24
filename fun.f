@@ -5,8 +5,8 @@ elemental real(dp) function fun (nu_d2)
 ! This is the theoretical function to be fitted
 
 	use types_and_interfaces, only: dp
-	use commonvar
-	use commonarray
+	use commonarray, only: c
+	use commonvar, only: w0ref, pi
 	implicit none
 
 	real(dp), intent(in)  :: nu_d2
@@ -18,16 +18,16 @@ elemental real(dp) function fun (nu_d2)
 	!   c(6) = tau_he
 	!   c(7) = phi_he
 	
-	xarg = 4.0_dp*pi*c(6)*w0ref*nu_d2*1d-6 + 2.0_dp*c(7)
-	heii = (c(4) * nu_d2 * exp(-(c(5)*2.0_dp*pi*w0ref*1d-6) * nu_d2**2)) * sin(xarg)
+	xarg = 4.0_dp*pi*c(6)*nu_d2*w0ref*1.0d-6 + 2.0_dp*c(7)
+	heii = (c(4)*nu_d2*exp(-c(5)*(nu_d2*w0ref*2.0_dp*pi*1.0d-6)**2)) * sin(xarg)
 
 	! BCZ signal
 	!   c(1) = A_bcz
 	!   c(2) = tau_bcz
 	!   c(3) = phi_bcz
 
-	yarg = 4.0d0*pi*c(2)*w0ref*nu_d2*1d-6 + 2.0_dp*c(3)
-	bcz  = ( c(1) / (nu_d2**2) ) * sin(yarg)
+	yarg = 4.0d0*pi*c(2)*nu_d2*w0ref*1.0d-6 + 2.0_dp*c(3)
+	bcz  = ( c(1)/nu_d2**2 ) * sin(yarg)
 
 	fun = bcz + heii
 

@@ -27,32 +27,31 @@ subroutine output (afile, chi2)
 	result_fun = fun(xx)
 	he_fun = he_comp(xx)
 	bcz_fun = bcz_comp(xx)
-	smooth_fun = smooth_comp(xx)
+	smooth_fun = smooth_comp(xx*w0ref)
 
 	if (show_plots) then
 		! Plot initial second differences and smooth function fitted to them
-		call plot(w_d2(1:nd2)*w0ref, pre_d2(1:nd2)*w0ref, &
-		xx*w0ref, smooth_fun*w0ref, ' 5.00-', color1='black', color2='red')
+		call plot(w_d2(1:nd2)*w0ref, pre_d2(1:nd2), &
+		xx*w0ref, smooth_fun, ' 5.00-', color1='black', color2='red')
 
 		! Plot second differences without the smooth component
 		!call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, ' 5.', color1='black')
 		
 		! Plot the fit of fun to the second differences
-		call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, &
-		xx*w0ref, result_fun*w0ref, ' 5.00-', color1='black', color2='red', errors=sigd2(1:nd2))
+		call plot(w_d2(1:nd2)*w0ref, d2(1:nd2), &
+		xx*w0ref, result_fun, ' 5.00-', color1='black', color2='red', errors=sigd2(1:nd2))
 
 		! Plot the HeII and the Bcz components
-		call plot(xx*w0ref, he_fun*w0ref, &
-		xx*w0ref, bcz_fun*w0ref, '00-00-', color1='blue', color2='red')
+		call plot(xx*w0ref, he_fun, &
+		xx*w0ref, bcz_fun, '00-00-', color1='blue', color2='red')
 	end if
 
 	! Get the parameters from the results array C.
-	a_bcz = c(1)*w0ref
+	a_bcz = c(1)
 	tauBCZ = c(2)
-	a_he = c(4)*w0ref
+	a_he = c(4)
 	beta = c(5)
 	tauHe = c(6)
-	chi2 = chi2*w0ref**2
 
 	! Write the results to the shell during execution if verbose is TRUE
 	if (verbose) write (6,1010)	'Results:', &

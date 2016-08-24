@@ -90,9 +90,9 @@ subroutine init (afile)
 	if (l(n+1).gt.lmax.or.l(n+1).lt.lmin) goto 11
 
 	n = n+1
-	w(n) = ww/w0ref
+	w(n) = ww
 	xn(n) = dble(nn)
-	if (verbose) write(*,1016) l(n), xn(n), w(n)*w0ref, sig(n)
+	if (verbose) write(*,1016) l(n), xn(n), w(n), sig(n)
  1016 format (i4, i5, f12.4, f9.4)
 	goto 11
 
