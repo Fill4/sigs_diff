@@ -19,7 +19,7 @@ elemental real(dp) function fun (nu_d2)
 	!   c(7) = phi_he
 	
 	xarg = 4.0_dp*pi*c(6)*nu_d2*w0ref*1.0d-6 + 2.0_dp*c(7)
-	heii = (c(4)*nu_d2*exp(-c(5)*(nu_d2*w0ref*2.0_dp*pi*1.0d-6)**2)) * sin(xarg)
+	heii = (c(4)*nu_d2*exp(-c(5)*nu_d2**2)) * sin(xarg)
 
 	! BCZ signal
 	!   c(1) = A_bcz

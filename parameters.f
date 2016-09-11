@@ -13,35 +13,39 @@ subroutine parameters(options_file)
 	! Defining namelist sig_bcz_controls for easy input of a list of variables
 	namelist / sig_bcz_controls / pikaia_popd,pikaia_gend,&
 								w0refd,&
-								vrightd,vleftd,&
+								lmind,lmaxd,&
 								nlmind,&
+								nmind,nmaxd,&
+								vrightd,vleftd,&
 								use_error_chi2d,&
 								ssmaxd,&
-								lmind,lmaxd,&
 								degreed,&
 								large_sepd, teffd, lumd,&
 								upper_tau_bczd, lower_tau_bczd,&
 								upper_tau_he2d,lower_tau_he2d
 
+	! Declaration and default initialization of all user defined variables
+	! Degree of the polynomial smooth function
+	integer		:: degreed = 0
 	! Variables to control pikaia execution
 	integer		:: pikaia_popd = -1, pikaia_gend = -1
 	! Reference frequency
 	real		:: w0refd = 2100.0
-	! Borders to ignore in frequency (right and left)
-	real		:: vrightd = 0.0, vleftd = 0.0
+	! Range in degree
+	integer		:: lmind = 0, lmaxd = 2
 	! Minimum number of modes with same degree
 	integer		:: nlmind = 5
+	! Range in radial order
+	integer		:: nmind = 0, nmaxd = 100
+	! Borders to ignore in frequency (right and left)
+	real		:: vrightd = 0.0, vleftd = 0.0
 	! Whether to use errors or not
 	logical		:: use_error_chi2d = .FALSE.
 	! Upper limit for error
 	real		:: ssmaxd = 0.500
-	! Range in degree
-	integer		:: lmind = 0,lmaxd = 2
-	! Degree of the polynomial smooth function
-	integer		:: degreed = 3
-	!Star parameters
+	! Star parameters
 	real		:: large_sepd, teffd, lumd
-	!Initial values for parameters
+	! Initial values for parameters
 	integer		:: upper_tau_bczd = 2500, lower_tau_bczd = 1500
 	integer		:: upper_tau_he2d = 1400, lower_tau_he2d = 500
 
@@ -49,13 +53,13 @@ subroutine parameters(options_file)
 	integer                        :: unit1 = 8
 	character (len=256)            :: message
 	
-	! Open Options File
+	! Open user defined options file
 	if (verbose) write (6,*) " Reading input parameters from file: ", options_file
 	open(unit=unit1, file=options_file, &
 				  action='read', delim='quote', &
 				  iostat=ierr)
 
-	! Read Options File
+	! Read user defined options file (overwrites default values)
 	read(unit1, nml=sig_bcz_controls, iostat=ierr, iomsg=message)
 	close (unit1)
 	if (ierr /= 0) write(*,*) "Failed reading ", trim(options_file), &
@@ -63,9 +67,10 @@ subroutine parameters(options_file)
 
 	! Constants
 	pi = 4.0_dp*atan(1.0_dp)
-	fac = 2.0d-6*pi
 	
 	! Assgn input values to all variables
+	degree = degreed
+	
 	pikaia_pop = pikaia_popd
 	pikaia_gen = pikaia_gend	
 	
@@ -74,21 +79,13 @@ subroutine parameters(options_file)
 	lmin = lmind
 	lmax = lmaxd
 	nlmin = nlmind
-	isel = 0
-
-	if (isel.eq.0) then
+	nmin = nmind
+	nmax = nmaxd
 	vleft = vleftd
 	vright = vrightd
-	else if (isel.eq.1) then
-	nleft = vleftd !! fix
-	nright = vrightd !! fix
-	else 
-	write(*,*) "ERROR: ISEL must be 0 or 1!"
-	endif
 
 	use_error_chi2 = use_error_chi2d
 	ssmax = ssmaxd
-	degree = degreed
 
 	upper_tau_bcz = upper_tau_bczd
 	lower_tau_bcz = lower_tau_bczd

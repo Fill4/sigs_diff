@@ -1,7 +1,7 @@
 !----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
 !----------------------------------------------------------------------------
-program sig_bcz_d2
+program sigs_d2
 ! This program isolates an oscillatory signal that is present in the second 
 ! differences of the oscillation frequencies and associated with regions where 
 ! the sound speed has a discontinuity.
@@ -45,7 +45,7 @@ program sig_bcz_d2
 
 	afile='00000'
 	options_file = 'options_file'
-	if (verbose) write (6,*)"---------------------> PROGRAM SIG_BCZ_D2 <---------------------"
+	if (verbose) write (6,*)"---------------------> PROGRAM SIGS_D2 <---------------------"
 
 	! Number of parameters to fit
 1	nconst=7
@@ -66,11 +66,11 @@ program sig_bcz_d2
 	! Output the results
 	call output (afile, chi2)
 
-	if (verbose) write (6,*)"---------------------> PROGRAM SIG_BCZ_D2 <---------------------"
+	if (verbose) write (6,*)"---------------------> PROGRAM SIGS_D2 <---------------------"
 
 	call flush (6)
 	deallocate(c)
 
 	goto 1
 
-end program sig_bcz_d2
+end program sigs_d2

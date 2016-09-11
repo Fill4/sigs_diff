@@ -74,16 +74,16 @@ subroutine output (afile, chi2)
 	close(9)
 
 	if (show_plots) then
-		open (8, file='data_funcs', status='unknown')
+		open (8, file='data_diff_2', status='unknown')
 		do j = 1,150
 			write(8,9004) xx(j)*w0ref, result_fun(j), bcz_fun(j), he_fun(j)
 	9004	format (4f15.5)
 		end do
 
-		open (7, file='data', status='unknown')
+		open (7, file='data_diff_1', status='unknown')
 		do k = 1,nd2
-			write(7,9005) w_d2(k)*w0ref, d2(k)*w0ref, sigd2(k)
-	9005	format (3f15.6)
+			write(7,9005) l_d2(k), w_d2(k)*w0ref, d2(k), sigd2(k)
+	9005	format (i3, 3f15.6)
 		end do
 	end if
 

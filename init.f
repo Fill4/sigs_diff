@@ -32,13 +32,8 @@ subroutine init (afile)
 		if (ss.gt.ssmax) goto 10
 	endif
 
-	if (nn.lt.6) goto 10
+	if (nn.gt.nmax.or.nn.lt.nmin) goto 10
 	if (ll.gt.lmax.or.ll.lt.lmin) goto 10
-	if (isel.eq.1) then
-		if (nn.lt.nleft) goto 10
-		if (nn.gt.nright) goto 10
-	endif
-
 	if (ww.gt.wmax) wmax = ww
 	if (ww.lt.wmin) wmin = ww
 	goto 10
@@ -55,45 +50,44 @@ subroutine init (afile)
 		write (*,1013) 'Range in frequencies:', wlower, wupper
 		write (*,1014) 'Reference frequency :', w0ref
 		write(*,*) ' '
-		write(*,1015) 'l', 'n', 'w', 'sig'
 	endif
 1013 format (2x, a, f10.4, x, '-', x, f9.4)
 1014 format (2x, a, f10.4)
-1015 format (a4, a5, a12, a9)
 
 	! Check if reference frequency is adequate
 	fw = (w0ref-wlower)/(wupper-wlower)
 	if (fw.lt.0.1d0.or.fw.gt.0.9d0) then
 		write (*,*) 'WARNING: Reference w is inadequate for data!'
+		write (*,*) ' '
 	endif
+
+	if (verbose) write(*,1015) 'l', 'n', 'w', 'sig'
+1015 format (a4, a5, a12, a9)
 
 	! Redo cycle to read the frequencies and its data to the arrays
-11	continue
+ 11 continue
 
 	if (.NOT. use_error_chi2) then
-		read (1,*,end=21) l(n+1),nn,ww
+		read (1,*,end=21) ll,nn,ww
 	else if (use_error_chi2) then
-		read (1,*,end=21) l(n+1),nn,ww,sig(n+1)
-		if (sig(n+1).gt.ssmax) goto 11
+		read (1,*,end=21) ll,nn,ww,ss
+		if (ss.gt.ssmax) goto 11
 	endif
 
-	if (nn.lt.0) goto 11
-	if (isel.eq.0) then
-		if (ww.gt.wupper.or.ww.lt.wlower) goto 11
-		else if (isel.eq.1) then
-			if (nn.lt.nleft) goto 11
-			if (nn.gt.nright) goto 11
-		else
-			write (*,*) 'WARNING: Wrong option for ISEL!'
-		endif
-
-	if (l(n+1).gt.lmax.or.l(n+1).lt.lmin) goto 11
+	if (ww.gt.wupper.or.ww.lt.wlower) goto 11
+	if (nn.lt.nmin) goto 11
+	if (nn.gt.nmax) goto 11
+	if (ll.gt.lmax.or.ll.lt.lmin) goto 11
 
 	n = n+1
+	l(n) = ll
+	sig(n) = ss
 	w(n) = ww
 	xn(n) = dble(nn)
+
 	if (verbose) write(*,1016) l(n), xn(n), w(n), sig(n)
- 1016 format (i4, i5, f12.4, f9.4)
+ 1016 format (i3, i4, f12.4, f9.4)
+	
 	goto 11
 
  21 close (1)

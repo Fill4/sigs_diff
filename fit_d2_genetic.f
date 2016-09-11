@@ -40,11 +40,11 @@ subroutine fit_d2_genetic (chi2)
 	d2(1:nd2) = d2(1:nd2) - smooth(1:nd2)
 
 	! Define number of re-weight iterations based on error usage 
-	if (use_error_chi2) then
-		maxIter = 4
-	else
-		maxIter = 1
-	end if
+	!if (use_error_chi2) then
+	!	maxIter = 4
+	!else
+	!	maxIter = 1
+	!end if
 
 	! First, initialize the random-number generator
 	seed = TIME()
@@ -147,7 +147,7 @@ subroutine rescale(array_in, array_out)
 	
 	! HeII
 	array_out(4) = dble(array_in(4)) * 10
-	array_out(5) = dble(array_in(5)) * 5000
+	array_out(5) = dble(array_in(5)) * 10
 	array_out(6) = dble(array_in(6)) * (upper_tau_he2 - lower_tau_he2) + lower_tau_he2
 	array_out(7) = dble(array_in(7)) * pi
   

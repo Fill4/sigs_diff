@@ -1,4 +1,5 @@
 &sig_bcz_controls
+
 pikaia_popd = -1			!Initial population of pikaia (Number of initial guesses)
 pikaia_gend = -1			!Number of generations evolved to determine the parameters
 

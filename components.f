@@ -37,7 +37,7 @@ elemental real(dp) function he_comp (nu_d2)
 	!   c(7) = phi_he
 	
 	xarg = 4.0_dp*pi*c(6)*nu_d2*w0ref*1.0d-6 + 2.0_dp*c(7)
-	he_comp = (c(4)*nu_d2*exp(-c(5)*(nu_d2*w0ref*2.0_dp*pi*1.0d-6)**2)) * sin(xarg)
+	he_comp = (c(4)*nu_d2*exp(-c(5)*nu_d2**2)) * sin(xarg)
 
 end function he_comp
 
