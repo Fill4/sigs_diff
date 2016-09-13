@@ -34,16 +34,20 @@ subroutine output (afile, chi2)
 		call plot(w_d2(1:nd2)*w0ref, pre_d2(1:nd2), &
 		xx*w0ref, smooth_fun, ' 5.00-', color1='black', color2='red')
 
-		! Plot second differences without the smooth component
-		!call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, ' 5.', color1='black')
-		
-		! Plot the fit of fun to the second differences
-		call plot(w_d2(1:nd2)*w0ref, d2(1:nd2), &
-		xx*w0ref, result_fun, ' 5.00-', color1='black', color2='red', errors=sigd2(1:nd2))
-
 		! Plot the HeII and the Bcz components
 		call plot(xx*w0ref, he_fun, &
 		xx*w0ref, bcz_fun, '00-00-', color1='blue', color2='red')
+		
+		! Plot second differences without the smooth component
+		!call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, ' 5.', color1='black')
+		if (use_error_chi2) then
+			! Plot the fit of fun to the second differences
+			call plot(w_d2(1:nd2)*w0ref, d2(1:nd2), &
+			xx*w0ref, result_fun, ' 5.00-', color1='black', color2='red', errors=sigd2(1:nd2))
+		else
+			call plot(w_d2(1:nd2)*w0ref, d2(1:nd2), &
+			xx*w0ref, result_fun, ' 5.00-', color1='black', color2='red')!, errors=sigd2(1:nd2))
+		endif
 	end if
 
 	! Get the parameters from the results array C.

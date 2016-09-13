@@ -26,7 +26,7 @@ subroutine parameters(options_file)
 
 	! Declaration and default initialization of all user defined variables
 	! Degree of the polynomial smooth function
-	integer		:: degreed = 0
+	integer		:: degreed = 3
 	! Variables to control pikaia execution
 	integer		:: pikaia_popd = -1, pikaia_gend = -1
 	! Reference frequency
