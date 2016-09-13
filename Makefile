@@ -15,15 +15,10 @@
 # *******************************************************
 # ***   Especificar as directorias com as subrotinas  ***
 # *******************************************************
-JF = /home/joao/Programs/CODE_freqFit/2ndDifferences
-JFA = /home/joao/Programs/CODE_freqFit/2ndDifferences/common
-JFB = /home/joao/Programs/CODE_freqFit/2ndDifferences/basic
-JFC = /home/joao/Programs/CODE_freqFit/nl2sol_fit/subroutines/nl2sol
-# plot library:
-JFp = /home/joao/utils/gnuFor2
-# spline library:
-JFspl = /home/joao/Programs/CODE_freqFit/dierckx
-lib = /home/joao/Programs/fortran/lib
+BASE = /home/fill/Documents/repos/glitch2
+
+# library
+lib = /home/fill/Documents/repos/lib-fortran
 
 # *******************************************************
 # ***                       Macros                    ***
@@ -47,75 +42,39 @@ LINK = -lmodules -llapack -lblas -L/usr/lib
 %.o: %.f90
 	$(FC) $(FFLAGS) -c -o $@ $*.f90 $(LINK) -L$(lib) -J$(lib)
 
-
-
-
 #----------------------------------------------------------
 
 FILES = \
-$(JF)/types.o \
-$(JF)/commonvar.o \
-$(JF)/commonarray.o \
-$(JF)/fun.o \
-$(JF)/components.o \
-$(JF)/sig_bcz_d2.o \
-$(JF)/output.o \
-$(JF)/deffreq.o \
-$(JF)/parameters.o \
-$(JF)/error_covariance.o \
-$(JF)/second_diff.o \
-$(JF)/fit_d2.o \
-$(JF)/fit_d2_genetic.o
-#$(JF)/fun2.o
-
-
-FCOM = \
-$(JFA)/init.o
-
-# $(JFA)/minimize.o \
-# $(JFA)/nl2sol.o \
-# $(JFA)/resid.o\
-
-FBASIC = \
-$(JFB)/num_to_text.o \
-$(JFB)/skpcom.o \
-$(JFB)/length.o
-
-Fnl2sol = \
-$(JFC)/interfaces.o \
-$(JFC)/minimize.o \
-$(JFC)/nl2sol.o \
-$(JFC)/resid.o
-
-
-
-FPLOT = \
-$(JFp)/gnufor2.o
-
-
-#FSPLINE = \
-#$(JFspl)/concur.o \
-#$(JFspl)/curev.o \
-#$(JFspl)/fpadpo.o \
-#$(JFspl)/fpback.o \
-#$(JFspl)/fpbspl.o \
-#$(JFspl)/fpched.o \
-#$(JFspl)/fpcons.o \
-#$(JFspl)/fpdisc.o \
-#$(JFspl)/fpgivs.o \
-#$(JFspl)/fpinst.o \
-#$(JFspl)/fpknot.o \
-#$(JFspl)/fppocu.o \
-#$(JFspl)/fprati.o \
-#$(JFspl)/fprota.o 
-
+$(BASE)/types.o \
+$(BASE)/commonvar.o \
+$(BASE)/commonarray.o \
+$(BASE)/fun.o \
+$(BASE)/components.o \
+$(BASE)/sig_bcz_d2.o \
+$(BASE)/openfiles.o \
+$(BASE)/output.o \
+$(BASE)/deffreq.o \
+$(BASE)/parameters.o \
+$(BASE)/second_diff.o \
+$(BASE)/init.o \
+$(BASE)/skpcom.o \
+$(BASE)/help.o \
+$(BASE)/fit_d2_genetic.o
 
 # **********************************************************
 # ***             Compilar os programas                  *** 
 # **********************************************************
 
+<<<<<<< HEAD
 sig_bcz_d2: $(FILES) $(FCOM) $(FBASIC) 
 	$(FC) $(FILES) $(FCOM) $(FBASIC) -o $@ -L$(lib) -I$(lib) $(LINK) -O3
 
 clean:
 	rm -f $(FILES) $(FCOM) $(FBASIC) *~ *.mod *.o sig_bcz_d2
+=======
+sig_bcz_d2: $(FILES)
+	$(FC) $(FILES) -o $@ -L$(lib) -I$(lib) $(LINK) -O3
+
+clean:
+	rm -f $(FILES) *~ *.mod *.o sig_bcz_d2
+>>>>>>> Automatic_Approach

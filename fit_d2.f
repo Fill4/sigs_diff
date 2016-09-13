@@ -131,6 +131,7 @@
         real(dp)                    :: resid, resid_vector(nd2,1), chi2(1,1)
         
         c = p
+<<<<<<< HEAD
         
         ww = w_d2(1:nd2)
         signal = fun(ww)
@@ -145,5 +146,29 @@
         
         return
         
+=======
+		
+		resid = 0.0d0
+		! if not weighting by errors -
+		if (.NOT. use_error_chi2) then
+			do i=1,nd2
+				ww = w_d2(i)
+				ll = l(i)
+				signal = fun(ww)
+				resid = resid + (d2(i)-signal)**2
+			end do
+		! if weighting by errors -
+		else if (use_error_chi2) then
+			do i=1,nd2
+				ww = w_d2(i)
+				ll = l(i)
+				signal = fun(ww)
+				resid = resid + ((d2(i)-signal)/sigd2(i))**2
+			end do
+		endif
+		
+		func = resid
+		
+>>>>>>> Automatic_Approach
   end subroutine objfun
 

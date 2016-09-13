@@ -1,0 +1,40 @@
+=== SIG-GENETIC ===
+Contributors: João Faria, Mário Monteiro
+Tags: acoustic, glitches, solar-type, stars, frequencies, second, differences
+Compiled with: gfortran
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+Fit acoustic glitches in low-degree p-mode second differences using the PIKAIA
+genetic algorithm.
+
+== Description ==
+
+The program fits the signal due to the acoustic glitches at the base of the 
+convection zone and at the Helium second ionization region that is present in
+the second frequency differences.
+See Houdek&Gough (2007), Mazumdar et al. (2012) for details.
+
+It considers the functional forms for the signals as presented in 
+Mazumdar et al. (2012), with a total of 7 free parameters in the fit:
+
+* A_bcz
+* tau_bcz
+* phi_bcz
+
+* A_HeIIz
+* beta_HeIIz
+* tau_HeIIz
+* phi_HeIIz
+
+
+== Compilation ==
+
+1. In the Makefile, change 'BASE' to the directory where you have the sig_genetic folder.
+2. Also change 'lib' to the directory where the library is
+    OR
+   Place "libmodules.a" in the sig_genetic folder and set 'lib' to the same value as 'BASE'
+
+== Changelog ==
+
+
