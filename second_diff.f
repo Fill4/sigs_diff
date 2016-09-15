@@ -32,7 +32,7 @@ subroutine second_diff
 	! Remove zeros and wrong values. Check wrong values definition (>50 in this case)
 	j = 1
 	do i=1,n
-		if (d2work(i) /= 0. .and. abs(d2work(i)) < 50) then
+		if (d2work(i) /= 0. .and. abs(d2work(i)) < 4) then
 			d2(j) = d2work(i)
 			w_d2(j) = w(i)/w0ref
 			l_d2(j) = l(i)

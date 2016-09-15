@@ -65,16 +65,8 @@ $(BASE)/fit_d2_genetic.o
 # ***             Compilar os programas                  *** 
 # **********************************************************
 
-<<<<<<< HEAD
-sig_bcz_d2: $(FILES) $(FCOM) $(FBASIC) 
-	$(FC) $(FILES) $(FCOM) $(FBASIC) -o $@ -L$(lib) -I$(lib) $(LINK) -O3
-
-clean:
-	rm -f $(FILES) $(FCOM) $(FBASIC) *~ *.mod *.o sig_bcz_d2
-=======
 sig_bcz_d2: $(FILES)
 	$(FC) $(FILES) -o $@ -L$(lib) -I$(lib) $(LINK) -O3
 
 clean:
 	rm -f $(FILES) *~ *.mod *.o sig_bcz_d2
->>>>>>> Automatic_Approach
