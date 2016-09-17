@@ -15,10 +15,10 @@
 # *******************************************************
 # ***   Especificar as directorias com as subrotinas  ***
 # *******************************************************
-BASE = /home/fill/Documents/repos/glitch2
+BASE := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 
 # library
-lib = /home/fill/Documents/repos/lib-fortran
+lib := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../lib-fortran)
 
 # *******************************************************
 # ***                       Macros                    ***
@@ -65,8 +65,8 @@ $(BASE)/fit_d2_genetic.o
 # ***             Compilar os programas                  *** 
 # **********************************************************
 
-sig_bcz_d2: $(FILES)
-	$(FC) $(FILES) -o $@ -L$(lib) -I$(lib) $(LINK) -O3
+sigs_diff: $(FILES)
+	$(FC) $(FILES) -o sigs_diff -L$(lib) -I$(lib) $(LINK) -O3
 
 clean:
-	rm -f $(FILES) *~ *.mod *.o sig_bcz_d2
+	rm -f $(FILES) *~ *.mod *.o sigs_diff
