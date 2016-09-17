@@ -29,10 +29,10 @@ subroutine second_diff
 		end if
 	end do
 
-	! Remove zeros and wrong values. Check wrong values definition (>50 in this case)
+	! Remove zeros and wrong values.
 	j = 1
 	do i=1,n
-		if (d2work(i) /= 0. .and. abs(d2work(i)) < 4) then
+		if (d2work(i) /= 0. .and. abs(d2work(i)) < 20) then
 			d2(j) = d2work(i)
 			w_d2(j) = w(i)/w0ref
 			l_d2(j) = l(i)

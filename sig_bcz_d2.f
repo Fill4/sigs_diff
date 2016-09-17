@@ -43,6 +43,8 @@ program sigs_d2
 		end do
 	end if
 
+	call cpu_time(start)
+
 	afile='00000'
 	options_file = 'options_file'
 	if (verbose) write (6,*)"---------------------> PROGRAM SIGS_D2 <---------------------"
@@ -72,5 +74,8 @@ program sigs_d2
 	deallocate(c)
 
 	goto 1
+
+	call cpu_time(finish)
+	print '("Time = ",f6.3," seconds.")',finish-start
 
 end program sigs_d2
