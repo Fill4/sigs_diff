@@ -28,9 +28,9 @@ subroutine parameters(options_file)
 	! Degree of the polynomial smooth function
 	integer		:: degreed = 3
 	! Variables to control pikaia execution
-	integer		:: pikaia_popd = -1, pikaia_gend = -1
+	integer		:: pikaia_popd = 80, pikaia_gend = 3000
 	! Reference frequency
-	real		:: w0refd = 2100.0
+	real		:: w0refd = -1
 	! Range in degree
 	integer		:: lmind = 0, lmaxd = 2
 	! Minimum number of modes with same degree

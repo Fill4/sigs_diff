@@ -75,7 +75,4 @@ program sigs_d2
 
 	goto 1
 
-	call cpu_time(finish)
-	print '("Time = ",f6.3," seconds.")',finish-start
-
 end program sigs_d2

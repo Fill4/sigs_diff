@@ -14,7 +14,7 @@ subroutine output (afile, chi2)
 
 	character(len=80), intent(in)	:: afile
 	real(dp), intent(inout)			:: chi2
-	real(dp)						:: tauBCZ, tauHe, a_bcz, a_he, beta
+	real(dp)						:: tau_bcz, tau_he, a_bcz, a_he, beta
 	real(dp), dimension(150)		:: xx, result_fun, he_fun, bcz_fun, smooth_fun
 	real(dp)						:: min_xx, max_xx
 	integer							:: j, k
@@ -52,19 +52,21 @@ subroutine output (afile, chi2)
 
 	! Get the parameters from the results array C.
 	a_bcz = c(1)
-	tauBCZ = c(2)
+	tau_bcz = c(2)
 	a_he = c(4)
 	beta = c(5)
-	tauHe = c(6)
+	tau_he = c(6)
 
 	! Write the results to the shell during execution if verbose is TRUE
-	if (verbose) write (6,1010)	'Results:', &
-								'tau_BCZ = ', tauBCZ, 'A_bcz = ', a_bcz,&
-								'phi_bcz = ', c(3),  &
-								'tau_He = ', tauHe, 'A_he = ', a_he,&
-								'phi_he = ', c(7),  'Beta = ', beta,&
-								'chi2 = ', chi2, 'chi2norm = ', chi2/nd2
-						   
+	if (verbose) then
+		write (6,1010)	'Results:', &
+						'tau_BCZ = ', tau_bcz, 'Phi = ', c(3), &
+						'A_BCZ = ', a_bcz, &
+						'tau_HeII = ', tau_he, 'Phi = ', c(7), &
+						'A_HeII = ', a_he, 'beta_HeII = ', beta, &
+						'chi2 = ', chi2, 'chi2norm = ', chi2/(n-nconst)
+	end if
+
 1010 format (3x, a, //, &
 			&3x, a, f9.4, 6x, a, f10.6, //,&
 			&3x, a, f9.2, //,&
@@ -73,8 +75,8 @@ subroutine output (afile, chi2)
 			&3x, a, f12.5, 3x, a, f10.5 //)
 
 	! Write results to the Results file
-	write (9,9003) afile, tauBCZ, c(3), a_bcz, tauHe, c(7), a_he, beta
-9003 format (a36, 7f12.4)
+	write (9,9003) afile, tau_bcz, c(3), a_bcz, tau_he, c(7), a_he, beta, chi2
+9003 format (a20, 8f12.4)
 	close(9)
 
 	if (show_plots) then

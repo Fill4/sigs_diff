@@ -27,7 +27,11 @@ subroutine deffreq (afile)
 	if (verbose) write (*,*) ' '
 
 	if (afile(1:1).eq.' ') afile = afile0
-	if (afile(1:4).eq.'stop') stop
+	if (afile(1:4).eq.'stop') then
+		call cpu_time(finish)
+		write(*,*) ' Time elapsed:   ', finish-start, 's'
+		stop
+	endif
 
 	if (verbose) then
 		write (*,*) " Reading frequencies from File: ", afile

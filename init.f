@@ -34,6 +34,11 @@ subroutine init (afile)
 
 	if (nn.gt.nmax.or.nn.lt.nmin) goto 10
 	if (ll.gt.lmax.or.ll.lt.lmin) goto 10
+	if (w0ref.eq.-1) then
+		if (nn.eq.18 .and. ll.eq.0) then
+			w0ref = ww
+		endif
+	endif
 	if (ww.gt.wmax) wmax = ww
 	if (ww.lt.wmin) wmin = ww
 	goto 10
@@ -41,6 +46,11 @@ subroutine init (afile)
 20	rewind (1)
 
 	call skpcom (1)
+
+	if (w0ref.eq.-1) then
+		write(*,*) ' No w0ref defined and could not attribute frequency of n=18 to w0ref'
+		write(*,*) ' Defining w0ref as 2500 nuHz. Consider defining a refence frequency in the options file'
+	endif
 
 	dw = (wmax-wmin)
 	wlower = wmin + dw*vleft
