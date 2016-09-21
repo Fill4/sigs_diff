@@ -12,6 +12,7 @@ subroutine parameters(options_file)
 
 	! Defining namelist sig_bcz_controls for easy input of a list of variables
 	namelist / sig_bcz_controls / pikaia_popd,pikaia_gend,&
+								lambdad,smooth_iter_maxd,ftold,&
 								w0refd,&
 								lmind,lmaxd,&
 								nlmind,&
@@ -25,6 +26,10 @@ subroutine parameters(options_file)
 								upper_tau_he2d,lower_tau_he2d
 
 	! Declaration and default initialization of all user defined variables
+	! Values here to wotk with sigs_freq
+	real(dp)	:: lambdad
+	real		:: ftold
+	integer		:: smooth_iter_maxd
 	! Degree of the polynomial smooth function
 	integer		:: degreed = 3
 	! Variables to control pikaia execution
