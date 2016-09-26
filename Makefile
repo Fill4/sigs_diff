@@ -13,7 +13,7 @@ lib := $(abspath ../lib-fortran)
 # ***					Macros							***
 # *********************************************************
 FC	= gfortran
-FFLAGS = -O2 -ffree-form -ffast-math
+FFLAGS = -O3 -ffree-form -ffast-math
 LINK = -lmodules -llapack
 
 # *******************************************************
