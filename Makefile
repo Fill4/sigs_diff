@@ -1,39 +1,21 @@
 # no console output during compilation:
 #.SILENT:
 
-# *******************************************************
-# ***          Comecar por limpar os sufixos          ***
-# *******************************************************
-.SUFFIXES:
-
-# *******************************************************
-# ***     Especificar os sufixos para .f .o .do       ***
-# *******************************************************
-#.SUFFIXES: .f90 .o
-
-
-# *******************************************************
-# ***   Especificar as directorias com as subrotinas  ***
-# *******************************************************
-BASE := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+# *********************************************************
+# ***					Directories						***
+# *********************************************************
+BASE := $(abspath ./)
 
 # library
-lib := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../lib-fortran)
+lib := $(abspath ../lib-fortran)
 
-# *******************************************************
-# ***                       Macros                    ***
-# *******************************************************
-# gfortran
+# *********************************************************
+# ***					Macros							***
+# *********************************************************
 FC	= gfortran
-FFLAGS = -O3 -ffree-form -ffast-math -fexternal-blas -march=native -funroll-loops -Wuninitialized -Werror
-LINK = -lmodules -llapack -lblas -L/usr/lib
-#dbx     = -O5 -r8 -g
-#profil  = -p -O5 -r8 
-#samedir = .
-#FTN     = ftnchek
+FFLAGS = -O2 -ffree-form -ffast-math
+LINK = -lmodules -llapack
 
-
-#
 # *******************************************************
 # *** Regra que por defeito produz os ficheiros .o **
 # *******************************************************
@@ -66,7 +48,7 @@ $(BASE)/fit_d2_genetic.o
 # **********************************************************
 
 sigs_diff: $(FILES)
-	$(FC) $(FILES) -o sigs_diff -L$(lib) -I$(lib) $(LINK) -O3
+	$(FC) $(FILES) -o sigs_diff -L$(lib) -I$(lib) $(LINK)
 
 clean:
 	rm -f $(FILES) *~ *.mod *.o sigs_diff

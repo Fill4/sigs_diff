@@ -28,8 +28,8 @@ subroutine output (afile)
 
 	if (show_plots) then
 		! Plot initial second differences and smooth function fitted to them
-		call plot(w_d2(1:nd2)*w0ref, pre_d2(1:nd2), &
-		xx*w0ref, smooth_fun, ' 5.00-', color1='black', color2='red')
+		!call plot(w_d2(1:nd2)*w0ref, pre_d2(1:nd2), &
+		!xx*w0ref, smooth_fun, ' 5.00-', color1='black', color2='red')
 
 		! Plot the HeII and the Bcz components
 		call plot(xx*w0ref, he_fun, &
