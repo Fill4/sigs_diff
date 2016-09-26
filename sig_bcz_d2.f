@@ -22,7 +22,6 @@ program sigs_d2
 	integer				:: narg, iarg
 	character (len=80)	:: afile, options_file, star_file
 	character (len=20)	:: name
-	real(dp)			:: chi2
 
 	! Check if arguments are found
 	narg=command_argument_count()
@@ -38,6 +37,8 @@ program sigs_d2
 				verbose = .TRUE.
 			case('-p','--plots')
 				show_plots = .TRUE.
+			case('-a','--auto')
+				automatic = .TRUE.
 			case default
 				write(6,*)"Option ",adjustl(name),"unknown"
 			end select
@@ -61,16 +62,16 @@ program sigs_d2
 	call deffreq (afile) 	! Reads freqs_list file
 	call init (afile) 		! Reads frequencias and calculates 2nd differences
 	call openfiles			! Prepare output files
-
 	call flush (6)
 
 	! Removes the smooth component and finds the best parameters
-	call fit_d2_genetic(chi2)
+	call fit_d2_genetic
+
 	! Output the results
-	call output (afile, chi2)
+	call output (afile)
 
 	if (verbose) write (6,*)"---------------------> PROGRAM SIGS_D2 <---------------------"
-
+	call flush (9)
 	call flush (6)
 	deallocate(c)
 

@@ -1,9 +1,6 @@
-!----------------------------------------------------------------------------
-! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
-!----------------------------------------------------------------------------
 subroutine init (afile)
-! This subroutine reads frequency data from file AFILE, and divides it in
-! groups of modes with same degree l.
+! This subroutine reads frequency data from file AFILE and selects all the ones that 
+! fulfill the parameters defined in the options_file
 
 	use types_and_interfaces, only: dp
 	use commonvar
@@ -11,7 +8,7 @@ subroutine init (afile)
 	implicit none
 	
 	character(len=80), intent(inout) :: afile
-	real(dp) :: dw, fw, ww, ss, wlower, wupper, wmax, wmin
+	real(dp) :: dw, fw, ww, ss, wmax, wmin
 	integer  :: ll, nd, nn
 	integer  :: i, j, k
 
@@ -50,14 +47,11 @@ subroutine init (afile)
 	if (w0ref.eq.-1) then
 		write(*,*) ' No w0ref defined and could not attribute frequency of n=18 to w0ref'
 		write(*,*) ' Defining w0ref as 2500 nuHz. Consider defining a refence frequency in the options file'
+		w0ref = 2500._dp
 	endif
-
-	dw = (wmax-wmin)
-	wlower = wmin + dw*vleft
-	wupper = wmax - dw*vright
  
 	if (verbose) then
-		write (*,1013) 'Range in frequencies:', wlower, wupper
+		write (*,1013) 'Range in frequencies:', wmin, wmax
 		write (*,1014) 'Reference frequency :', w0ref
 		write(*,*) ' '
 	endif
@@ -65,9 +59,9 @@ subroutine init (afile)
 1014 format (2x, a, f10.4)
 
 	! Check if reference frequency is adequate
-	fw = (w0ref-wlower)/(wupper-wlower)
+	fw = (w0ref-wmin)/(wmax-wmin)
 	if (fw.lt.0.1d0.or.fw.gt.0.9d0) then
-		write (*,*) 'WARNING: Reference w is inadequate for data!'
+		write (*,*) ' WARNING: Reference w = ', w0ref, 'is inadequate for data!'
 		write (*,*) ' '
 	endif
 
@@ -84,7 +78,7 @@ subroutine init (afile)
 		if (ss.gt.ssmax) goto 11
 	endif
 
-	if (ww.gt.wupper.or.ww.lt.wlower) goto 11
+	if (ww.gt.wmax.or.ww.lt.wmin) goto 11
 	if (nn.lt.nmin) goto 11
 	if (nn.gt.nmax) goto 11
 	if (ll.gt.lmax.or.ll.lt.lmin) goto 11

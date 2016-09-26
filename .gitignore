@@ -1,6 +1,7 @@
 *.mod
 *.o
-freqs
-*.freqs
-Results
+Results*
 sigs_diff
+command_file.txt
+data_*
+data_file.txt

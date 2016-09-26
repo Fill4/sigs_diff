@@ -1,8 +1,6 @@
-!----------------------------------------------------------------------------
-! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
-!----------------------------------------------------------------------------
-subroutine output (afile, chi2)
-! Outputs the plots and writes the results to a file.sss
+subroutine output (afile)
+! Writes final results to file Results_diff. Can show plots from gnuplot,
+! write results on the shell and write plot values to file data_diff_1 and 2
 
 	use types_and_interfaces
 	use commonvar
@@ -13,7 +11,6 @@ subroutine output (afile, chi2)
 	implicit none
 
 	character(len=80), intent(in)	:: afile
-	real(dp), intent(inout)			:: chi2
 	real(dp)						:: tau_bcz, tau_he, a_bcz, a_he, beta
 	real(dp), dimension(150)		:: xx, result_fun, he_fun, bcz_fun, smooth_fun
 	real(dp)						:: min_xx, max_xx
@@ -91,6 +88,9 @@ subroutine output (afile, chi2)
 			write(7,9005) l_d2(k), w_d2(k)*w0ref, d2(k), sigd2(k)
 	9005	format (i3, 3f15.6)
 		end do
+
+		call flush (7)
+		call flush (8)
 	end if
 
 	return

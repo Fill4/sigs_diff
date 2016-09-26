@@ -1,13 +1,10 @@
-!--------------------------------------------------------------------
-! Joao Faria: 20/08/2012	|	Revised: Filipe Pereira - Abr 2016
-!--------------------------------------------------------------------
 subroutine openfiles
-! This subroutine opens or creates the Results file.
+! Set the files necessary for the output
 
 	use commonvar
 	implicit none
 	
-	logical			:: bool_Results
+	logical :: bool_Results
 
 	! Results_diff file (unit = 9)
 	inquire( file="Results_diff", exist=bool_Results)

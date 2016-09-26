@@ -1,12 +1,9 @@
-!----------------------------------------------------------------------------
-! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
-!----------------------------------------------------------------------------
-subroutine fit_d2_genetic (chi2)
+subroutine fit_d2_genetic
 ! This subroutine initially removes the smooth component from the second 
 ! differences.
 !
 ! Next it runs PIKAIA to try to fit the second differences to the funtion
-! in the fun.f file using a iteratively reweighted least squares method.
+! in the fun.f file using a least squares method.
 
 	use types_and_interfaces
 	use commonvar
@@ -16,9 +13,8 @@ subroutine fit_d2_genetic (chi2)
 	use lib_statistics, only: median
 
 	implicit none
-		
-	real(dp), intent(inout)		:: chi2
-	real(dp), dimension(nconst)	:: c0, p, step, var
+
+	real(dp), dimension(nconst)	:: c0, p
 
 	real						:: ctrl(12), x(nconst), f
 	integer						:: seed, status
@@ -39,13 +35,6 @@ subroutine fit_d2_genetic (chi2)
 	pre_d2(1:nd2) = d2(1:nd2)
 	d2(1:nd2) = d2(1:nd2) - smooth(1:nd2)
 
-	! Define number of re-weight iterations based on error usage 
-	!if (use_error_chi2) then
-	!	maxIter = 4
-	!else
-	!	maxIter = 1
-	!end if
-
 	! First, initialize the random-number generator
 	seed = TIME()
 	call rninit(seed)
@@ -56,19 +45,13 @@ subroutine fit_d2_genetic (chi2)
 	ctrl(2) = pikaia_gen
 	ctrl(5) = 5 ! one-point+creep, adjustable rate based on fitness
 	
-	! Either run PIKAIA once for a no errors run or iterate through various weights for
-	! each point until convergence or until MaxIter
-	!do iterIRLS=1,maxIter
+	! Run PIKAIA 
 	call pikaia(objfun_ga, nconst, ctrl, x, f, status)  ! if using PIKAIA 1.2
-		!call rescale(x, c)
-		!if (all(abs(c0(1:2)-c(1:2)) < 0.2_dp * c(1:2)) .and. all(abs(c0(4:6)-c(4:6)) < 0.2_dp * c(4:6))) exit
-		!c0 = c
-	!end do
 		
 	! Rescale parameters
 	call rescale(x, c)
 
-	!Check exit_status for errors during PIKAIA execution and stop if there were any
+	! Check exit_status for errors during PIKAIA execution and stop if there were any
 	if (status /= 0) then
 		write(6,*) "Error in PIKAIA"
 		stop
@@ -88,7 +71,7 @@ function objfun_ga(n, p) result(fun_val)
 ! and subtracted from the second differences
 
 	use types_and_interfaces, only: dp, fun, rescale
-	use commonvar, only : nconst, pi, iterIRLS, use_error_chi2
+	use commonvar, only : nconst, pi, use_error_chi2
 	use commonarray, only : nd2, w_d2, d2, c, l, sigd2, weight
 	implicit none
 
@@ -125,30 +108,3 @@ function objfun_ga(n, p) result(fun_val)
 	return
 
 end function objfun_ga
-  
-subroutine rescale(array_in, array_out)
-! Rescales the parameters that come out of pikaia ARRAY_IN to their physical
-! values ARRAY_OUT
-	
-	use types_and_interfaces, only: dp
-	use commonvar
-	
-	implicit none
-	
-	real, dimension(:), intent(in)			:: array_in
-	real(dp), dimension(:), intent(out) 	:: array_out
-
-	
-	! Bcz
-	array_out(1) = dble(array_in(1)) * 0.6_dp
-	array_out(2) = dble(array_in(2)) * (upper_tau_bcz - lower_tau_bcz) + lower_tau_bcz
-	array_out(3) = dble(array_in(3)) * pi
-	
-	! HeII
-	array_out(4) = dble(array_in(4)) * (50.0_dp - 0.5_dp) + 0.5_dp
-	array_out(5) = dble(array_in(5)) * 5.0_dp
-	array_out(6) = dble(array_in(6)) * (upper_tau_he2 - lower_tau_he2) + lower_tau_he2
-	array_out(7) = dble(array_in(7)) * pi
-  
-end subroutine rescale
-  

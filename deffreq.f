@@ -1,6 +1,3 @@
-!----------------------------------------------------------------------------
-! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
-!----------------------------------------------------------------------------
 subroutine deffreq (afile)
 ! This subroutine reads all the frequencies files on afile.
 	

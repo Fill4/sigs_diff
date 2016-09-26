@@ -1,4 +1,3 @@
-!----------------------------------------------------------------------------
 elemental real(dp) function smooth_comp (nu_d2)
 ! Polynomial smooth function. Depends on degree defined.
 
@@ -17,7 +16,6 @@ elemental real(dp) function smooth_comp (nu_d2)
 
 end function smooth_comp
 
-!----------------------------------------------------------------------------
 elemental real(dp) function he_comp (nu_d2)
 ! Function that represents the signal produced by the sharp transition in 
 ! the helium ionization region.
@@ -41,7 +39,6 @@ elemental real(dp) function he_comp (nu_d2)
 
 end function he_comp
 
-!----------------------------------------------------------------------------
 elemental real(dp) function bcz_comp (nu_d2)
 ! Function that represents the signal produced by the sharp transition in 
 ! the base of the convection zone.

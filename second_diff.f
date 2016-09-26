@@ -1,9 +1,5 @@
-!----------------------------------------------------------------------------
-! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
-!----------------------------------------------------------------------------
 subroutine second_diff
-! This subroutine calculates the second differences from the oscillation
-! frequencies.
+! This subroutine calculates the second differences from the oscillation frequencies
 
 	use types_and_interfaces
 	use commonvar
@@ -51,18 +47,5 @@ subroutine second_diff
 	nd2 = j-1
 	if (verbose) write (*,*) ' '
 	if (verbose) write (6,'(2x, a, i3)') "# of second differences: ", nd2
-
-	! Write second differences to file
-	if (use_error_chi2) then
-		open(unit=33, file='d2.data', action='write')
-		write(33,*) "#  nu (muHz)", "d2 (muHz)", "err_d2 (muHz)"
-		write(33,'(f18.8, f18.8, f18.8)') (w_d2(i)*w0ref, d2(i)*w0ref, sigd2(i), i=1,nd2)
-		close(33)
-	else
-		open(unit=33, file='d2.data', action='write')
-		write(33,*) "#  nu (muHz)", "d2 (muHz)"
-		write(33,'(f18.8, f18.8)') (w_d2(i)*w0ref, d2(i)*w0ref, i=1,nd2)
-		close(33)
-	end if
 
 end subroutine second_diff
