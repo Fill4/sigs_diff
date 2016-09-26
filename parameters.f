@@ -1,17 +1,15 @@
-!----------------------------------------------------------------------------
-! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
-!----------------------------------------------------------------------------
 subroutine parameters(options_file)
 ! This subroutine parses through the options_file assigning the input values to 
-! all variables.
+! all variables. Variables are already initialized and assigned default values 
+! in commonvar
 
 	use commonvar
 	implicit none
 	
 	character(len=80), intent(in)  :: options_file
 
-	! Defining namelist sig_bcz_controls for easy input of a list of variables
-	namelist / sig_bcz_controls / pikaia_popd,pikaia_gend,&
+	! Defining namelist opt_namelist for easy input of a list of variables
+	namelist / opt_namelist / pikaia_popd,pikaia_gend,&
 								lambdad,smooth_iter_maxd,ftold,&
 								w0refd,&
 								lmind,lmaxd,&
@@ -31,28 +29,28 @@ subroutine parameters(options_file)
 	real		:: ftold
 	integer		:: smooth_iter_maxd
 	! Degree of the polynomial smooth function
-	integer		:: degreed = 3
+	integer		:: degreed = 2
 	! Variables to control pikaia execution
 	integer		:: pikaia_popd = 80, pikaia_gend = 3000
 	! Reference frequency
 	real		:: w0refd = -1
 	! Range in degree
-	integer		:: lmind = 0, lmaxd = 2
+	integer		:: lmind = 0, lmaxd = 3
 	! Minimum number of modes with same degree
 	integer		:: nlmind = 5
 	! Range in radial order
-	integer		:: nmind = 0, nmaxd = 100
+	integer		:: nmind = 8, nmaxd = 28
 	! Borders to ignore in frequency (right and left)
 	real		:: vrightd = 0.0, vleftd = 0.0
 	! Whether to use errors or not
-	logical		:: use_error_chi2d = .FALSE.
+	logical		:: use_error_chi2d = .TRUE.
 	! Upper limit for error
-	real		:: ssmaxd = 0.500
+	real		:: ssmaxd = 0.100
 	! Star parameters
 	real		:: large_sepd, teffd, lumd
 	! Initial values for parameters
-	integer		:: upper_tau_bczd = 2500, lower_tau_bczd = 1500
-	integer		:: upper_tau_he2d = 1400, lower_tau_he2d = 500
+	integer		:: upper_tau_bczd = 4500, lower_tau_bczd = 1500
+	integer		:: upper_tau_he2d = 1500, lower_tau_he2d = 300
 
 	integer                        :: ierr = 1
 	integer                        :: unit1 = 8
@@ -65,7 +63,7 @@ subroutine parameters(options_file)
 				  iostat=ierr)
 
 	! Read user defined options file (overwrites default values)
-	read(unit1, nml=sig_bcz_controls, iostat=ierr, iomsg=message)
+	read(unit1, nml=opt_namelist, iostat=ierr, iomsg=message)
 	close (unit1)
 	if (ierr /= 0) write(*,*) "Failed reading ", trim(options_file), &
 				  " with error code ", ierr, '/', message		

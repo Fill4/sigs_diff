@@ -1,5 +1,6 @@
 !----------------------------------------------------------------------------
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
+! CHANGE
 !----------------------------------------------------------------------------
 program sigs_d2
 ! This program isolates an oscillatory signal that is present in the second 

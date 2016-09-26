@@ -53,7 +53,7 @@ subroutine output (afile, chi2)
 	! Get the parameters from the results array C.
 	a_bcz = c(1)
 	tau_bcz = c(2)
-	a_he = c(4)
+	a_he = c(4)*exp(-c(5))
 	beta = c(5)
 	tau_he = c(6)
 
