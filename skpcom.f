@@ -1,5 +1,4 @@
-!***************************************************************************
-	subroutine skpcom (nunit)
+subroutine skpcom (nunit)
 ! This subroutine checks if there is a line starting by "#" and
 ! if there is it skips it.
 !
@@ -12,5 +11,4 @@
  2	return
 !
  1000	format (a1)
-	end
-!***************************************************************************
+end
