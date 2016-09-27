@@ -2,7 +2,7 @@
 ! Joao Faria: Jan 2013	|	Revised: Filipe Pereira - Abr 2016
 ! CHANGE
 !----------------------------------------------------------------------------
-program sigs_d2
+program main
 ! This program isolates an oscillatory signal that is present in the second 
 ! differences of the oscillation frequencies and associated with regions where 
 ! the sound speed has a discontinuity.
@@ -49,14 +49,14 @@ program sigs_d2
 
 	afile='00000'
 	options_file = 'options_file'
-	if (verbose) write (6,*)"---------------------> PROGRAM SIGS_D2 <---------------------"
+	if (verbose) write (6,*)"---------------------> PROGRAM SIGS_DIFF <---------------------"
 
 	! Number of parameters to fit
 1	nconst=7
 	allocate(c(nconst))
 
 	! Read options_file with input parameters
-	call parameters(options_file)	
+	call read_inputs(options_file)	
 
 	! Initializing all quantities, read in frequencies and create output files
 	call deffreq (afile) 	! Reads freqs_list file
@@ -65,16 +65,19 @@ program sigs_d2
 	call flush (6)
 
 	! Removes the smooth component and finds the best parameters
+	if (automatic) then
+		call automatic_interval
+	endif
 	call fit_d2_genetic
 
 	! Output the results
 	call output (afile)
 
-	if (verbose) write (6,*)"---------------------> PROGRAM SIGS_D2 <---------------------"
+	if (verbose) write (6,*)"---------------------> PROGRAM SIGS_DIFF <---------------------"
 	call flush (9)
 	call flush (6)
 	deallocate(c)
 
 	goto 1
 
-end program sigs_d2
+end program main

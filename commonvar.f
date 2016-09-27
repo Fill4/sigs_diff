@@ -38,8 +38,9 @@ module commonvar
 	! Star parameters
 	real		:: large_sep, teff
 	! Initial values for parameters
-	integer		:: upper_tau_bcz = 4500, lower_tau_bcz = 1500
-	integer		:: upper_tau_he2 = 1400, lower_tau_he2 = 300
+	real		:: upper_tau_bcz = 4500, lower_tau_bcz = 1500
+	real		:: upper_tau_he2 = 1400, lower_tau_he2 = 300
+	integer		:: bcz_interval = 800, he2_interval = 400
 	!--------------------------------------------------------
 
 	! Other variables used during execution

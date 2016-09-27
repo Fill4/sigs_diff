@@ -7,7 +7,7 @@
 BASE := $(abspath ./)
 
 # library
-lib := $(abspath ../lib-fortran)
+lib := $(abspath ./lib/)
 
 # *********************************************************
 # ***					Macros							***
@@ -32,16 +32,17 @@ $(BASE)/commonvar.o \
 $(BASE)/commonarray.o \
 $(BASE)/fun.o \
 $(BASE)/components.o \
-$(BASE)/sig_bcz_d2.o \
+$(BASE)/fit_d2_genetic.o \
 $(BASE)/openfiles.o \
 $(BASE)/output.o \
 $(BASE)/deffreq.o \
-$(BASE)/parameters.o \
+$(BASE)/read_inputs.o \
 $(BASE)/second_diff.o \
+$(BASE)/automatic_interval.o \
 $(BASE)/init.o \
 $(BASE)/skpcom.o \
 $(BASE)/help.o \
-$(BASE)/fit_d2_genetic.o
+$(BASE)/main.o
 
 # **********************************************************
 # ***             Compilar os programas                  *** 

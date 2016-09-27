@@ -7,7 +7,6 @@ subroutine output (afile)
 	use commonarray
 	use lib_array
 	use lib_plot
-	use lib_io
 	implicit none
 
 	character(len=80), intent(in)	:: afile

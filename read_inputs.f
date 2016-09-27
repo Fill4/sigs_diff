@@ -1,4 +1,4 @@
-subroutine parameters(options_file)
+subroutine read_inputs(options_file)
 ! This subroutine parses through the options_file assigning the input values to 
 ! all variables.
 
@@ -12,7 +12,8 @@ subroutine parameters(options_file)
 								degree, lambda, ftol, smooth_iter_max,&
 								pikaia_pop, pikaia_gen,&
 								w0ref, large_sep, teff,&
-								upper_tau_bcz, lower_tau_bcz, upper_tau_he2, lower_tau_he2
+								upper_tau_bcz, lower_tau_bcz, upper_tau_he2, lower_tau_he2,&
+								bcz_interval, he2_interval
 
 	integer :: ierr = 1
 	integer :: unit1 = 8
@@ -30,4 +31,4 @@ subroutine parameters(options_file)
 
 	return
 
-end subroutine parameters
+end subroutine read_inputs

@@ -1,6 +1,9 @@
 # Output from READ.PRO with the frequencies from GOLF
 # Original file: GOLF_freq_5202d_dt20.dat
 #
+#   Teff    Large_Sep
+    5780     136.12
+# 
 #   l   n        v         sig
 #-------------------------------
     0    8   1263.3142   0.3704
