@@ -16,7 +16,6 @@ program main
 	use types_and_interfaces
 	use commonvar
 	use commonarray
-	use lib_array
 	implicit none
 
 	integer				:: narg, iarg
