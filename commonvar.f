@@ -22,9 +22,9 @@ module commonvar
 	! Whether it should use the errors or not
 	logical		:: use_error_chi2 = .TRUE.
 	! Upper limit for error
-	real(dp)	:: ssmax = 0.100
+	real(dp)	:: ssmax = 0.300
 	! Value to work with sigs_diff
-	integer		:: degree = 2
+	integer		:: degree = 0
 	! Fitting control parameter
 	real(dp)	:: ftol
 	! Smoothing control parameter

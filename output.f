@@ -38,11 +38,9 @@ subroutine output (afile)
 		!call plot(w_d2(1:nd2)*w0ref, d2(1:nd2)*w0ref, ' 5.', color1='black')
 		if (use_error_chi2) then
 			! Plot the fit of fun to the second differences
-			call plot(w_d2(1:nd2)*w0ref, d2(1:nd2), &
-			xx*w0ref, result_fun, ' 5.00-', color1='black', color2='red', errors=sigd2(1:nd2))
+			call plot(w_d2(1:nd2)*w0ref, d2(1:nd2), xx*w0ref, result_fun, ' 5.00-', color1='black', color2='red', errors=sigd2(1:nd2))
 		else
-			call plot(w_d2(1:nd2)*w0ref, d2(1:nd2), &
-			xx*w0ref, result_fun, ' 5.00-', color1='black', color2='red')!, errors=sigd2(1:nd2))
+			call plot(w_d2(1:nd2)*w0ref, d2(1:nd2), xx*w0ref, result_fun, ' 5.00-', color1='black', color2='red')
 		endif
 	end if
 

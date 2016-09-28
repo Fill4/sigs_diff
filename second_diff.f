@@ -47,5 +47,6 @@ subroutine second_diff
 	nd2 = j-1
 	if (verbose) write (*,*) ' '
 	if (verbose) write (6,'(2x, a, i3)') "# of second differences: ", nd2
+	if (verbose) write (*,*) ' '
 
 end subroutine second_diff
