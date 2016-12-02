@@ -4,5 +4,5 @@ cd lib/
 make
 cd ../src
 make
-mv sigs-freq ../sigs-freq
+mv sigs_diff ../sigs_diff
 cd ../

@@ -7,7 +7,7 @@
 BASE := $(abspath ./)
 
 # library
-lib := $(abspath ./lib/)
+lib := $(abspath ../lib/)
 
 # *********************************************************
 # ***					Macros							***

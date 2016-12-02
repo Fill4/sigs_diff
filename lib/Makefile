@@ -39,4 +39,4 @@ libmodules.a: $(OBJS)
 	ar r $@ $^
 
 clean:
-	rm -f $(OBJS) libmodules.a *~
+	rm -f $(OBJS) libmodules.a *~ *.mod
