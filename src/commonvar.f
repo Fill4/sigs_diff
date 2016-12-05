@@ -22,7 +22,7 @@ module commonvar
 	! Whether it should use the errors or not
 	logical		:: use_error_chi2 = .TRUE.
 	! Upper limit for error
-	real(dp)	:: ssmax = 0.300
+	real(dp)	:: ssmax = 0.500
 	! Value to work with sigs_diff
 	integer		:: degree = 0
 	! Fitting control parameter
@@ -32,7 +32,7 @@ module commonvar
 	! Fitting procedure values
 	integer		:: smooth_iter_max
 	! Fitting procedure values
-	integer		:: pikaia_pop = 80, pikaia_gen = 3000
+	integer		:: pikaia_pop = 100, pikaia_gen = 3000
 	! Reference frequency
 	real(dp)	:: w0ref = -1
 	! Star parameters
