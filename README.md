@@ -32,7 +32,7 @@ git clone https://github.com/Fill4/sigs_diff
 # Move to repository folder
 cd /path/to/repo/
 # Compile
-./install.sh
+make
 ```
 ## Usage
 
@@ -42,7 +42,7 @@ Then run the command:
 ./sigs_diff -v -p
 ```
 and when prompted, select the location of the frequencies file and click Enter.
-The command -p shows the plots of the final fit and the final parameters will be printed to a file Results_diff.
+The command -p shows the plots of the final fit and the final parameters will be printed to a file results_diff.
 More commands and ways of executing the code are available and can be consulted here: __to be added__
 
 ## Testing
@@ -52,7 +52,7 @@ To test the compilation go to the tests folder and execute
 sigs_diff -v -p < freqs
 ```
 
-The plots will appear at the end of execution and the file Results_diff will have the final parameters of the fitted function
+The plots will appear at the end of execution and the file results_diff will have the final parameters of the fitted function
 
 ## Bibliography
 
