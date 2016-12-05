@@ -39,7 +39,7 @@ make
 To use the code it is necessary a file with the format of [sun.freqs](tests/sun.freqs) with the frequencies of oscillation of a star
 Then run the command:
 ```
-./sigs_diff -v -p
+./sigs_diff -v -p -a
 ```
 and when prompted, select the location of the frequencies file and click Enter.
 The command -p shows the plots of the final fit and the final parameters will be printed to a file results_diff.
@@ -49,7 +49,7 @@ More commands and ways of executing the code are available and can be consulted 
 To test the compilation go to the tests folder and execute
 
 ```
-sigs_diff -v -p < freqs
+sigs_diff -v -p -a < freqs
 ```
 
 The plots will appear at the end of execution and the file results_diff will have the final parameters of the fitted function
