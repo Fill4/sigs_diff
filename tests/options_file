@@ -1,5 +1,41 @@
 &opt_namelist
 
+! Range in angular degree l
+!lmin = 0
+!lmax = 3
+
+! Range in radial order n
+!nmin = 6
+!nmax = 30
+
+! Minimum number of modes with same degree
+!nlmin = 5
+
+! Whether it should use the uncertainties or not
+!use_error_chi2 = .TRUE.
+
+! Upper limit for error
+!ssmax = 0.500
+
+! Degree of smooth function
+degree = 2
+
+! Population and generation values for PIKAIA algorithm
+!pikaia_pop = 100
+!pikaia_gen = 3000
+
+! Reference frequency
+!w0ref = -1
+
+! Min and max values for acoustic depth intervals (used without automatic mode -a)
+!upper_tau_bcz = 4500
+!lower_tau_bcz = 1500
+!upper_tau_he2 = 1400
+!lower_tau_he2 = 300
+
+! Interval for acoustic depths centered on automatic value determined (used with automaic mode -a)
+!bcz_interval = 800
+!he2_interval = 400
 
 /
 !Line added otherwise the code will report a error in the read
