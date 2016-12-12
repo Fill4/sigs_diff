@@ -7,3 +7,4 @@ clean:
 
 	make -C src clean
 	make -C lib clean
+	rm sigs_diff

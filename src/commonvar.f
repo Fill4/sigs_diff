@@ -24,7 +24,7 @@ module commonvar
 	! Upper limit for error
 	real(dp)	:: ssmax = 0.500
 	! Value to work with sigs_diff
-	integer		:: degree = 0
+	integer		:: degree = 1
 	! Fitting control parameter
 	real(dp)	:: ftol
 	! Smoothing control parameter
