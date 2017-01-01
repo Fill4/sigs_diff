@@ -16,12 +16,17 @@ More details regarding the development of the methods from this repository can b
 
 ## Dependencies
 
-This program requires the LAPACK and BLAS libraries
+This program requires the LAPACK and BLAS libraries and gfortran for the compilation
+It also needs gnuplot to use option -p that shows plots of the results
 
 In Linux these can be installed by running the command:
 
 ```
 sudo apt-get install liblapack-dev
+sudo apt-get install gfortran
+sudo apt-get install gnuplot
+# Install gnuplot-x11 if you are using an x11 server to show the plot windows
+
 ```
 
 ## Compiling
